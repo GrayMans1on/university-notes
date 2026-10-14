@@ -102,7 +102,7 @@ thumbs = SITE / 'assets/room-thumbnails'
 thumbs.mkdir(exist_ok=True)
 created = {}
 preview_lessons = [(lesson, lesson) for lesson in schedule['lessons']]
-for event in schedule['exceptions']:
+for event in schedule['exceptions'] + [dict(event, source={'lessonId': event['lessonId']}, target={'lesson': event['patch']}) for event in schedule['permanentChanges'] if event.get('patch')]:
     if not event.get('target'):
         continue
     patch = event['target']['lesson']

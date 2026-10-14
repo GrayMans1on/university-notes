@@ -57,7 +57,9 @@ jobs:
           python3 scripts/prepare-android.py
           python3 scripts/publish-android-feed.py
       - name: Test mobile interface
-        run: node android/tests/mobile.test.cjs
+        run: |
+          node android/tests/mobile.test.cjs
+          node android/tests/admin.test.cjs
       - uses: actions/setup-java@v4
         if: steps.native.outputs.build == 'true'
         with:

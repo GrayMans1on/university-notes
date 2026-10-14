@@ -5,6 +5,7 @@ import { loadSchedule } from './schedule-data.mjs';
 
 const context = { window: {}, document: { getElementById() { return null; } } };
 vm.createContext(context);
+vm.runInContext(fs.readFileSync('assets/schedule-overrides.js', 'utf8'), context);
 vm.runInContext(fs.readFileSync('assets/schedule.js', 'utf8'), context);
 const api = context.window.StudySchedule;
 const schedule = loadSchedule(process.cwd());
@@ -40,3 +41,15 @@ assert.equal(read('2026-10-18').length, 1);
 assert.equal(read('2026-10-18', 1, 'other').length, 0);
 assert.equal(JSON.stringify(schedule.lessons), before);
 console.log('Schedule: date, group, subgroup, move, replacement, cancellation, addition, revocation and base preservation passed.');
+
+schedule.exceptions = [];
+schedule.permanentChanges = [{ id: 'room-1', action: 'replace', lessonId: original.id,
+    effectiveFrom: '2026-10-14', patch: { room: '326' } }];
+assert.equal(read('2026-10-14').find((lesson) => lesson.id === original.id).room, '326');
+assert.equal(read('2026-10-28').find((lesson) => lesson.id === original.id).room, '326');
+assert.equal(read('2026-09-30').find((lesson) => lesson.id === original.id).room, original.room);
+schedule.permanentChanges.push({ id: 'revert-room', action: 'revoke', effectiveFrom: '2026-10-21', supersedes: ['room-1'] });
+assert.equal(read('2026-10-14').find((lesson) => lesson.id === original.id).room, '326');
+assert.equal(read('2026-10-28').find((lesson) => lesson.id === original.id).room, original.room);
+assert.equal(JSON.stringify(schedule.lessons), before);
+console.log('Permanent overrides: effective date, future cycles, historical dates and rollback passed.');

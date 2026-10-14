@@ -17,7 +17,8 @@
         const week = cycleWeek(date, data.anchor);
         const eligible = (item) => (!item.group || item.group === group)
             && (!item.subgroup || item.subgroup === subgroup);
-        let result = data.lessons.filter((item) => item.day === day && item.weeks.includes(week) && eligible(item))
+        const regular = window.StudyScheduleOverrides.apply(data, isoDate(date));
+        let result = regular.filter((item) => item.day === day && item.weeks.includes(week) && eligible(item))
             .map((item) => ({ ...item }));
         const events = data.exceptions || [];
         const superseded = new Set(events.flatMap((event) => event.supersedes || []));
@@ -28,7 +29,7 @@
                 || event.subgroups && !event.subgroups.includes(subgroup)) {
                 continue;
             }
-            const original = event.source && data.lessons.find((item) => item.id === event.source.lessonId);
+            const original = event.source && regular.find((item) => item.id === event.source.lessonId);
             if (original && !eligible(original)) {
                 continue;
             }

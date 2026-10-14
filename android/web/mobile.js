@@ -207,9 +207,9 @@
         overlay.append(appStatus, install);
         const admin = node('button', '', 'Ввести код администратора');
         admin.type = 'button';
-        admin.disabled = true;
+        admin.addEventListener('click', () => window.StudyAdmin.open());
         overlay.append(node('h2', '', 'Администратор'), admin, node('p', 'app-note',
-            'Авторизация будет доступна после подключения защищённого сервера. Изменения расписания пока публикуются через GitHub.'));
+            'Код открывает постоянные и разовые изменения расписания. Сохранение и история — в GitHub.'));
         overlay.append(checked, node('p', 'app-note', 'Учёба · версия ' + (typeof native.version === 'function' ? native.version() : '1.0.0')
             + ' · расписание по времени Челябинска'));
     }

@@ -29,6 +29,57 @@ final class Schedule {
         return schedule.getJSONObject("bells").optJSONArray(String.valueOf(lesson.optInt("pair")));
     }
 
+    static JSONArray permanent(JSONObject schedule, LocalDate date) throws Exception {
+        JSONArray events = schedule.optJSONArray("permanentChanges");
+        JSONArray lessons = schedule.getJSONArray("lessons");
+        JSONArray result = new JSONArray();
+        java.util.Set<String> superseded = new java.util.HashSet<>();
+        if (events != null) {
+            for (int i = 0; i < events.length(); i++) {
+                JSONObject event = events.getJSONObject(i);
+                if (event.optString("effectiveFrom").compareTo(date.toString()) <= 0) {
+                    JSONArray ids = event.optJSONArray("supersedes");
+                    if (ids != null) {
+                        for (int j = 0; j < ids.length(); j++) {
+                            superseded.add(ids.getString(j));
+                        }
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < lessons.length(); i++) {
+            JSONObject lesson = new JSONObject(lessons.getJSONObject(i).toString());
+            if (events != null) {
+                for (int j = 0; j < events.length(); j++) {
+                    JSONObject event = events.getJSONObject(j);
+                    if (event.optString("action").equals("replace") && !superseded.contains(event.optString("id"))
+                        && event.optString("effectiveFrom").compareTo(date.toString()) <= 0
+                        && event.optString("lessonId").equals(lesson.optString("id"))) {
+                        JSONObject patch = event.getJSONObject("patch");
+                        if (patch.has("room") || patch.has("place") || patch.has("note")) {
+                            lesson.remove("thumbnail");
+                            lesson.remove("mapUrl");
+                            if (patch.has("room")) {
+                                lesson.remove("place");
+                            }
+                            if (patch.has("place")) {
+                                lesson.remove("room");
+                            }
+                        }
+                        java.util.Iterator<String> keys = patch.keys();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            lesson.put(key, patch.get(key));
+                        }
+                        lesson.put("permanentId", event.getString("id"));
+                    }
+                }
+            }
+            result.put(lesson);
+        }
+        return result;
+    }
+
     private static boolean includes(JSONArray values, Object value) {
         if (values == null) {
             return true;
@@ -54,7 +105,7 @@ final class Schedule {
         JSONObject schedule = data.getJSONObject("schedule");
         int cycle = week(date, LocalDate.parse(schedule.getString("anchor")));
         List<JSONObject> result = new ArrayList<>();
-        JSONArray lessons = schedule.getJSONArray("lessons");
+        JSONArray lessons = permanent(schedule, date);
         java.util.Map<String, JSONObject> originals = new java.util.HashMap<>();
         for (int i = 0; i < lessons.length(); i++) {
             JSONObject lesson = lessons.getJSONObject(i);

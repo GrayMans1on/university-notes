@@ -40,7 +40,7 @@ public final class MainActivity extends Activity {
     private File content;
     private String downloadPath;
     private ConnectivityManager.NetworkCallback callback;
-    private static final Set<String> KEYS = new java.util.HashSet<>(java.util.Arrays.asList("mobile-bookmarks", "mobile-last", "study-reading-settings"));
+    private static final Set<String> KEYS = new java.util.HashSet<>(java.util.Arrays.asList("mobile-bookmarks", "mobile-last", "study-reading-settings", "study-admin-unlocked", "study-admin-draft"));
 
     @Override
     protected void onCreate(Bundle state) {
@@ -311,7 +311,7 @@ public final class MainActivity extends Activity {
 
         @JavascriptInterface
         public String version() {
-            return "1.0.2";
+            return "1.0.3";
         }
 
         @JavascriptInterface
@@ -358,6 +358,20 @@ public final class MainActivity extends Activity {
             } catch (Exception ignored) {
                 // Keep the previous group when data is unavailable.
             }
+        }
+
+        @JavascriptInterface
+        public void githubRequest(int id, String method, String path, String token, String body) {
+            Updater.EXECUTOR.execute(() -> {
+                JSONObject result = GithubSchedule.request(method, path, token, body);
+                try {
+                    result.put("id", id);
+                } catch (Exception ignored) {
+                    // The request ID is an integer and remains serializable.
+                }
+                runOnUiThread(() -> web.evaluateJavascript("window.dispatchEvent(new CustomEvent('study-github',"
+                    + "{detail:" + result.toString() + "}));", null));
+            });
         }
 
         @JavascriptInterface

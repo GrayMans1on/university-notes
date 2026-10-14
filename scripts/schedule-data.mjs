@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import overrides from '../assets/schedule-overrides.js';
 
 export function loadSchedule(root) {
     const schedule = JSON.parse(fs.readFileSync(path.join(root, 'content/schedule.json'), 'utf8'));
@@ -13,6 +14,9 @@ export function loadSchedule(root) {
     if (ids.size !== schedule.lessons.length || ids.has(undefined)) {
         throw new Error('Lessons require unique stable IDs');
     }
+    const permanent = JSON.parse(fs.readFileSync(path.join(root, 'content/schedule-overrides.json'), 'utf8'));
+    overrides.validate(permanent, schedule);
+    schedule.permanentChanges = permanent.events;
     const seen = new Set();
     const validDate = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value || '')
         && !Number.isNaN(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
@@ -49,7 +53,7 @@ export function loadSchedule(root) {
             throw new Error('Invalid source date or lesson');
         }
         if (event.source) {
-            const lesson = schedule.lessons.find((item) => item.id === event.source.lessonId);
+            const lesson = overrides.apply(schedule, event.source.date).find((item) => item.id === event.source.lessonId);
             const date = new Date(event.source.date + 'T00:00:00Z');
             const day = (date.getUTCDay() + 6) % 7;
             const monday = new Date(date.getTime() - day * 86400000);

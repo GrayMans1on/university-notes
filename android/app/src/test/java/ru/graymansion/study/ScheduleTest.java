@@ -80,6 +80,21 @@ public class ScheduleTest {
     }
 
     @Test
+    public void permanentRoomChangesKeepPastDatesAndCanBeRolledBack() throws Exception {
+        JSONObject data = data();
+        JSONArray events = new JSONArray().put(new JSONObject().put("id", "room-1").put("action", "replace")
+            .put("lessonId", "math").put("effectiveFrom", "2026-10-12").put("patch", new JSONObject().put("room", "326")));
+        data.getJSONObject("schedule").put("permanentChanges", events);
+        assertEquals("326", Schedule.lessons(data, LocalDate.parse("2026-10-12"), 1).get(1).getString("room"));
+        assertEquals("326", Schedule.lessons(data, LocalDate.parse("2026-10-26"), 1).get(1).getString("room"));
+        assertFalse(Schedule.lessons(data, LocalDate.parse("2026-10-05"), 1).get(0).has("room"));
+        events.put(new JSONObject().put("id", "undo-room").put("action", "revoke").put("effectiveFrom", "2026-10-19")
+            .put("supersedes", new JSONArray().put("room-1")));
+        assertEquals("326", Schedule.lessons(data, LocalDate.parse("2026-10-12"), 1).get(1).getString("room"));
+        assertFalse(Schedule.lessons(data, LocalDate.parse("2026-10-26"), 1).get(1).has("room"));
+    }
+
+    @Test
     public void pathTraversalIsRejected() {
         assertFalse(ContentStore.safe("../notes/index.html"));
         assertFalse(ContentStore.safe("assets/../../index.html"));

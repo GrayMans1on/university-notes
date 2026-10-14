@@ -20,13 +20,19 @@ function page(route) {
         theme(value) { state.set('native-theme', value); },
         installAppUpdate() { state.set('install-requested', true); },
     };
+    window.TextEncoder = TextEncoder;
+    window.TextDecoder = TextDecoder;
+    window.structuredClone = structuredClone;
     const RealDate = window.Date;
     window.Date = class extends RealDate {
         constructor(...args) { super(...(args.length ? args : ['2026-10-14T06:00:00Z'])); }
         static now() { return new RealDate('2026-10-14T06:00:00Z').getTime(); }
     };
-    window.fetch = async () => ({ json: async () => JSON.parse(fs.readFileSync(path.join(root, 'android/generated/assets/site/assets/app-data.json'))) });
-    for (const file of ['assets/preferences.js', 'assets/schedule.js', 'android/web/mobile.js']) {
+    window.fetch = async (url) => ({ ok: true, json: async () => {
+        const data = JSON.parse(fs.readFileSync(path.join(root, 'android/generated/assets/site/assets/app-data.json')));
+        return url.includes('campus-map/schedule.json') ? data.schedule : data;
+    } });
+    for (const file of ['assets/preferences.js', 'assets/schedule-overrides.js', 'assets/schedule.js', 'assets/schedule-admin.js', 'android/web/mobile.js']) {
         window.eval(fs.readFileSync(path.join(root, file), 'utf8'));
     }
     return dom;
@@ -86,7 +92,14 @@ function page(route) {
     assert.equal(state.get('native-theme'), true);
     const admin = [...home.window.document.querySelectorAll('.app-panel button')]
         .find((button) => button.textContent === 'Ввести код администратора');
-    assert.ok(admin.disabled, 'Admin access stays unavailable before a secure backend is configured');
+    assert.equal(admin.disabled, false);
+    admin.click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const adminCode = home.window.document.querySelector('.schedule-admin-content input');
+    adminCode.value = 'CSU2410';
+    home.window.document.querySelector('.schedule-admin-content button').click();
+    assert.ok(home.window.document.querySelector('.schedule-admin-content form'));
+    assert.equal(home.window.localStorage.getItem('study-admin-unlocked'), 'true');
     home.window.dispatchEvent(new home.window.CustomEvent('native-status', {
         detail: { status: 'Offline', appStatus: 'Ready', appReady: true, checked: 1 },
     }));

@@ -103,6 +103,7 @@ final class AppUpdater {
                 ready = true;
                 announce("Версия " + manifest.getString("versionName") + " загружена · готова к установке");
             } catch (Exception error) {
+                app.getSharedPreferences("study", 0).edit().putLong("apk-checked", 0).apply();
                 announce("Обновление приложения не завершено · установленная версия сохранена");
             } finally {
                 stage.delete();

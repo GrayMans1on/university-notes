@@ -50,7 +50,7 @@ public final class ScheduleRows extends RemoteViewsService {
                     try {
                         String time = lesson.optBoolean("onlineCourse") ? "Онлайн-курс"
                             : data.getJSONObject("schedule").getJSONObject("bells").getJSONArray(
-                                String.valueOf(lesson.getInt("pair"))).getString(0);
+                                String.valueOf(lesson.getInt("pair"))).join("–").replace("\"", "");
                         text = time + "  " + lesson.optString("title") + " · " + Schedule.room(lesson);
                         route = lesson.optString("mapUrl", "/#schedule");
                     } catch (Exception ignored) {

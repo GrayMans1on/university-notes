@@ -1,1 +1,1 @@
-<resources><string name="schedule_description">Все пары на сегодня. Нажмите, чтобы открыть расписание.</string><string name="next_description">Ближайшая пара, кабинет, время и фрагмент карты.</string></resources>
+<resources><string name="schedule_description">Все пары на сегодня. Нажмите, чтобы открыть расписание.</string><string name="next_description">Ближайшая пара, кабинет, время и фрагмент карты.</string><string name="schedule_title">Расписание</string><string name="next_title">Следующая пара</string></resources>

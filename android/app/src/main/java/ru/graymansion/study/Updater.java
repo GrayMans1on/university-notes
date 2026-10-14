@@ -66,7 +66,7 @@ final class Updater {
                 if (manifest.getInt("schema") != 1) {
                     throw new IOException("Unsupported update format");
                 }
-                if (manifest.optInt("minAppVersion", 1) > 1) {
+                if (manifest.optInt("minAppVersion", 1) > app.getPackageManager().getPackageInfo(app.getPackageName(), 0).versionCode) {
                     announce("Для новых материалов требуется обновить APK");
                     return;
                 }

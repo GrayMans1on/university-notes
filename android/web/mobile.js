@@ -185,7 +185,8 @@
         const checked = node('p', 'app-note');
         checked.id = 'app-last-sync';
         checked.textContent = latestStatus.checked ? 'Проверено: ' + new Date(latestStatus.checked).toLocaleString('ru-RU') : 'Пока без проверок';
-        overlay.append(checked, node('p', 'app-note', 'Учёба · версия 1.0.0 · расписание по времени Челябинска'));
+        overlay.append(checked, node('p', 'app-note', 'Учёба · версия ' + (typeof native.version === 'function' ? native.version() : '1.0.0')
+            + ' · расписание по времени Челябинска'));
     }
     function route() {
         const home = location.pathname === '/';

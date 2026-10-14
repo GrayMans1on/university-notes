@@ -9,6 +9,11 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Build;
+import android.graphics.Insets;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
+import android.widget.FrameLayout;
 import android.print.PrintManager;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -40,13 +45,26 @@ public final class MainActivity extends Activity {
         super.onCreate(state);
         web = new WebView(this);
         web.setBackgroundColor(Color.rgb(245, 247, 251));
-        web.setPadding(0, 0, 0, 0);
-        web.setOnApplyWindowInsetsListener((view, insets) -> {
-            view.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
-                insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
+        FrameLayout frame = new FrameLayout(this);
+        frame.setBackgroundColor(Color.rgb(245, 247, 251));
+        frame.addView(web, new FrameLayout.LayoutParams(-1, -1));
+        frame.setOnApplyWindowInsetsListener((view, insets) -> {
+            if (Build.VERSION.SDK_INT >= 30) {
+                Insets bars = insets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+                Insets keyboard = insets.getInsets(WindowInsets.Type.ime());
+                view.setPadding(Math.max(bars.left, keyboard.left), Math.max(bars.top, keyboard.top),
+                    Math.max(bars.right, keyboard.right), Math.max(bars.bottom, keyboard.bottom));
+                return WindowInsets.CONSUMED;
+            }
+            view.setPadding(Math.max(insets.getStableInsetLeft(), insets.getSystemWindowInsetLeft()),
+                Math.max(insets.getStableInsetTop(), insets.getSystemWindowInsetTop()),
+                Math.max(insets.getStableInsetRight(), insets.getSystemWindowInsetRight()),
+                Math.max(insets.getStableInsetBottom(), insets.getSystemWindowInsetBottom()));
             return insets.consumeSystemWindowInsets();
         });
-        setContentView(web);
+        setContentView(frame);
+        hideSystemBars();
+        frame.requestApplyInsets();
         content = ContentStore.active(this);
         File pinned = content;
         Updater.EXECUTOR.execute(() -> {
@@ -162,6 +180,29 @@ public final class MainActivity extends Activity {
         Updater.start(this, null);
     }
 
+    private void hideSystemBars() {
+        if (Build.VERSION.SDK_INT >= 30) {
+            getWindow().setDecorFitsSystemWindows(false);
+            WindowInsetsController controller = getWindow().getInsetsController();
+            if (controller != null) {
+                controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+                controller.hide(WindowInsets.Type.systemBars());
+            }
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean focused) {
+        super.onWindowFocusChanged(focused);
+        if (focused) {
+            hideSystemBars();
+        }
+    }
+
     private static String safeRoute(String route) {
         return route != null && route.startsWith("/") && !route.startsWith("//") && !route.contains("\\") ? route : "/";
     }
@@ -188,6 +229,7 @@ public final class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        hideSystemBars();
         if (web != null) {
             web.onResume();
             Widgets.refresh(this);
@@ -239,6 +281,11 @@ public final class MainActivity extends Activity {
     }
 
     public final class Bridge {
+        @JavascriptInterface
+        public String version() {
+            return "1.0.1";
+        }
+
         @JavascriptInterface
         public String get(String key) {
             return KEYS.contains(key) ? getSharedPreferences("study", 0).getString(key, "") : "";

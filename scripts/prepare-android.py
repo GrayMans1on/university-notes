@@ -140,6 +140,11 @@ for lesson in schedule['lessons']:
     svg.extend(labels)
     svg.append('</svg>')
     cairosvg.svg2png(bytestring=''.join(svg).encode(), write_to=str(SITE / file))
+    dark_svg = ''.join(svg)
+    for source, target in [('#f5f7fb', '#0f1827'), ('#ffffff', '#1d2b40'), ('#dae5ff', '#253557'),
+                           ('#8b98aa', '#8495b0'), ('#254cce', '#a8bcff'), ('#182333', '#e4ebf5')]:
+        dark_svg = dark_svg.replace(source, target)
+    cairosvg.svg2png(bytestring=dark_svg.encode(), write_to=str(SITE / file.replace('.png', '-dark.png')))
     created[key] = room['id']
 (SITE / 'assets/app-data.json').write_text(json.dumps({'schedule': schedule}, ensure_ascii=False))
 files = {}

@@ -43,6 +43,11 @@ final class Widgets {
                 PendingIntent template = PendingIntent.getActivity(context, id * 100, launch,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
                 views.setPendingIntentTemplate(R.id.widget_list, template);
+                int height = manager.getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 70);
+                views.setViewVisibility(R.id.widget_title, height < 80 ? View.GONE : View.VISIBLE);
+                WidgetTimeline timeline = WidgetTimeline.build(data, now.toLocalDate(), Schedule.subgroup(context),
+                    now.getHour() * 60 + now.getMinute(), WidgetTimeline.viewport(height));
+                views.setScrollPosition(R.id.widget_list, timeline.scroll);
                 views.setOnClickPendingIntent(R.id.widget_root, open(context, "/#schedule", id));
                 manager.updateAppWidget(id, views);
                 manager.notifyAppWidgetViewDataChanged(id, R.id.widget_list);
@@ -60,7 +65,7 @@ final class Widgets {
                 }
                 views.setViewVisibility(R.id.widget_map, View.GONE);
                 if (next != null && next.has("thumbnail")) {
-                    try (InputStream input = ContentStore.open(context, ContentStore.active(context), next.getString("thumbnail"))) {
+                    try (InputStream input = thumbnail(context, next.getString("thumbnail").replace(".png", "-dark.png"))) {
                         Bitmap image = BitmapFactory.decodeStream(input);
                         if (image != null) {
                             views.setImageViewBitmap(R.id.widget_map, image);
@@ -76,6 +81,14 @@ final class Widgets {
             // The packaged dataset remains available if an update is incomplete.
         }
         scheduleRefresh(context, now);
+    }
+
+    private static InputStream thumbnail(Context context, String path) throws java.io.IOException {
+        try {
+            return ContentStore.open(context, ContentStore.active(context), path);
+        } catch (java.io.IOException missing) {
+            return ContentStore.open(context, null, path);
+        }
     }
 
     private static void scheduleRefresh(Context context, ZonedDateTime now) {

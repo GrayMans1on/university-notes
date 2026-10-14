@@ -1,0 +1,76 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const assert = require('node:assert/strict');
+const { JSDOM } = require('jsdom');
+const root = path.resolve(__dirname, '../..');
+const state = new Map();
+let subgroup = 1;
+function page(route) {
+    const file = path.join(root, 'dist', route.replace(/^\//, ''), 'index.html');
+    const dom = new JSDOM(fs.readFileSync(file, 'utf8'), { url: 'https://study.local' + route, runScripts: 'outside-only' });
+    const window = dom.window;
+    window.matchMedia = () => ({ matches: false, addEventListener() {} });
+    window.scrollTo = () => {};
+    window.confirm = () => true;
+    window.StudyNative = {
+        get(key) { return state.get(key) || ''; },
+        put(key, value) { state.set(key, value); },
+        subgroup(value) { if (value) { subgroup = value; } return subgroup; },
+        sync() {}, applyUpdate() {}, printPage() {},
+    };
+    const RealDate = window.Date;
+    window.Date = class extends RealDate {
+        constructor(...args) { super(...(args.length ? args : ['2026-10-14T06:00:00Z'])); }
+        static now() { return new RealDate('2026-10-14T06:00:00Z').getTime(); }
+    };
+    window.fetch = async () => ({ json: async () => JSON.parse(fs.readFileSync(path.join(root, 'android/generated/assets/site/assets/app-data.json'))) });
+    for (const file of ['assets/preferences.js', 'assets/schedule.js', 'android/web/mobile.js']) {
+        window.eval(fs.readFileSync(path.join(root, file), 'utf8'));
+    }
+    return dom;
+}
+(async () => {
+    const reading = page('/notes/informatics/');
+    const window = reading.window;
+    const buttons = window.document.querySelectorAll('.app-bookmark');
+    assert.ok(buttons.length >= 3, 'Every topic receives a bookmark control');
+    buttons[0].click();
+    assert.equal(JSON.parse(state.get('mobile-bookmarks')).length, 1);
+    assert.equal(buttons[0].textContent, 'Убрать закладку');
+    buttons[0].click();
+    assert.equal(JSON.parse(state.get('mobile-bookmarks')).length, 0);
+    buttons[0].click();
+    buttons[1].click();
+    const section = window.document.querySelector('section.topic');
+    section.getBoundingClientRect = () => ({ top: 90, bottom: 900 });
+    window.dispatchEvent(new window.Event('pagehide'));
+    assert.equal(JSON.parse(state.get('mobile-last')).path, '/notes/informatics/');
+    reading.window.close();
+    const home = page('/');
+    await new Promise((resolve) => setTimeout(resolve, 30));
+    assert.equal(home.window.document.querySelectorAll('.app-nav a').length, 5);
+    const cards = home.window.document.querySelectorAll('.app-card');
+    assert.equal(cards.length, 2);
+    assert.match(cards[1].href, /\/notes\/informatics\/#/);
+    assert.ok(cards[0].querySelector('strong').textContent.length > 0);
+    assert.ok(cards[0].querySelector('img'), 'Classroom card includes a map preview');
+    home.window.location.hash = '#bookmarks';
+    home.window.dispatchEvent(new home.window.Event('hashchange'));
+    assert.equal(home.window.document.querySelectorAll('.app-bookmarks-list li').length, 2);
+    home.window.document.querySelector('.app-bookmarks-list input').checked = true;
+    home.window.document.querySelector('.app-bookmark-tools button').click();
+    assert.equal(JSON.parse(state.get('mobile-bookmarks')).length, 1);
+    home.window.document.querySelectorAll('.app-bookmark-tools button')[1].click();
+    assert.equal(JSON.parse(state.get('mobile-bookmarks')).length, 0);
+    home.window.location.hash = '#settings';
+    home.window.dispatchEvent(new home.window.Event('hashchange'));
+    const selects = home.window.document.querySelectorAll('.app-panel select');
+    selects[0].value = 'dark';
+    selects[0].dispatchEvent(new home.window.Event('change'));
+    assert.equal(home.window.document.documentElement.dataset.theme, 'dark');
+    selects[3].value = '2';
+    selects[3].dispatchEvent(new home.window.Event('change'));
+    assert.equal(subgroup, 2);
+    home.window.close();
+    console.log('Mobile UI: bookmarks, bulk removal, reading resume, next lesson, map preview, navigation and settings passed.');
+})();

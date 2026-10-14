@@ -3,3 +3,11 @@
 *.log
 /pages-output/
 /dist/
+
+/android/.gradle/
+/android/**/build/
+/android/generated/
+/android/local.properties
+*.jks
+*.keystore
+__pycache__/

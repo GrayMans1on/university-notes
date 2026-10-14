@@ -33,6 +33,11 @@ jobs:
         run: python3 scripts/validate-site.py
       - name: Export for project hosting
         run: python3 scripts/export-pages.py
+      - name: Prepare Android offline updates
+        run: |
+          python3 -m pip install CairoSVG==2.7.1
+          python3 scripts/prepare-android.py
+          python3 scripts/publish-android-feed.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

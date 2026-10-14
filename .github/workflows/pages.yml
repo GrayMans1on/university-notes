@@ -18,6 +18,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check whether native Android code changed
+        id: native
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          if [ "$EVENT_NAME" = workflow_dispatch ] || [ "$BEFORE_SHA" = 0000000000000000000000000000000000000000 ]; then
+            echo 'build=true' >> "$GITHUB_OUTPUT"
+          elif git diff --name-only "$BEFORE_SHA" "$GITHUB_SHA" | grep -Eq '^(android/(app/|build.gradle|settings.gradle|gradle.properties)|scripts/package-android-release.py)'; then
+            echo 'build=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'build=false' >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -44,21 +59,27 @@ jobs:
       - name: Test mobile interface
         run: node android/tests/mobile.test.cjs
       - uses: actions/setup-java@v4
+        if: steps.native.outputs.build == 'true'
         with:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v3
+        if: steps.native.outputs.build == 'true'
         with:
           packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
           log-accepted-android-sdk-licenses: false
       - uses: gradle/actions/setup-gradle@v4
+        if: steps.native.outputs.build == 'true'
         with:
           gradle-version: '8.9'
       - name: Install Android build tools
+        if: steps.native.outputs.build == 'true'
         run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
       - name: Build and test Android
+        if: steps.native.outputs.build == 'true'
         run: gradle -p android assembleRelease testDebugUnitTest lintRelease --console=plain
       - name: Prepare signed release when the original key is available
+        if: steps.native.outputs.build == 'true'
         id: apk
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -67,6 +88,7 @@ jobs:
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: python3 scripts/package-android-release.py
       - uses: actions/upload-artifact@v4
+        if: steps.native.outputs.build == 'true'
         with:
           name: android-${{ steps.apk.outputs.version }}
           path: android/release-output/
@@ -88,6 +110,14 @@ jobs:
           tag="android-v${APP_VERSION}"
           if ! gh release view "$tag" >/dev/null 2>&1; then
             gh release create "$tag" android/release-output/app.apk android/release-output/app-release.json --target "$GITHUB_SHA" --title "Android ${APP_VERSION}" --notes "Системные панели, разовые изменения расписания и обновления APK по Wi-Fi."
+          fi
+      - name: Preserve the published APK feed during material-only updates
+        if: steps.native.outputs.build != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view >/dev/null 2>&1; then
+            gh release download --pattern 'app.apk' --pattern 'app-release.json' --dir pages-output/android
           fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

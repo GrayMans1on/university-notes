@@ -6,7 +6,7 @@
     --blue: #254cce;
     --surface: #ffffff;
     --background: #f5f7fb;
-    --sidebar: #142238;
+    --sidebar: #ffffff;
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     font-size: 16px;
     color: var(--ink);
@@ -24,20 +24,20 @@ button, a, input, summary, [tabindex] { -webkit-tap-highlight-color: transparent
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .skip-link { position: fixed; left: 1rem; top: -8rem; z-index: 20; padding: 1rem; background: white; }
 .skip-link:focus { top: 1rem; }
-.sidebar { width: 15.5rem; position: fixed; inset: 0 auto 0 0; padding: 2rem 1rem; background: var(--sidebar); color: #fff; overflow-y: auto; z-index: 5; }
-.brand { display: flex; align-items: center; gap: .85rem; padding: 0 .65rem; color: #fff; font-size: 1.3rem; font-weight: 650; }
-.brand svg { width: 2.3rem; height: 2.3rem; color: #8faaff; }
-.brand-caption { display: block; color: #b5c3d8; font-size: .875rem; font-weight: 400; margin-top: .3rem; }
-.semester { margin: 2rem .65rem 1rem; font-size: .875rem; color: #b5c3d8; }
-.library-link { display: block; padding: .7rem .8rem; border-radius: .4rem; color: #e4ecf8; font-weight: 550; }
-.nav-label { margin: 1.6rem .8rem .6rem; font-size: .875rem; color: #a9b9d0; }
-.subject-link { display: flex; align-items: center; justify-content: flex-start; gap: .7rem; padding: .75rem .8rem; margin-top: .15rem; color: #d2dded; border-radius: .4rem; font-size: .94rem; min-height: 2.8rem; }
-.subject-icon { width: 1.15rem; height: 1.15rem; flex: 0 0 auto; color: #96a9c7; }
-.subject-link:hover .subject-icon, .subject-link.is-current .subject-icon { color: #b4c7ff; }
-.sidebar a:hover { background: #223853; }
-.sidebar a.is-current { background: #2a405e; color: white; box-shadow: inset 3px 0 #91aaff; }
-.external-link { border-top: 1px solid #304259; border-radius: 0; margin-top: 1.05rem; padding-top: 1.2rem; align-items: start; }
-.external-link small { display: block; margin-top: .4rem; color: #a9b9d0; font-size: .8rem; }
+.sidebar { width: 15.5rem; position: fixed; inset: 0 auto 0 0; padding: 2rem 1rem; background: var(--sidebar); border-right: 1px solid var(--line); color: var(--ink); overflow-y: auto; z-index: 5; }
+.brand { display: flex; align-items: center; gap: .85rem; padding: 0 .65rem; color: var(--ink); font-size: 1.3rem; font-weight: 650; }
+.brand svg { width: 2.3rem; height: 2.3rem; color: var(--blue); }
+.brand-caption { display: block; color: var(--muted); font-size: .875rem; font-weight: 400; margin-top: .3rem; }
+.semester { margin: 2rem .65rem 1rem; font-size: .875rem; color: var(--muted); }
+.library-link { display: block; padding: .7rem .8rem; border-radius: .4rem; color: var(--ink); font-weight: 550; }
+.nav-label { margin: 1.6rem .8rem .6rem; font-size: .875rem; color: var(--muted); }
+.subject-link { display: flex; align-items: center; justify-content: flex-start; gap: .7rem; padding: .75rem .8rem; margin-top: .15rem; color: var(--ink); border-radius: .4rem; font-size: .94rem; min-height: 2.8rem; }
+.subject-icon { width: 1.15rem; height: 1.15rem; flex: 0 0 auto; color: var(--muted); }
+.subject-link:hover .subject-icon, .subject-link.is-current .subject-icon { color: var(--blue); }
+.sidebar a:hover { background: var(--hover); }
+.sidebar a.is-current { background: var(--hover); color: var(--blue); box-shadow: inset 3px 0 var(--blue); }
+.external-link { border-top: 1px solid var(--line); border-radius: 0; margin-top: 1.05rem; padding-top: 1.2rem; align-items: start; }
+.external-link small { display: block; margin-top: .4rem; color: var(--muted); font-size: .8rem; }
 .external-label { display: none; }
 .workspace { margin-left: 15.5rem; min-height: 100vh; }
 .site-credit { margin: 0 2.5rem; padding: 1.25rem 0 1.75rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .875rem; line-height: 1.7; }

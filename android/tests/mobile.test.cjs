@@ -51,6 +51,7 @@ function page(route) {
     const home = page('/');
     await new Promise((resolve) => setTimeout(resolve, 30));
     assert.equal(home.window.document.querySelectorAll('.app-nav a').length, 5);
+    assert.equal(home.window.document.getElementById('schedule-academic-group'), null);
     const cards = home.window.document.querySelectorAll('.app-card');
     assert.equal(cards.length, 2);
     assert.match(cards[1].href, /\/notes\/informatics\/#/);
@@ -70,6 +71,14 @@ function page(route) {
     selects[0].value = 'dark';
     selects[0].dispatchEvent(new home.window.Event('change'));
     assert.equal(home.window.document.documentElement.dataset.theme, 'dark');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.match(cards[0].querySelector('img').src, /-dark\.png$/);
+    selects[0].value = 'light';
+    selects[0].dispatchEvent(new home.window.Event('change'));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.ok(!cards[0].querySelector('img').src.endsWith('-dark.png'));
+    selects[0].value = 'dark';
+    selects[0].dispatchEvent(new home.window.Event('change'));
     selects[3].value = '2';
     selects[3].dispatchEvent(new home.window.Event('change'));
     assert.equal(subgroup, 2);

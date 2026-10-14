@@ -9,7 +9,10 @@
             native.theme(document.documentElement.dataset.theme === 'dark');
         }
     };
-    new MutationObserver(updateSystemTheme).observe(document.documentElement, {
+    new MutationObserver(() => {
+        updateSystemTheme();
+        renderNext();
+    }).observe(document.documentElement, {
         attributes: true, attributeFilter: ['data-theme'],
     });
     updateSystemTheme();
@@ -329,7 +332,8 @@
         body.append(node('strong', '', next.title), node('small', '', `${room} · ${date} · ${bells[0]}–${bells[1]}`));
         if (next.thumbnail && !/онлайн/i.test(next.note || '')) {
             const image = document.createElement('img');
-            image.src = '/' + next.thumbnail;
+            const dark = document.documentElement.dataset.theme === 'dark';
+            image.src = '/' + (dark ? next.thumbnail.replace(/\.png$/, '-dark.png') : next.thumbnail);
             image.alt = 'Кабинет ' + (next.room || next.place) + ' и соседние помещения';
             nextCard.append(image);
         }

@@ -4,6 +4,15 @@
         return;
     }
     const native = window.StudyNative;
+    const updateSystemTheme = () => {
+        if (typeof native.theme === 'function') {
+            native.theme(document.documentElement.dataset.theme === 'dark');
+        }
+    };
+    new MutationObserver(updateSystemTheme).observe(document.documentElement, {
+        attributes: true, attributeFilter: ['data-theme'],
+    });
+    updateSystemTheme();
     const read = (key, fallback) => {
         try {
             return JSON.parse(native.get(key) || localStorage.getItem(key) || 'null') || fallback;

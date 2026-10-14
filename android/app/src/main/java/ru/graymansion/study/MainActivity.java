@@ -35,6 +35,8 @@ import java.util.Set;
 
 public final class MainActivity extends Activity {
     private WebView web;
+    private FrameLayout frame;
+    private boolean darkTheme;
     private File content;
     private String downloadPath;
     private ConnectivityManager.NetworkCallback callback;
@@ -45,7 +47,7 @@ public final class MainActivity extends Activity {
         super.onCreate(state);
         web = new WebView(this);
         web.setBackgroundColor(Color.rgb(245, 247, 251));
-        FrameLayout frame = new FrameLayout(this);
+        frame = new FrameLayout(this);
         frame.setBackgroundColor(Color.rgb(245, 247, 251));
         frame.addView(web, new FrameLayout.LayoutParams(-1, -1));
         frame.setOnApplyWindowInsetsListener((view, insets) -> {
@@ -63,7 +65,7 @@ public final class MainActivity extends Activity {
             return insets.consumeSystemWindowInsets();
         });
         setContentView(frame);
-        hideSystemBars();
+        showSystemBars();
         frame.requestApplyInsets();
         content = ContentStore.active(this);
         File pinned = content;
@@ -180,26 +182,46 @@ public final class MainActivity extends Activity {
         Updater.start(this, null);
     }
 
-    private void hideSystemBars() {
+    private void showSystemBars() {
         if (Build.VERSION.SDK_INT >= 30) {
             getWindow().setDecorFitsSystemWindows(false);
             WindowInsetsController controller = getWindow().getInsetsController();
             if (controller != null) {
-                controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
-                controller.hide(WindowInsets.Type.systemBars());
+                controller.show(WindowInsets.Type.systemBars());
+                int appearance = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                    | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS;
+                controller.setSystemBarsAppearance(darkTheme ? 0 : appearance, appearance);
             }
         } else {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN);
+            int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            if (!darkTheme) {
+                flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            }
+            getWindow().getDecorView().setSystemUiVisibility(flags);
         }
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        if (Build.VERSION.SDK_INT >= 29) {
+            getWindow().setStatusBarContrastEnforced(false);
+            getWindow().setNavigationBarContrastEnforced(false);
+        }
+    }
+
+    private void applyTheme(boolean dark) {
+        darkTheme = dark;
+        int background = dark ? Color.rgb(15, 24, 39) : Color.rgb(245, 247, 251);
+        frame.setBackgroundColor(background);
+        web.setBackgroundColor(background);
+        getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(background));
+        showSystemBars();
     }
 
     @Override
     public void onWindowFocusChanged(boolean focused) {
         super.onWindowFocusChanged(focused);
         if (focused) {
-            hideSystemBars();
+            showSystemBars();
         }
     }
 
@@ -229,7 +251,7 @@ public final class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        hideSystemBars();
+        showSystemBars();
         if (web != null) {
             web.onResume();
             Widgets.refresh(this);
@@ -281,6 +303,11 @@ public final class MainActivity extends Activity {
     }
 
     public final class Bridge {
+        @JavascriptInterface
+        public void theme(boolean dark) {
+            runOnUiThread(() -> applyTheme(dark));
+        }
+
         @JavascriptInterface
         public String version() {
             return "1.0.1";

@@ -1,0 +1,391 @@
+[
+  {
+    "subject": "Дискретка",
+    "slug": "discrete-math",
+    "title": "Комбинаторика",
+    "id": "formulas-discrete-math-1",
+    "formulas": [
+      "$P_n=n!$, $A_n^k=\\frac{n!}{(n-k)!}$, $C_n^k=\\frac{n!}{k!(n-k)!}$; $n,k\\in\\mathbb Z$, $0\\le k\\le n$.",
+      "$\\overline A_n^k=n^k$, $\\overline C_n^k=C_{n+k-1}^k$; $n\\ge1$, $k\\ge0$.",
+      "$\\overline P_n=\\frac{n!}{k_1!\\cdots k_m!}$, $n=\\sum k_i$; $k_i\\ge0$ — целые.",
+      "$C_n^k+C_n^{k-1}=C_{n+1}^k$; $1\\le k\\le n$.",
+      "$\\frac{A_n^{m+2}+A_n^{m+1}}{A_n^m}=(n-m)^2$; $0\\le m\\le n-2$."
+    ],
+    "sources": [
+      "Комбинаторика: соединения и формулы",
+      "Комбинаторные выражения, уравнения и неравенства"
+    ]
+  },
+  {
+    "subject": "Дискретка",
+    "slug": "discrete-math",
+    "title": "Множества и мощности",
+    "id": "formulas-discrete-math-2",
+    "formulas": [
+      "$A\\div B=(A\\setminus B)\\cup(B\\setminus A)$.",
+      "$A=B\\iff A\\subseteq B\\land B\\subseteq A$.",
+      "$|B(X)|=2^{|X|}$.",
+      "$|A\\cup B|=|A|+|B|-|A\\cap B|$.",
+      "$|A\\times B|=|A|\\cdot|B|$.",
+      "$\\overline{A\\cup B}=\\overline A\\cap\\overline B$; $\\overline{A\\cap B}=\\overline A\\cup\\overline B$.",
+      "$(C\\setminus A)\\setminus B=C\\cap\\overline A\\cap\\overline B$.",
+      "$X\\setminus X=\\varnothing$.",
+      "$P\\setminus\\overline Q=P\\cap Q$."
+    ],
+    "sources": [
+      "Операции над множествами и их законы",
+      "Битовые строки: представление и операции"
+    ]
+  },
+  {
+    "subject": "Дискретка",
+    "slug": "discrete-math",
+    "title": "Битовые строки",
+    "id": "formulas-discrete-math-3",
+    "formulas": [
+      "$a_i=1\\iff s_i\\in A$.",
+      "$\\mu_{A\\cup B}=\\mu_A\\lor\\mu_B$, $\\mu_{A\\cap B}=\\mu_A\\land\\mu_B$, $\\mu_{\\overline A}=\\neg\\mu_A$; операции выполняются поразрядно в одном универсуме."
+    ],
+    "sources": [
+      "Битовые строки: представление и операции"
+    ]
+  },
+  {
+    "subject": "Дискретка",
+    "slug": "discrete-math",
+    "title": "Бинарные отношения",
+    "id": "formulas-discrete-math-4",
+    "formulas": [
+      "$\\rho\\subseteq A\\times B$; $(x,y)\\in\\rho\\iff x\\rho y$.",
+      "$\\rho_{ij}=1\\iff(a_i,b_j)\\in\\rho$.",
+      "Симметричность: $x\\rho y\\Rightarrow y\\rho x$.",
+      "Транзитивность: $x\\rho y\\land y\\rho z\\Rightarrow x\\rho z$.",
+      "Рефлексивность: $\\forall x\\in A:\\ x\\rho x$; антирефлексивность: $\\forall x\\in A:\\ \\neg(x\\rho x)$.",
+      "Антисимметричность: $x\\rho y\\land y\\rho x\\Rightarrow x=y$.",
+      "Эквивалентность = рефлексивность + симметричность + транзитивность."
+    ],
+    "sources": [
+      "Бинарные отношения: определение и способы задания",
+      "Свойства бинарных отношений",
+      "Отношение эквивалентности"
+    ]
+  },
+  {
+    "subject": "Линал",
+    "slug": "linear-algebra",
+    "title": "Матрицы и операции",
+    "id": "formulas-linear-algebra-5",
+    "formulas": [
+      "$A=(a_{ij})_{m\\times n}$.",
+      "Сложение — для одинаковых размеров: $c_{ij}=a_{ij}+b_{ij}$.",
+      "$A_{n\\times m}B_{m\\times k}=C_{n\\times k}$.",
+      "$(AB)^T=B^TA^T$.",
+      "Симметричная: $A=A^T$; кососимметричная: $A=-A^T$.",
+      "$c_{ij}=\\sum_{s=1}^{n}a_{is}b_{sj}$ для $A_{m\\times n}B_{n\\times k}=C_{m\\times k}$."
+    ],
+    "sources": [
+      "Матрицы: виды и операции",
+      "Обратная матрица: свойства и методы вычисления"
+    ]
+  },
+  {
+    "subject": "Линал",
+    "slug": "linear-algebra",
+    "title": "Определители",
+    "id": "formulas-linear-algebra-6",
+    "formulas": [
+      "$\\det\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}=ad-bc$.",
+      "$\\det A=\\sum_\\sigma(-1)^{I(\\sigma)}a_{1i_1}\\cdots a_{ni_n}$.",
+      "$A_{ij}=(-1)^{i+j}M_{ij}$.",
+      "$\\det A=\\sum_{j=1}^n a_{ij}A_{ij}$.",
+      "$\\det(\\alpha A)=\\alpha^n\\det A$; $\\det(AB)=\\det A\\det B$.",
+      "$\\Delta_n=\\prod_{1\\le i<j\\le n}(x_j-x_i)$.",
+      "$\\det A^T=\\det A$; для треугольной $A$: $\\det A=\\prod_{i=1}^{n}a_{ii}$."
+    ],
+    "sources": [
+      "Определители: определения, разложение и свойства"
+    ]
+  },
+  {
+    "subject": "Линал",
+    "slug": "linear-algebra",
+    "title": "Обратная матрица",
+    "id": "formulas-linear-algebra-7",
+    "formulas": [
+      "$AA^{-1}=A^{-1}A=E$, $\\det A\\ne0$.",
+      "$A^{-1}=\\frac{1}{\\det A}(A_{ij})^T$.",
+      "$[A\\mid E]\\longrightarrow[E\\mid A^{-1}]$ преобразованиями строк.",
+      "$\\det A^{-1}=1/\\det A$ при обратимости."
+    ],
+    "sources": [
+      "Обратная матрица: свойства и методы вычисления",
+      "Определители: определения, разложение и свойства"
+    ]
+  },
+  {
+    "subject": "Линал",
+    "slug": "linear-algebra",
+    "title": "Системы линейных уравнений",
+    "id": "formulas-linear-algebra-8",
+    "formulas": [
+      "$Ax=b$.",
+      "$x_j=\\Delta_j/\\Delta$, $\\Delta=\\det A\\ne0$.",
+      "$x=A^{-1}b$ при квадратной A и $\\det A\\ne0$."
+    ],
+    "sources": [
+      "Системы линейных уравнений: запись и классификация",
+      "Правило Крамера",
+      "Метод обратной матрицы и метод Гаусса"
+    ]
+  },
+  {
+    "subject": "Матанализ",
+    "slug": "calculus",
+    "title": "Логика",
+    "id": "formulas-calculus-9",
+    "formulas": [
+      "$\\neg(A\\Rightarrow B)\\Leftrightarrow A\\land\\neg B$.",
+      "$\\neg(A\\lor B)\\Leftrightarrow\\neg A\\land\\neg B$.",
+      "$\\neg(A\\land B)\\Leftrightarrow\\neg A\\lor\\neg B$."
+    ],
+    "sources": [
+      "Элементы математической логики"
+    ]
+  },
+  {
+    "subject": "Матанализ",
+    "slug": "calculus",
+    "title": "Отображения и обратная функция",
+    "id": "formulas-calculus-10",
+    "formulas": [
+      "Сюръекция: $F[X]=Y$.",
+      "Инъекция: $F(x_1)=F(x_2)\\Rightarrow x_1=x_2$.",
+      "$f^{-1}(y)=x\\iff y=f(x)$. Для биективного $f$.",
+      "$\\sin x$ на $[-\\pi/2,\\pi/2]$ имеет обратную $\\arcsin x$.",
+      "$(g\\circ f)(x)=g(f(x))$, $f:X\\to Y$, $g:Y\\to Z$."
+    ],
+    "sources": [
+      "Множества, отображения и обратная функция",
+      "Действительные числа: свойства поля и счётность"
+    ]
+  },
+  {
+    "subject": "Матанализ",
+    "slug": "calculus",
+    "title": "Графики функций",
+    "id": "formulas-calculus-11",
+    "formulas": [
+      "$y(x+a)$: влево при $a>0$, вправо при $a<0$.",
+      "$y(kx)$: сжатие по Ox при $k>1$.",
+      "$|y(x)|$: отрицательные участки отражаются вверх."
+    ],
+    "sources": [
+      "Преобразования графиков"
+    ]
+  },
+  {
+    "subject": "Матанализ",
+    "slug": "calculus",
+    "title": "Грани, целая часть и окрестности",
+    "id": "formulas-calculus-12",
+    "formulas": [
+      "Принцип Архимеда: $\\forall x\\in\\mathbb R,\\ h>0\\ \\exists k\\in\\mathbb Z:\\ (k-1)h\\le x<kh$.",
+      "$\\{x\\}=x-[x]\\in[0,1)$.",
+      "$O_{x_0}^\\varepsilon=(x_0-\\varepsilon,x_0+\\varepsilon)$."
+    ],
+    "sources": [
+      "Верхняя и нижняя грани. Принцип Архимеда",
+      "Целая часть, промежутки и окрестности"
+    ]
+  },
+  {
+    "subject": "Матанализ",
+    "slug": "calculus",
+    "title": "Пределы",
+    "id": "formulas-calculus-13",
+    "formulas": [
+      "$\\forall\\varepsilon>0\\ \\exists N\\ \\forall n>N:\\ |a_n-a|<\\varepsilon$.",
+      "Ограниченность: $\\exists C>0\\ \\forall n:\\ |a_n|\\le C$.",
+      "$\\lim(x_n+y_n)=x+y$; $\\lim x_ny_n=xy$. При $x_n\to x$, $y_n\to y$.",
+      "$\\lim(x_n/y_n)=x/y$ при $y\\ne0$ и $y_n\\ne0$.",
+      "$x_n\\le y_n\\le z_n$, $\\lim x_n=\\lim z_n=a\\Rightarrow\\lim y_n=a$.",
+      "Коши: $\\forall\\varepsilon>0\\ \\exists N\\ \\forall m,n>N:\\ |x_n-x_m|<\\varepsilon$.",
+      "$\\lim_{n\\to\\infty}(1+1/n)^n=e$.",
+      "$\\lim_{n\\to\\infty}(1+1/n)^{n+1}=e$.",
+      "$\\lim_{x\\to0}\\sin x/x=1$.",
+      "$\\lim_{x\\to0}\\ln(1+x)/x=1$.",
+      "$\\lim_{x\\to0}(a^x-1)/x=\\ln a$, $a>0$.",
+      "$\\lim(1+1/F)^F=e$ при $F\\to\\infty$.",
+      "$\\lim(1+F)^{1/F}=e$ при $F\\to0$ и определённости выражения.",
+      "$(\\sqrt A-\\sqrt B)(\\sqrt A+\\sqrt B)=A-B$.",
+      "$\\sqrt{x^2}=|x|$."
+    ],
+    "sources": [
+      "Предел последовательности: определение и свойства",
+      "Критерии Коши и Вейерштрасса, монотонность, неравенство Бернулли",
+      "Число e и второй замечательный предел",
+      "Первый замечательный предел и замены переменных",
+      "Вычисление пределов последовательностей",
+      "Вычисление пределов функций"
+    ]
+  },
+  {
+    "subject": "Матанализ",
+    "slug": "calculus",
+    "title": "Неравенство Бернулли",
+    "id": "formulas-calculus-14",
+    "formulas": [
+      "$(1+\\alpha)^n\\ge1+n\\alpha$, $n\\in\\mathbb N$, $\\alpha>-1$."
+    ],
+    "sources": [
+      "Критерии Коши и Вейерштрасса, монотонность, неравенство Бернулли"
+    ]
+  },
+  {
+    "subject": "Физика",
+    "slug": "physics",
+    "title": "Векторы и перемещение",
+    "id": "formulas-physics-15",
+    "formulas": [
+      "$\\vec r=x_m\\vec i+y_m\\vec j+z_m\\vec k$.",
+      "$r=\\sqrt{x_m^2+y_m^2+z_m^2}$.",
+      "$\\Delta\\vec r=\\vec r_B-\\vec r_A$.",
+      "$\\vec V_3=\\vec V_1+\\vec V_2$."
+    ],
+    "sources": [
+      "Кинематика: модели, координаты, перемещение",
+      "Графики движения и сложение векторов"
+    ]
+  },
+  {
+    "subject": "Физика",
+    "slug": "physics",
+    "title": "Равноускоренное движение и торможение",
+    "id": "formulas-physics-16",
+    "formulas": [
+      "$V=V_0+at$. При постоянном ускорении.",
+      "$a=\\frac{V_1-V_2}{t_1-t_2}$ при $t_1\\ne t_2$. При постоянном ускорении.",
+      "$V_0=V_1-t_1a$. При постоянном ускорении.",
+      "$t_0=-V_0/a$. При $V_0>0$, $a<0$, до остановки.",
+      "$S=V_0t_0/2=V_0^2/(-2a)$. При $V_0>0$, $a<0$, до остановки.",
+      "$a=-V_0^2/(2S)$. При $V_0>0$, $a<0$, до остановки.",
+      "При постоянной $\\vec a$: $\\vec v=\\vec v_0+\\vec a\\Delta t$, $\\Delta\\vec r=\\vec v_0\\Delta t+\\vec a(\\Delta t)^2/2$, $\\Delta t=t-t_0$.",
+      "По оси при постоянном $a$: $v^2-v_0^2=2a\\Delta x$; $v,v_0,a$ — подписанные проекции."
+    ],
+    "sources": [
+      "Равноускоренное движение и торможение"
+    ]
+  },
+  {
+    "subject": "Физика",
+    "slug": "physics",
+    "title": "Площади под графиками",
+    "id": "formulas-physics-17",
+    "formulas": [
+      "$\\Delta V=\\int_{t_1}^{t_2}a(t)\\,dt$.",
+      "$S=\\int_{t_1}^{t_2}V(t)\\,dt$ для неотрицательной скорости; знаковая площадь даёт перемещение при одномерном движении."
+    ],
+    "sources": [
+      "Графики движения и сложение векторов"
+    ]
+  },
+  {
+    "subject": "Информатика",
+    "slug": "informatics",
+    "title": "Веса двоичных разрядов",
+    "id": "formulas-informatics-18",
+    "formulas": [
+      "$w_i=2^i$; $i=0,1,2,\\ldots$ — номер разряда справа, начиная с нуля.",
+      "Тетрада: $w_3,w_2,w_1,w_0=8,4,2,1$."
+    ],
+    "sources": [
+      "Перевод двоичных чисел в шестнадцатеричные"
+    ]
+  },
+  {
+    "subject": "Матанализ",
+    "slug": "calculus",
+    "title": "Частичные пределы и непрерывность",
+    "id": "formulas-calculus-19",
+    "formulas": [
+      "Для ограниченной $\\{x_n\\}$: $x_n\\to a\\iff\\liminf x_n=\\limsup x_n=a\\in\\mathbb R$.",
+      "Непрерывность: $\\lim_{x\\to a}f(x)=f(a)$; во внутренней точке $f(a-)=f(a+)=f(a)$.",
+      "Устранимый разрыв: $f(a-)=f(a+)=L\\in\\mathbb R$; доопределяем $f(a)=L$.",
+      "Величина скачка: $|f(a+)-f(a-)|$ при разных конечных односторонних пределах."
+    ],
+    "sources": [
+      "Подпоследовательности и частичные пределы",
+      "Непрерывность и точки разрыва"
+    ]
+  },
+  {
+    "subject": "Матанализ",
+    "slug": "calculus",
+    "title": "Числовые ряды",
+    "id": "formulas-calculus-20",
+    "formulas": [
+      "$S_n=\\sum_{k=1}^{n}x_k$, $\\sum_{n=1}^{\\infty}x_n=S\\iff S_n\\to S\\in\\mathbb R$.",
+      "Коши: $\\forall\\varepsilon>0\\ \\exists N\\ \\forall m>n>N:|\\sum_{k=n+1}^{m}x_k|<\\varepsilon$.",
+      "Необходимое условие: $\\sum x_n$ сходится $\\Rightarrow x_n\\to0$; обратное неверно.",
+      "Сравнение: $0\\le x_n\\le y_n$; сходимость $\\sum y_n$ влечёт сходимость $\\sum x_n$, расходимость $\\sum x_n$ влечёт расходимость $\\sum y_n$.",
+      "Предельное сравнение: $x_n,y_n>0$, $x_n/y_n\\to L\\in(0,\\infty)$ — одинаковое поведение рядов.",
+      "$\\sum1/n^{\\alpha}$ сходится $\\iff\\alpha>1$.",
+      "Даламбер: $q=\\lim x_{n+1}/x_n$ для положительных членов; Коши: $q=\\lim\\sqrt[n]{x_n}$ для неотрицательных. $q<1$ — сходимость; $q>1$ — расходимость; $q=1$ — без вывода.",
+      "Лейбниц: $b_n\\ge0$, $b_{n+1}\\le b_n$, $b_n\\to0\\Rightarrow\\sum(-1)^{n-1}b_n$ сходится.",
+      "Абсолютная сходимость: $\\sum|x_n|$ сходится; условная: $\\sum x_n$ сходится, $\\sum|x_n|$ расходится."
+    ],
+    "sources": [
+      "Ряд, частичные суммы и критерий Коши",
+      "Положительные ряды и признаки сходимости",
+      "Знакопеременные ряды и перестановка членов"
+    ]
+  },
+  {
+    "subject": "Линал",
+    "slug": "linear-algebra",
+    "title": "Зависимость, ранг и совместность",
+    "id": "formulas-linear-algebra-21",
+    "formulas": [
+      "Зависимость: $\\exists\\alpha\\ne0:\\ \\sum_i\\alpha_i a_i=0$; независимость: $\\sum_i\\alpha_i a_i=0\\Rightarrow\\alpha_i=0$ для всех $i$.",
+      "$\\operatorname{rank}A$ — максимальное число независимых строк или столбцов, наибольший порядок ненулевого минора.",
+      "$0\\le\\operatorname{rank}A\\le\\min(m,n)$ для $A_{m\\times n}$.",
+      "$Ax=b$ совместна $\\iff\\operatorname{rank}A=\\operatorname{rank}[A\\mid b]$.",
+      "При совместности ранг $r=n$ даёт одно решение; $r<n$ — $n-r$ свободных переменных."
+    ],
+    "sources": [
+      "Линейные комбинации и зависимость векторов",
+      "Ранг матрицы и способы его нахождения",
+      "Теорема Кронекера–Капелли"
+    ]
+  },
+  {
+    "subject": "Физика",
+    "slug": "physics",
+    "title": "Скорость и ускорение",
+    "id": "formulas-physics-22",
+    "formulas": [
+      "$\\vec v=d\\vec r/dt=\\dot{\\vec r}$; $\\vec a=d\\vec v/dt=\\ddot{\\vec r}$.",
+      "$\\vec v(t)=\\vec v_0+\\int_{t_0}^{t}\\vec a(\\tau)\\,d\\tau$; $\\vec r(t)=\\vec r_0+\\int_{t_0}^{t}\\vec v(\\tau)\\,d\\tau$.",
+      "$a_{\\tau}=d|\\vec v|/dt$, $a_n=v^2/R$, $|\\vec a|=\\sqrt{a_{\\tau}^2+a_n^2}$; $R$ — радиус кривизны, $a_{\\tau}$ подписана.",
+      "$v_{\\text{м/с}}=v_{\\text{км/ч}}/3{,}6$."
+    ],
+    "sources": [
+      "Скорость, ускорение и восстановление движения"
+    ]
+  },
+  {
+    "subject": "Физика",
+    "slug": "physics",
+    "title": "Масса и центр масс",
+    "id": "formulas-physics-23",
+    "formulas": [
+      "$m=\\sum_i m_i$, $\\vec r_C=\\frac1m\\sum_i m_i\\vec r_i$.",
+      "Для непрерывного распределения: $m=\\int dm$, $\\vec r_C=\\frac1m\\int\\vec r\\,dm$.",
+      "$x_C=\\sum_i m_ix_i/m$; аналогично $y_C,z_C$."
+    ],
+    "sources": [
+      "Взаимодействия, сила и масса",
+      "Центр масс системы"
+    ]
+  }
+]

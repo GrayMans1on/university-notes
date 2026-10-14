@@ -1,0 +1,142 @@
+{
+  "reference": "User satellite overlay, image(20261010-024348).png",
+  "image_projection": {
+    "scale": 0.2065,
+    "source_anchor": [
+      345.5,
+      650.5
+    ],
+    "image_anchor": [
+      355,
+      498
+    ]
+  },
+  "lecture": {
+    "source_box": [
+      984,
+      89,
+      1381.5,
+      576
+    ],
+    "image_box": [
+      464,
+      326,
+      571,
+      465
+    ]
+  },
+  "theatre": {
+    "source_anchor": [
+      390.5,
+      1879.5
+    ],
+    "image_anchor": [
+      365,
+      780
+    ],
+    "scale": 1.42
+  },
+  "transition_bands": [
+    [
+      576,
+      650.5
+    ],
+    [
+      1818.5,
+      1834.5
+    ]
+  ],
+  "accuracy": "Relative schematic registration to the user overlay; no geodetic scale or distance in metres.",
+  "basement": {
+    "source_stairs": [
+      [
+        1376.05,
+        1767
+      ],
+      [
+        1527.55,
+        1203
+      ]
+    ],
+    "target_stairs": [
+      [
+        1411.95,
+        1661.23
+      ],
+      [
+        1527.55,
+        1203
+      ]
+    ]
+  },
+  "passages": [
+    {
+      "floors": [
+        2
+      ],
+      "bounds": [
+        1140,
+        576,
+        1182,
+        743
+      ],
+      "anchors": [
+        {
+          "point": [
+            1181.5,
+            576
+          ],
+          "region": "lecture"
+        },
+        {
+          "point": [
+            1181.5,
+            743
+          ],
+          "region": "main"
+        }
+      ],
+      "join_y": 666
+    },
+    {
+      "floors": [
+        1,
+        2
+      ],
+      "bounds": [
+        524.4,
+        1772,
+        566,
+        1879.5
+      ],
+      "anchors": [
+        {
+          "point": [
+            565.5,
+            1773
+          ],
+          "region": "main"
+        },
+        {
+          "point": [
+            565.5,
+            1836
+          ],
+          "region": "theatre"
+        }
+      ],
+      "start_by_floor": {
+        "1": 1773.48,
+        "2": 1773
+      },
+      "end_by_floor": {
+        "1": 1834.43,
+        "2": 1835.5
+      }
+    }
+  ],
+  "hidden_vectors": [
+    "th_r_checkroom_door",
+    "Vector_69_228"
+  ]
+}

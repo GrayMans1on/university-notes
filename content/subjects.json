@@ -1,0 +1,65 @@
+[
+  {
+    "title": "История",
+    "slug": "history",
+    "description": "Образование Руси, первые князья, крещение и письменная культура",
+    "source_bytes": 3117,
+    "content_bytes": 36161
+  },
+  {
+    "title": "ОРГ",
+    "slug": "statehood",
+    "description": "Цивилизация, государство, территория и суверенитет",
+    "source_bytes": 3681,
+    "content_bytes": 20219
+  },
+  {
+    "title": "Линал",
+    "slug": "linear-algebra",
+    "description": "Матрицы, определители, линейная зависимость, ранг и системы",
+    "source_bytes": 51914,
+    "content_bytes": 64799
+  },
+  {
+    "title": "Совр технологии",
+    "slug": "modern-technologies",
+    "description": "Информация, безопасность, управление и информационные системы",
+    "source_bytes": 5560,
+    "content_bytes": 16199
+  },
+  {
+    "title": "Дискретка",
+    "slug": "discrete-math",
+    "description": "Комбинаторика, множества и отношения",
+    "source_bytes": 48149,
+    "content_bytes": 47470
+  },
+  {
+    "title": "Английский",
+    "slug": "english",
+    "description": "Лексика, произношение и грамматика",
+    "source_bytes": 14309,
+    "content_bytes": 8807
+  },
+  {
+    "title": "Матанализ",
+    "slug": "calculus",
+    "description": "Последовательности, пределы, непрерывность и ряды",
+    "source_bytes": 76929,
+    "content_bytes": 90148
+  },
+  {
+    "title": "Информатика",
+    "slug": "informatics",
+    "description": "Системы счисления и алгоритмы",
+    "source_bytes": 3602,
+    "content_bytes": 1948
+  },
+  {
+    "title": "Физика",
+    "slug": "physics",
+    "description": "Кинематика, взаимодействия, масса и центр масс",
+    "source_bytes": 12880,
+    "content_bytes": 19170
+  }
+]

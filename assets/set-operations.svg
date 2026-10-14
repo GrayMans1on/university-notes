@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 850" role="img" aria-labelledby="title" class="study-diagram" data-prepared="theme-outlines">
+<title id="title">Операции над множествами: шесть диаграмм Эйлера</title>
+<style>.study-diagram{--diagram-ink:#36465e;--diagram-muted:#42536c;--diagram-grid:#dce3ee;--diagram-blue:#254cce;--diagram-green:#168276;--diagram-orange:#bd5b22;--diagram-violet:#7955ba;--diagram-blue-soft:#dce6ff;--diagram-green-soft:#d7f0eb;--diagram-orange-soft:#ffe6d7;--diagram-violet-soft:#e6dcf8;--diagram-soft:#f3f6fd;--diagram-surface:white;--diagram-on-accent:white}@media(prefers-color-scheme:dark){.study-diagram{--diagram-ink:#dce6f7;--diagram-muted:#afbed3;--diagram-grid:#455775;--diagram-blue:#8faaff;--diagram-green:#64c5b4;--diagram-orange:#f3a56d;--diagram-violet:#bca2ed;--diagram-blue-soft:#263c67;--diagram-green-soft:#204139;--diagram-orange-soft:#57382b;--diagram-violet-soft:#3d3059;--diagram-soft:#1d2b41;--diagram-surface:#172234;--diagram-on-accent:#0f1827}}@media print{.study-diagram{--diagram-ink:#36465e;--diagram-muted:#42536c;--diagram-grid:#dce3ee;--diagram-blue:#254cce;--diagram-green:#168276;--diagram-orange:#bd5b22;--diagram-violet:#7955ba;--diagram-blue-soft:#dce6ff;--diagram-green-soft:#d7f0eb;--diagram-orange-soft:#ffe6d7;--diagram-violet-soft:#e6dcf8;--diagram-soft:#f3f6fd;--diagram-surface:white;--diagram-on-accent:white}}</style><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<g class="diagram-label" aria-label="A ∪ B" role="img" transform="translate(125.4105 45.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M8.8887 16.4288L5.4072 6.9956L12.3784 6.9956L8.8887 16.4288ZM7.4384 18.9556L10.3472 18.9556L17.5703 0L14.9053 0L13.1788 4.8628L4.6353 4.8628L2.9087 0L0.2031 0L7.4384 18.9556ZM29.4023 7.54L29.4023 15.0556L31.588 15.0556L31.588 7.8569Q31.588 4.7613 32.5264 3.4206Q33.4648 2.0841 35.5733 2.0841Q37.6655 2.0841 38.6039 3.4206Q39.5464 4.7613 39.5464 7.8569L39.5464 15.0556L41.728 15.0556L41.728 7.54Q41.728 3.7822 40.172 1.8891Q38.6202 0 35.5733 0Q32.5142 0 30.9583 1.8891Q29.4023 3.7822 29.4023 7.54ZM58.4604 9.0512L58.4604 2.1084L62.5757 2.1084Q64.6435 2.1084 65.6388 2.9656Q66.6382 3.8228 66.6382 5.5859Q66.6382 7.3653 65.6388 8.2063Q64.6435 9.0512 62.5757 9.0512L58.4604 9.0512ZM58.4604 16.8472L58.4604 11.1353L62.2588 11.1353Q64.1357 11.1353 65.0538 11.8381Q65.976 12.545 65.976 13.9913Q65.976 15.4253 65.0538 16.1363Q64.1357 16.8472 62.2588 16.8472L58.4604 16.8472ZM55.897 18.9556L62.4498 18.9556Q65.3829 18.9556 66.9673 17.7369Q68.5557 16.5181 68.5557 14.2716Q68.5557 12.5288 67.7432 11.5009Q66.9307 10.4731 65.3545 10.2212Q67.2476 9.815 68.2957 8.5231Q69.3438 7.2353 69.3438 5.3056Q69.3438 2.7666 67.6173 1.3813Q65.8907 0 62.7016 0L55.897 0L55.897 18.9556Z"/></g>
+<defs>
+<clipPath id="venn1-c0"><circle cx="124" cy="166" r="76"/></clipPath>
+<clipPath id="venn1-c1"><circle cx="201" cy="166" r="76"/></clipPath>
+<mask id="venn1-m1" maskUnits="userSpaceOnUse" x="16" y="68" width="292" height="208">
+<rect x="16" y="68" width="292" height="208" fill="white"/>
+<circle cx="201" cy="166" r="76" fill="black"/>
+</mask>
+<mask id="venn1-m2" maskUnits="userSpaceOnUse" x="16" y="68" width="292" height="208">
+<rect x="16" y="68" width="292" height="208" fill="white"/>
+<circle cx="124" cy="166" r="76" fill="black"/>
+</mask>
+<mask id="venn1-m3" maskUnits="userSpaceOnUse" x="16" y="68" width="292" height="208">
+<rect x="16" y="68" width="292" height="208" fill="white"/>
+</mask>
+</defs>
+<g mask="url(#venn1-m1)">
+<g clip-path="url(#venn1-c0)">
+<rect x="16" y="68" width="292" height="208" rx="0" fill="var(--diagram-blue-soft)" stroke="none" stroke-width="1.6"/>
+</g></g>
+<g mask="url(#venn1-m2)">
+<g clip-path="url(#venn1-c1)">
+<rect x="16" y="68" width="292" height="208" rx="0" fill="var(--diagram-blue-soft)" stroke="none" stroke-width="1.6"/>
+</g></g>
+<g mask="url(#venn1-m3)">
+<g clip-path="url(#venn1-c0)">
+<g clip-path="url(#venn1-c1)">
+<rect x="16" y="68" width="292" height="208" rx="0" fill="var(--diagram-blue-soft)" stroke="none" stroke-width="1.6"/>
+</g></g></g>
+<rect x="16" y="68" width="292" height="208" rx="8" fill="none" stroke="var(--diagram-grid)" stroke-width="1.6"/>
+<circle cx="124" cy="166" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<circle cx="201" cy="166" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<g class="diagram-label" aria-label="A" role="img" transform="translate(79.1333 168.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M7.8631 14.5331L4.7833 6.1884L10.9502 6.1884L7.8631 14.5331ZM6.5802 16.7684L9.1533 16.7684L15.543 0L13.1855 0L11.6581 4.3017L4.1005 4.3017L2.5731 0L0.1797 0L6.5802 16.7684Z"/></g>
+<g class="diagram-label" aria-label="B" role="img" transform="translate(231.1099 168.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M4.5245 8.0069L4.5245 1.8652L8.165 1.8652Q9.9942 1.8652 10.8747 2.6234Q11.7588 3.3817 11.7588 4.9414Q11.7588 6.5155 10.8747 7.2594Q9.9942 8.0069 8.165 8.0069L4.5245 8.0069ZM4.5245 14.9033L4.5245 9.8505L7.8847 9.8505Q9.545 9.8505 10.3572 10.4722Q11.173 11.0975 11.173 12.3769Q11.173 13.6455 10.3572 14.2744Q9.545 14.9033 7.8847 14.9033L4.5245 14.9033ZM2.2569 16.7684L8.0536 16.7684Q10.6483 16.7684 12.0498 15.6903Q13.455 14.6122 13.455 12.6248Q13.455 11.0831 12.7363 10.1739Q12.0175 9.2647 10.6231 9.0419Q12.2978 8.6825 13.225 7.5397Q14.1522 6.4005 14.1522 4.6934Q14.1522 2.4473 12.6248 1.2219Q11.0975 0 8.2764 0L2.2569 0L2.2569 16.7684Z"/></g>
+<g class="diagram-label" aria-label="U" role="img" transform="translate(279.0472 94.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M1.6506 13.8522L3.5358 13.8522L3.5358 5.4358Q3.5358 3.2092 4.3403 2.2295Q5.1478 1.2528 6.9588 1.2528Q8.7578 1.2528 9.5653 2.2295Q10.3728 3.2092 10.3728 5.4358L10.3728 13.8522L12.255 13.8522L12.255 5.2042Q12.255 2.4967 10.9131 1.1133Q9.5742 -0.2702 6.9588 -0.2702Q4.3314 -0.2702 2.9895 1.1133Q1.6506 2.4967 1.6506 5.2042L1.6506 13.8522Z"/></g>
+<g class="diagram-label" aria-label="A ∩ B" role="img" transform="translate(445.4105 45.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M8.8887 16.4288L5.4072 6.9956L12.3784 6.9956L8.8887 16.4288ZM7.4384 18.9556L10.3472 18.9556L17.5703 0L14.9053 0L13.1788 4.8628L4.6353 4.8628L2.9087 0L0.2031 0L7.4384 18.9556ZM29.4023 7.5156Q29.4023 11.2734 30.9583 13.1625Q32.5142 15.0556 35.5733 15.0556Q38.6202 15.0556 40.172 13.1625Q41.728 11.2734 41.728 7.5156L41.728 0L39.5464 0L39.5464 7.1988Q39.5464 10.2944 38.6039 11.635Q37.6655 12.9756 35.5733 12.9756Q33.4648 12.9756 32.5264 11.635Q31.588 10.2944 31.588 7.1988L31.588 0L29.4023 0L29.4023 7.5156ZM58.4604 9.0512L58.4604 2.1084L62.5757 2.1084Q64.6435 2.1084 65.6388 2.9656Q66.6382 3.8228 66.6382 5.5859Q66.6382 7.3653 65.6388 8.2063Q64.6435 9.0512 62.5757 9.0512L58.4604 9.0512ZM58.4604 16.8472L58.4604 11.1353L62.2588 11.1353Q64.1357 11.1353 65.0538 11.8381Q65.976 12.545 65.976 13.9913Q65.976 15.4253 65.0538 16.1363Q64.1357 16.8472 62.2588 16.8472L58.4604 16.8472ZM55.897 18.9556L62.4498 18.9556Q65.3829 18.9556 66.9673 17.7369Q68.5557 16.5181 68.5557 14.2716Q68.5557 12.5288 67.7432 11.5009Q66.9307 10.4731 65.3545 10.2212Q67.2476 9.815 68.2957 8.5231Q69.3438 7.2353 69.3438 5.3056Q69.3438 2.7666 67.6173 1.3813Q65.8907 0 62.7016 0L55.897 0L55.897 18.9556Z"/></g>
+<defs>
+<clipPath id="venn2-c0"><circle cx="444" cy="166" r="76"/></clipPath>
+<clipPath id="venn2-c1"><circle cx="521" cy="166" r="76"/></clipPath>
+<mask id="venn2-m3" maskUnits="userSpaceOnUse" x="336" y="68" width="292" height="208">
+<rect x="336" y="68" width="292" height="208" fill="white"/>
+</mask>
+</defs>
+<g mask="url(#venn2-m3)">
+<g clip-path="url(#venn2-c0)">
+<g clip-path="url(#venn2-c1)">
+<rect x="336" y="68" width="292" height="208" rx="0" fill="var(--diagram-blue-soft)" stroke="none" stroke-width="1.6"/>
+</g></g></g>
+<rect x="336" y="68" width="292" height="208" rx="8" fill="none" stroke="var(--diagram-grid)" stroke-width="1.6"/>
+<circle cx="444" cy="166" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<circle cx="521" cy="166" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<g class="diagram-label" aria-label="A" role="img" transform="translate(399.1333 168.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M7.8631 14.5331L4.7833 6.1884L10.9502 6.1884L7.8631 14.5331ZM6.5802 16.7684L9.1533 16.7684L15.543 0L13.1855 0L11.6581 4.3017L4.1005 4.3017L2.5731 0L0.1797 0L6.5802 16.7684Z"/></g>
+<g class="diagram-label" aria-label="B" role="img" transform="translate(551.1099 168.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M4.5245 8.0069L4.5245 1.8652L8.165 1.8652Q9.9942 1.8652 10.8747 2.6234Q11.7588 3.3817 11.7588 4.9414Q11.7588 6.5155 10.8747 7.2594Q9.9942 8.0069 8.165 8.0069L4.5245 8.0069ZM4.5245 14.9033L4.5245 9.8505L7.8847 9.8505Q9.545 9.8505 10.3572 10.4722Q11.173 11.0975 11.173 12.3769Q11.173 13.6455 10.3572 14.2744Q9.545 14.9033 7.8847 14.9033L4.5245 14.9033ZM2.2569 16.7684L8.0536 16.7684Q10.6483 16.7684 12.0498 15.6903Q13.455 14.6122 13.455 12.6248Q13.455 11.0831 12.7363 10.1739Q12.0175 9.2647 10.6231 9.0419Q12.2978 8.6825 13.225 7.5397Q14.1522 6.4005 14.1522 4.6934Q14.1522 2.4473 12.6248 1.2219Q11.0975 0 8.2764 0L2.2569 0L2.2569 16.7684Z"/></g>
+<g class="diagram-label" aria-label="U" role="img" transform="translate(599.0472 94.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M1.6506 13.8522L3.5358 13.8522L3.5358 5.4358Q3.5358 3.2092 4.3403 2.2295Q5.1478 1.2528 6.9588 1.2528Q8.7578 1.2528 9.5653 2.2295Q10.3728 3.2092 10.3728 5.4358L10.3728 13.8522L12.255 13.8522L12.255 5.2042Q12.255 2.4967 10.9131 1.1133Q9.5742 -0.2702 6.9588 -0.2702Q4.3314 -0.2702 2.9895 1.1133Q1.6506 2.4967 1.6506 5.2042L1.6506 13.8522Z"/></g>
+<g class="diagram-label" aria-label="A ∖ B" role="img" transform="translate(126.6475 325.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M8.8887 16.4288L5.4072 6.9956L12.3784 6.9956L8.8887 16.4288ZM7.4384 18.9556L10.3472 18.9556L17.5703 0L14.9053 0L13.1788 4.8628L4.6353 4.8628L2.9087 0L0.2031 0L7.4384 18.9556ZM33.213 19.9956L39.8145 -1.3731L37.6573 -1.3731L31.0558 19.9956L33.213 19.9956ZM55.9848 9.0512L55.9848 2.1084L60.1001 2.1084Q62.1679 2.1084 63.1632 2.9656Q64.1626 3.8228 64.1626 5.5859Q64.1626 7.3653 63.1632 8.2063Q62.1679 9.0512 60.1001 9.0512L55.9848 9.0512ZM55.9848 16.8472L55.9848 11.1353L59.7832 11.1353Q61.6601 11.1353 62.5782 11.8381Q63.5004 12.545 63.5004 13.9913Q63.5004 15.4253 62.5782 16.1363Q61.6601 16.8472 59.7832 16.8472L55.9848 16.8472ZM53.4214 18.9556L59.9742 18.9556Q62.9073 18.9556 64.4917 17.7369Q66.0801 16.5181 66.0801 14.2716Q66.0801 12.5288 65.2676 11.5009Q64.4551 10.4731 62.8789 10.2212Q64.772 9.815 65.8201 8.5231Q66.8682 7.2353 66.8682 5.3056Q66.8682 2.7666 65.1417 1.3813Q63.4151 0 60.2261 0L53.4214 0L53.4214 18.9556Z"/></g>
+<defs>
+<clipPath id="venn3-c0"><circle cx="124" cy="446" r="76"/></clipPath>
+<clipPath id="venn3-c1"><circle cx="201" cy="446" r="76"/></clipPath>
+<mask id="venn3-m1" maskUnits="userSpaceOnUse" x="16" y="348" width="292" height="208">
+<rect x="16" y="348" width="292" height="208" fill="white"/>
+<circle cx="201" cy="446" r="76" fill="black"/>
+</mask>
+</defs>
+<g mask="url(#venn3-m1)">
+<g clip-path="url(#venn3-c0)">
+<rect x="16" y="348" width="292" height="208" rx="0" fill="var(--diagram-blue-soft)" stroke="none" stroke-width="1.6"/>
+</g></g>
+<rect x="16" y="348" width="292" height="208" rx="8" fill="none" stroke="var(--diagram-grid)" stroke-width="1.6"/>
+<circle cx="124" cy="446" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<circle cx="201" cy="446" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<g class="diagram-label" aria-label="A" role="img" transform="translate(79.1333 448.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M7.8631 14.5331L4.7833 6.1884L10.9502 6.1884L7.8631 14.5331ZM6.5802 16.7684L9.1533 16.7684L15.543 0L13.1855 0L11.6581 4.3017L4.1005 4.3017L2.5731 0L0.1797 0L6.5802 16.7684Z"/></g>
+<g class="diagram-label" aria-label="B" role="img" transform="translate(231.1099 448.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M4.5245 8.0069L4.5245 1.8652L8.165 1.8652Q9.9942 1.8652 10.8747 2.6234Q11.7588 3.3817 11.7588 4.9414Q11.7588 6.5155 10.8747 7.2594Q9.9942 8.0069 8.165 8.0069L4.5245 8.0069ZM4.5245 14.9033L4.5245 9.8505L7.8847 9.8505Q9.545 9.8505 10.3572 10.4722Q11.173 11.0975 11.173 12.3769Q11.173 13.6455 10.3572 14.2744Q9.545 14.9033 7.8847 14.9033L4.5245 14.9033ZM2.2569 16.7684L8.0536 16.7684Q10.6483 16.7684 12.0498 15.6903Q13.455 14.6122 13.455 12.6248Q13.455 11.0831 12.7363 10.1739Q12.0175 9.2647 10.6231 9.0419Q12.2978 8.6825 13.225 7.5397Q14.1522 6.4005 14.1522 4.6934Q14.1522 2.4473 12.6248 1.2219Q11.0975 0 8.2764 0L2.2569 0L2.2569 16.7684Z"/></g>
+<g class="diagram-label" aria-label="U" role="img" transform="translate(279.0472 374.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M1.6506 13.8522L3.5358 13.8522L3.5358 5.4358Q3.5358 3.2092 4.3403 2.2295Q5.1478 1.2528 6.9588 1.2528Q8.7578 1.2528 9.5653 2.2295Q10.3728 3.2092 10.3728 5.4358L10.3728 13.8522L12.255 13.8522L12.255 5.2042Q12.255 2.4967 10.9131 1.1133Q9.5742 -0.2702 6.9588 -0.2702Q4.3314 -0.2702 2.9895 1.1133Q1.6506 2.4967 1.6506 5.2042L1.6506 13.8522Z"/></g>
+<g class="diagram-label" aria-label="B ∖ A" role="img" transform="translate(446.6475 325.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M5.1147 9.0512L5.1147 2.1084L9.23 2.1084Q11.2978 2.1084 12.2931 2.9656Q13.2925 3.8228 13.2925 5.5859Q13.2925 7.3653 12.2931 8.2063Q11.2978 9.0512 9.23 9.0512L5.1147 9.0512ZM5.1147 16.8472L5.1147 11.1353L8.9131 11.1353Q10.79 11.1353 11.7081 11.8381Q12.6303 12.545 12.6303 13.9913Q12.6303 15.4253 11.7081 16.1363Q10.79 16.8472 8.9131 16.8472L5.1147 16.8472ZM2.5513 18.9556L9.1041 18.9556Q12.0372 18.9556 13.6216 17.7369Q15.21 16.5181 15.21 14.2716Q15.21 12.5288 14.3975 11.5009Q13.585 10.4731 12.0088 10.2212Q13.9019 9.815 14.95 8.5231Q15.9981 7.2353 15.9981 5.3056Q15.9981 2.7666 14.2716 1.3813Q12.545 0 9.3559 0L2.5513 0L2.5513 18.9556ZM33.2638 19.9956L39.8653 -1.3731L37.7081 -1.3731L31.1066 19.9956L33.2638 19.9956ZM59.8096 16.4288L56.3281 6.9956L63.2993 6.9956L59.8096 16.4288ZM58.3593 18.9556L61.2681 18.9556L68.4912 0L65.8262 0L64.0996 4.8628L55.5562 4.8628L53.8296 0L51.124 0L58.3593 18.9556Z"/></g>
+<defs>
+<clipPath id="venn4-c0"><circle cx="444" cy="446" r="76"/></clipPath>
+<clipPath id="venn4-c1"><circle cx="521" cy="446" r="76"/></clipPath>
+<mask id="venn4-m2" maskUnits="userSpaceOnUse" x="336" y="348" width="292" height="208">
+<rect x="336" y="348" width="292" height="208" fill="white"/>
+<circle cx="444" cy="446" r="76" fill="black"/>
+</mask>
+</defs>
+<g mask="url(#venn4-m2)">
+<g clip-path="url(#venn4-c1)">
+<rect x="336" y="348" width="292" height="208" rx="0" fill="var(--diagram-blue-soft)" stroke="none" stroke-width="1.6"/>
+</g></g>
+<rect x="336" y="348" width="292" height="208" rx="8" fill="none" stroke="var(--diagram-grid)" stroke-width="1.6"/>
+<circle cx="444" cy="446" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<circle cx="521" cy="446" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<g class="diagram-label" aria-label="A" role="img" transform="translate(399.1333 448.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M7.8631 14.5331L4.7833 6.1884L10.9502 6.1884L7.8631 14.5331ZM6.5802 16.7684L9.1533 16.7684L15.543 0L13.1855 0L11.6581 4.3017L4.1005 4.3017L2.5731 0L0.1797 0L6.5802 16.7684Z"/></g>
+<g class="diagram-label" aria-label="B" role="img" transform="translate(551.1099 448.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M4.5245 8.0069L4.5245 1.8652L8.165 1.8652Q9.9942 1.8652 10.8747 2.6234Q11.7588 3.3817 11.7588 4.9414Q11.7588 6.5155 10.8747 7.2594Q9.9942 8.0069 8.165 8.0069L4.5245 8.0069ZM4.5245 14.9033L4.5245 9.8505L7.8847 9.8505Q9.545 9.8505 10.3572 10.4722Q11.173 11.0975 11.173 12.3769Q11.173 13.6455 10.3572 14.2744Q9.545 14.9033 7.8847 14.9033L4.5245 14.9033ZM2.2569 16.7684L8.0536 16.7684Q10.6483 16.7684 12.0498 15.6903Q13.455 14.6122 13.455 12.6248Q13.455 11.0831 12.7363 10.1739Q12.0175 9.2647 10.6231 9.0419Q12.2978 8.6825 13.225 7.5397Q14.1522 6.4005 14.1522 4.6934Q14.1522 2.4473 12.6248 1.2219Q11.0975 0 8.2764 0L2.2569 0L2.2569 16.7684Z"/></g>
+<g class="diagram-label" aria-label="U" role="img" transform="translate(599.0472 374.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M1.6506 13.8522L3.5358 13.8522L3.5358 5.4358Q3.5358 3.2092 4.3403 2.2295Q5.1478 1.2528 6.9588 1.2528Q8.7578 1.2528 9.5653 2.2295Q10.3728 3.2092 10.3728 5.4358L10.3728 13.8522L12.255 13.8522L12.255 5.2042Q12.255 2.4967 10.9131 1.1133Q9.5742 -0.2702 6.9588 -0.2702Q4.3314 -0.2702 2.9895 1.1133Q1.6506 2.4967 1.6506 5.2042L1.6506 13.8522Z"/></g>
+<g class="diagram-label" aria-label="A △ B" role="img" transform="translate(124.9270 605.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M8.8887 16.4288L5.4072 6.9956L12.3784 6.9956L8.8887 16.4288ZM7.4384 18.9556L10.3472 18.9556L17.5703 0L14.9053 0L13.1788 4.8628L4.6353 4.8628L2.9087 0L0.2031 0L7.4384 18.9556ZM28.2973 -1.7509L43.7998 -1.7509L36.0405 13.8125L28.2973 -1.7509ZM26.128 -3.2012L36.0405 16.7091L45.9692 -3.2012L26.128 -3.2012ZM59.4252 9.0512L59.4252 2.1084L63.5405 2.1084Q65.6084 2.1084 66.6037 2.9656Q67.603 3.8228 67.603 5.5859Q67.603 7.3653 66.6037 8.2063Q65.6084 9.0512 63.5405 9.0512L59.4252 9.0512ZM59.4252 16.8472L59.4252 11.1353L63.2237 11.1353Q65.1005 11.1353 66.0187 11.8381Q66.9409 12.545 66.9409 13.9913Q66.9409 15.4253 66.0187 16.1363Q65.1005 16.8472 63.2237 16.8472L59.4252 16.8472ZM56.8618 18.9556L63.4146 18.9556Q66.3477 18.9556 67.9321 17.7369Q69.5205 16.5181 69.5205 14.2716Q69.5205 12.5288 68.708 11.5009Q67.8955 10.4731 66.3193 10.2212Q68.2124 9.815 69.2605 8.5231Q70.3087 7.2353 70.3087 5.3056Q70.3087 2.7666 68.5821 1.3813Q66.8555 0 63.6665 0L56.8618 0L56.8618 18.9556Z"/></g>
+<defs>
+<clipPath id="venn5-c0"><circle cx="124" cy="726" r="76"/></clipPath>
+<clipPath id="venn5-c1"><circle cx="201" cy="726" r="76"/></clipPath>
+<mask id="venn5-m1" maskUnits="userSpaceOnUse" x="16" y="628" width="292" height="208">
+<rect x="16" y="628" width="292" height="208" fill="white"/>
+<circle cx="201" cy="726" r="76" fill="black"/>
+</mask>
+<mask id="venn5-m2" maskUnits="userSpaceOnUse" x="16" y="628" width="292" height="208">
+<rect x="16" y="628" width="292" height="208" fill="white"/>
+<circle cx="124" cy="726" r="76" fill="black"/>
+</mask>
+</defs>
+<g mask="url(#venn5-m1)">
+<g clip-path="url(#venn5-c0)">
+<rect x="16" y="628" width="292" height="208" rx="0" fill="var(--diagram-blue-soft)" stroke="none" stroke-width="1.6"/>
+</g></g>
+<g mask="url(#venn5-m2)">
+<g clip-path="url(#venn5-c1)">
+<rect x="16" y="628" width="292" height="208" rx="0" fill="var(--diagram-blue-soft)" stroke="none" stroke-width="1.6"/>
+</g></g>
+<rect x="16" y="628" width="292" height="208" rx="8" fill="none" stroke="var(--diagram-grid)" stroke-width="1.6"/>
+<circle cx="124" cy="726" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<circle cx="201" cy="726" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<g class="diagram-label" aria-label="A" role="img" transform="translate(79.1333 728.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M7.8631 14.5331L4.7833 6.1884L10.9502 6.1884L7.8631 14.5331ZM6.5802 16.7684L9.1533 16.7684L15.543 0L13.1855 0L11.6581 4.3017L4.1005 4.3017L2.5731 0L0.1797 0L6.5802 16.7684Z"/></g>
+<g class="diagram-label" aria-label="B" role="img" transform="translate(231.1099 728.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M4.5245 8.0069L4.5245 1.8652L8.165 1.8652Q9.9942 1.8652 10.8747 2.6234Q11.7588 3.3817 11.7588 4.9414Q11.7588 6.5155 10.8747 7.2594Q9.9942 8.0069 8.165 8.0069L4.5245 8.0069ZM4.5245 14.9033L4.5245 9.8505L7.8847 9.8505Q9.545 9.8505 10.3572 10.4722Q11.173 11.0975 11.173 12.3769Q11.173 13.6455 10.3572 14.2744Q9.545 14.9033 7.8847 14.9033L4.5245 14.9033ZM2.2569 16.7684L8.0536 16.7684Q10.6483 16.7684 12.0498 15.6903Q13.455 14.6122 13.455 12.6248Q13.455 11.0831 12.7363 10.1739Q12.0175 9.2647 10.6231 9.0419Q12.2978 8.6825 13.225 7.5397Q14.1522 6.4005 14.1522 4.6934Q14.1522 2.4473 12.6248 1.2219Q11.0975 0 8.2764 0L2.2569 0L2.2569 16.7684Z"/></g>
+<g class="diagram-label" aria-label="U" role="img" transform="translate(279.0472 654.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M1.6506 13.8522L3.5358 13.8522L3.5358 5.4358Q3.5358 3.2092 4.3403 2.2295Q5.1478 1.2528 6.9588 1.2528Q8.7578 1.2528 9.5653 2.2295Q10.3728 3.2092 10.3728 5.4358L10.3728 13.8522L12.255 13.8522L12.255 5.2042Q12.255 2.4967 10.9131 1.1133Q9.5742 -0.2702 6.9588 -0.2702Q4.3314 -0.2702 2.9895 1.1133Q1.6506 2.4967 1.6506 5.2042L1.6506 13.8522Z"/></g>
+<g class="diagram-label" aria-label="U ∖ A" role="img" transform="translate(446.0523 605.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M2.2588 18.9556L4.8384 18.9556L4.8384 7.4384Q4.8384 4.3916 5.9394 3.0509Q7.0444 1.7144 9.5225 1.7144Q11.9844 1.7144 13.0894 3.0509Q14.1944 4.3916 14.1944 7.4384L14.1944 18.9556L16.77 18.9556L16.77 7.1216Q16.77 3.4166 14.9337 1.5234Q13.1016 -0.3697 9.5225 -0.3697Q5.9272 -0.3697 4.0909 1.5234Q2.2588 3.4166 2.2588 7.1216L2.2588 18.9556ZM34.4571 19.9956L41.0587 -1.3731L38.9015 -1.3731L32.2999 19.9956L34.4571 19.9956ZM61.003 16.4288L57.5214 6.9956L64.4927 6.9956L61.003 16.4288ZM59.5527 18.9556L62.4614 18.9556L69.6846 0L67.0196 0L65.293 4.8628L56.7496 4.8628L55.023 0L52.3174 0L59.5527 18.9556Z"/></g>
+<defs>
+<clipPath id="venn6-c0"><circle cx="444" cy="726" r="76"/></clipPath>
+<clipPath id="venn6-c1"><circle cx="521" cy="726" r="76"/></clipPath>
+<mask id="venn6-m0" maskUnits="userSpaceOnUse" x="336" y="628" width="292" height="208">
+<rect x="336" y="628" width="292" height="208" fill="white"/>
+<circle cx="444" cy="726" r="76" fill="black"/>
+<circle cx="521" cy="726" r="76" fill="black"/>
+</mask>
+<mask id="venn6-m2" maskUnits="userSpaceOnUse" x="336" y="628" width="292" height="208">
+<rect x="336" y="628" width="292" height="208" fill="white"/>
+<circle cx="444" cy="726" r="76" fill="black"/>
+</mask>
+</defs>
+<g mask="url(#venn6-m0)">
+<rect x="336" y="628" width="292" height="208" rx="0" fill="var(--diagram-blue-soft)" stroke="none" stroke-width="1.6"/>
+</g>
+<g mask="url(#venn6-m2)">
+<g clip-path="url(#venn6-c1)">
+<rect x="336" y="628" width="292" height="208" rx="0" fill="var(--diagram-blue-soft)" stroke="none" stroke-width="1.6"/>
+</g></g>
+<rect x="336" y="628" width="292" height="208" rx="8" fill="none" stroke="var(--diagram-grid)" stroke-width="1.6"/>
+<circle cx="444" cy="726" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<circle cx="521" cy="726" r="76" fill="none" stroke="var(--diagram-ink)" stroke-width="2"/>
+<g class="diagram-label" aria-label="A" role="img" transform="translate(399.1333 728.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M7.8631 14.5331L4.7833 6.1884L10.9502 6.1884L7.8631 14.5331ZM6.5802 16.7684L9.1533 16.7684L15.543 0L13.1855 0L11.6581 4.3017L4.1005 4.3017L2.5731 0L0.1797 0L6.5802 16.7684Z"/></g>
+<g class="diagram-label" aria-label="B" role="img" transform="translate(551.1099 728.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M4.5245 8.0069L4.5245 1.8652L8.165 1.8652Q9.9942 1.8652 10.8747 2.6234Q11.7588 3.3817 11.7588 4.9414Q11.7588 6.5155 10.8747 7.2594Q9.9942 8.0069 8.165 8.0069L4.5245 8.0069ZM4.5245 14.9033L4.5245 9.8505L7.8847 9.8505Q9.545 9.8505 10.3572 10.4722Q11.173 11.0975 11.173 12.3769Q11.173 13.6455 10.3572 14.2744Q9.545 14.9033 7.8847 14.9033L4.5245 14.9033ZM2.2569 16.7684L8.0536 16.7684Q10.6483 16.7684 12.0498 15.6903Q13.455 14.6122 13.455 12.6248Q13.455 11.0831 12.7363 10.1739Q12.0175 9.2647 10.6231 9.0419Q12.2978 8.6825 13.225 7.5397Q14.1522 6.4005 14.1522 4.6934Q14.1522 2.4473 12.6248 1.2219Q11.0975 0 8.2764 0L2.2569 0L2.2569 16.7684Z"/></g>
+<g class="diagram-label" aria-label="U" role="img" transform="translate(599.0472 654.0000) scale(1.000000 -1)" fill="var(--diagram-ink)"><path d="M1.6506 13.8522L3.5358 13.8522L3.5358 5.4358Q3.5358 3.2092 4.3403 2.2295Q5.1478 1.2528 6.9588 1.2528Q8.7578 1.2528 9.5653 2.2295Q10.3728 3.2092 10.3728 5.4358L10.3728 13.8522L12.255 13.8522L12.255 5.2042Q12.255 2.4967 10.9131 1.1133Q9.5742 -0.2702 6.9588 -0.2702Q4.3314 -0.2702 2.9895 1.1133Q1.6506 2.4967 1.6506 5.2042L1.6506 13.8522Z"/></g>
+</svg>

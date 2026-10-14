@@ -1,0 +1,420 @@
+{
+  "anchor": "2026-09-28",
+  "timeZone": "Asia/Yekaterinburg",
+  "lessons": [
+    {
+      "day": 0,
+      "pair": 1,
+      "title": "Иностранный язык",
+      "teacher": "Мингажева Е.А.",
+      "kind": "Практика",
+      "room": "013",
+      "weeks": [
+        1
+      ],
+      "url": "/notes/english/",
+      "subgroup": 1
+    },
+    {
+      "day": 0,
+      "pair": 1,
+      "title": "Иностранный язык",
+      "teacher": "Мингажева Е.А.",
+      "kind": "Практика",
+      "room": "013",
+      "weeks": [
+        2
+      ],
+      "url": "/notes/english/",
+      "subgroup": 2
+    },
+    {
+      "day": 0,
+      "pair": 2,
+      "title": "Иностранный язык",
+      "teacher": "Мингажева Е.А.",
+      "kind": "Практика",
+      "room": "013",
+      "weeks": [
+        1
+      ],
+      "url": "/notes/english/",
+      "subgroup": 1
+    },
+    {
+      "day": 0,
+      "pair": 2,
+      "title": "Иностранный язык",
+      "teacher": "Мингажева Е.А.",
+      "kind": "Практика",
+      "room": "013",
+      "weeks": [
+        2
+      ],
+      "url": "/notes/english/",
+      "subgroup": 2
+    },
+    {
+      "day": 0,
+      "pair": 3,
+      "title": "Дискретная математика",
+      "teacher": "Земцова Е.М.",
+      "kind": "Практика",
+      "room": "132",
+      "weeks": [
+        2
+      ],
+      "url": "/notes/discrete-math/"
+    },
+    {
+      "day": 0,
+      "pair": 4,
+      "title": "Дискретная математика",
+      "teacher": "Земцова Е.М.",
+      "kind": "Практика",
+      "room": "132",
+      "weeks": [
+        2
+      ],
+      "url": "/notes/discrete-math/"
+    },
+    {
+      "day": 1,
+      "pair": 2,
+      "title": "Основы российской государственности",
+      "teacher": "Корецкая Т.П.",
+      "kind": "Практика",
+      "room": "425/201",
+      "weeks": [
+        1,
+        2
+      ],
+      "url": "/notes/statehood/"
+    },
+    {
+      "day": 1,
+      "pair": 3,
+      "title": "Основы российской государственности",
+      "teacher": "Корецкая Т.П.",
+      "kind": "Лекция",
+      "room": "А-13",
+      "weeks": [
+        1,
+        2
+      ],
+      "url": "/notes/statehood/"
+    },
+    {
+      "day": 1,
+      "pair": 4,
+      "title": "Дискретная математика",
+      "teacher": "Земцова Е.М.",
+      "kind": "Лекция",
+      "room": "А-17",
+      "weeks": [
+        1
+      ],
+      "url": "/notes/discrete-math/"
+    },
+    {
+      "day": 1,
+      "pair": 4,
+      "title": "История России",
+      "teacher": "Рыбалко А.А.",
+      "kind": "Лекция",
+      "room": "А-17",
+      "weeks": [
+        2
+      ],
+      "url": "/notes/history/"
+    },
+    {
+      "day": 1,
+      "pair": 5,
+      "title": "Учебно-методический модуль",
+      "teacher": "Юрина Н.А.",
+      "kind": "Модуль",
+      "room": "132А",
+      "weeks": [
+        1
+      ]
+    },
+    {
+      "day": 1,
+      "pair": 5,
+      "title": "Современные технологии поиска и обработки информации",
+      "teacher": "Земцова Е.М.",
+      "kind": "Практика",
+      "room": "132",
+      "weeks": [
+        2
+      ],
+      "url": "/notes/modern-technologies/",
+      "note": "2–8 учебные недели"
+    },
+    {
+      "day": 2,
+      "pair": 1,
+      "title": "Математический анализ. Дифференциальные и разностные уравнения",
+      "teacher": "Шайхуллина П.А.",
+      "kind": "Практика",
+      "room": "А-22",
+      "weeks": [
+        1,
+        2
+      ],
+      "url": "/notes/calculus/"
+    },
+    {
+      "day": 2,
+      "pair": 2,
+      "title": "Дискретная математика",
+      "teacher": "Земцова Е.М.",
+      "kind": "Практика",
+      "room": "132",
+      "weeks": [
+        1
+      ],
+      "url": "/notes/discrete-math/"
+    },
+    {
+      "day": 2,
+      "pair": 2,
+      "title": "История России",
+      "teacher": "Быкова В.В.",
+      "kind": "Практика",
+      "room": "013",
+      "weeks": [
+        2
+      ],
+      "url": "/notes/history/"
+    },
+    {
+      "day": 2,
+      "pair": 3,
+      "title": "Иностранный язык",
+      "teacher": "Мингажева Е.А.",
+      "kind": "Практика",
+      "room": "132Б",
+      "weeks": [
+        1
+      ],
+      "url": "/notes/english/",
+      "subgroup": 2
+    },
+    {
+      "day": 2,
+      "pair": 3,
+      "title": "Иностранный язык",
+      "teacher": "Мингажева Е.А.",
+      "kind": "Практика",
+      "room": "132Б",
+      "weeks": [
+        2
+      ],
+      "url": "/notes/english/",
+      "subgroup": 1
+    },
+    {
+      "day": 3,
+      "pair": 4,
+      "title": "Линейная алгебра и аналитическая геометрия",
+      "teacher": "Митина О.В.",
+      "kind": "Лекция",
+      "room": "А-15",
+      "weeks": [
+        1,
+        2
+      ],
+      "url": "/notes/linear-algebra/"
+    },
+    {
+      "day": 3,
+      "pair": 5,
+      "title": "Физическая культура и спорт",
+      "teacher": "Панькин В.Е.",
+      "kind": "Практика",
+      "room": "",
+      "weeks": [
+        1,
+        2
+      ],
+      "place": "ФОК ЧелГУ"
+    },
+    {
+      "day": 4,
+      "pair": 1,
+      "title": "Современные технологии поиска и обработки информации",
+      "teacher": "Земцова Е.М.",
+      "kind": "Лекция",
+      "room": "А-15",
+      "weeks": [
+        1
+      ],
+      "url": "/notes/modern-technologies/",
+      "note": "1–7 учебные недели"
+    },
+    {
+      "day": 4,
+      "pair": 1,
+      "title": "Физика",
+      "teacher": "Бутько Л.Н.",
+      "kind": "Лекция",
+      "room": "А-15",
+      "weeks": [
+        2
+      ],
+      "url": "/notes/physics/"
+    },
+    {
+      "day": 4,
+      "pair": 2,
+      "title": "Математический анализ. Дифференциальные и разностные уравнения",
+      "teacher": "Нагуманова А.В.",
+      "kind": "Лекция",
+      "room": "А-17",
+      "weeks": [
+        1,
+        2
+      ],
+      "url": "/notes/calculus/"
+    },
+    {
+      "day": 4,
+      "pair": 3,
+      "title": "Линейная алгебра и аналитическая геометрия",
+      "teacher": "Тюрина И.А.",
+      "kind": "Практика",
+      "room": "427",
+      "weeks": [
+        1,
+        2
+      ],
+      "url": "/notes/linear-algebra/"
+    },
+    {
+      "day": 4,
+      "pair": 4,
+      "title": "Физика",
+      "teacher": "Бутько Л.Н.",
+      "kind": "Практика",
+      "room": "326",
+      "weeks": [
+        1,
+        2
+      ],
+      "url": "/notes/physics/"
+    },
+    {
+      "day": 5,
+      "pair": 2,
+      "title": "Информатика",
+      "teacher": "Терюхин А.Е.",
+      "kind": "Практика",
+      "room": "326",
+      "weeks": [
+        2
+      ],
+      "url": "/notes/informatics/"
+    },
+    {
+      "day": 5,
+      "pair": 3,
+      "title": "Программирование",
+      "teacher": "Кирсанов А.А.",
+      "kind": "Лекция",
+      "room": "",
+      "weeks": [
+        1
+      ],
+      "url": "https://github.com/GrayMans1on/UniversityProjects_Shparov/tree/main/lectures",
+      "note": "Онлайн"
+    },
+    {
+      "day": 5,
+      "pair": 3,
+      "title": "Информатика",
+      "teacher": "Терюхин А.Е.",
+      "kind": "Лекция",
+      "room": "А-15",
+      "weeks": [
+        2
+      ],
+      "url": "/notes/informatics/"
+    },
+    {
+      "day": 5,
+      "pair": 4,
+      "title": "Программирование",
+      "teacher": "Кирсанов А.А.",
+      "kind": "Практика",
+      "room": "132А",
+      "weeks": [
+        2
+      ],
+      "url": "https://github.com/GrayMans1on/UniversityProjects_Shparov/tree/main/lectures"
+    },
+    {
+      "day": 5,
+      "pair": 5,
+      "title": "Программирование",
+      "teacher": "Кирсанов А.А.",
+      "kind": "Практика",
+      "room": "",
+      "weeks": [
+        1
+      ],
+      "url": "https://github.com/GrayMans1on/UniversityProjects_Shparov/tree/main/lectures",
+      "note": "Онлайн"
+    },
+    {
+      "day": 5,
+      "pair": 6,
+      "title": "История России",
+      "teacher": "Быкова В.В.",
+      "kind": "Лекция",
+      "room": "",
+      "weeks": [
+        1,
+        2
+      ],
+      "url": "/notes/history/",
+      "note": "Онлайн-курс · 22 часа",
+      "onlineCourse": true
+    }
+  ],
+  "bells": {
+    "1": [
+      "08:00",
+      "09:30"
+    ],
+    "2": [
+      "09:40",
+      "11:10"
+    ],
+    "3": [
+      "11:20",
+      "12:50"
+    ],
+    "4": [
+      "13:15",
+      "14:45"
+    ],
+    "5": [
+      "15:00",
+      "16:30"
+    ],
+    "6": [
+      "16:40",
+      "18:10"
+    ],
+    "7": [
+      "18:20",
+      "19:50"
+    ],
+    "8": [
+      "19:55",
+      "21:25"
+    ]
+  }
+}

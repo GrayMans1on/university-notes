@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1040" role="img"><title>Объединение цифр: приписывание справа</title>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#36465e"/></marker></defs>
+<rect x="375.0" y="25.0" width="250" height="60" rx="35" fill="#dce6ff" stroke="#254cce" stroke-width="2"/>
+<text x="500" y="62.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">Начало</text>
+<path d="M395.0 110.0H645.0L605.0 170.0H355.0Z" fill="#dce6ff" stroke="#254cce" stroke-width="2"/>
+<text x="500" y="147.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">Ввести a, b</text>
+<rect x="375.0" y="195.0" width="250" height="60" rx="6" fill="#dce6ff" stroke="#254cce" stroke-width="2"/>
+<text x="500" y="232.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">n = 0</text>
+<path d="M500 275.0L670.0 330L500 385.0L330.0 330Z" fill="#dce6ff" stroke="#254cce" stroke-width="2"/>
+<text x="500" y="337.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">a &gt; 0 или b &gt; 0?</text>
+<rect x="375.0" y="425.0" width="250" height="80" rx="6" fill="#dce6ff" stroke="#254cce" stroke-width="2"/>
+<text x="500" y="458.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">x = a % 10</text>
+<text x="500" y="486.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">y = b % 10</text>
+<path d="M500 550.0L760.0 615L500 680.0L240.0 615Z" fill="#dce6ff" stroke="#254cce" stroke-width="2"/>
+<text x="500" y="608.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">b = 0</text>
+<text x="500" y="636.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">или (a &gt; 0 и x &gt; y)?</text>
+<rect x="125.0" y="745.0" width="250" height="120" rx="6" fill="#dce6ff" stroke="#254cce" stroke-width="2"/>
+<text x="250" y="798.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">n = 10*n + x</text>
+<text x="250" y="826.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">a = a // 10</text>
+<rect x="625.0" y="745.0" width="250" height="120" rx="6" fill="#dce6ff" stroke="#254cce" stroke-width="2"/>
+<text x="750" y="798.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">n = 10*n + y</text>
+<text x="750" y="826.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">b = b // 10</text>
+<path d="M815.0 435.0H985.0L945.0 495.0H775.0Z" fill="#dce6ff" stroke="#254cce" stroke-width="2"/>
+<text x="880" y="472.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">Вывести n</text>
+<rect x="795.0" y="525.0" width="170" height="60" rx="35" fill="#dce6ff" stroke="#254cce" stroke-width="2"/>
+<text x="880" y="562.0" font-family="DejaVu Sans" font-size="21" text-anchor="middle" fill="#36465e">Конец</text>
+<path d="M500 85V110" fill="none" stroke="#36465e" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M500 170V195" fill="none" stroke="#36465e" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M500 255V275" fill="none" stroke="#36465e" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M500 385V425" fill="none" stroke="#36465e" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M500 505V550" fill="none" stroke="#36465e" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M240 615H210V720H250V745" fill="none" stroke="#36465e" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M760 615H790V720H750V745" fill="none" stroke="#36465e" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M670 330H880V435" fill="none" stroke="#36465e" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M880 495V525" fill="none" stroke="#36465e" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="535" y="410.0" font-family="DejaVu Sans" font-size="18" text-anchor="middle" fill="#36465e">Да</text>
+<text x="725" y="314.0" font-family="DejaVu Sans" font-size="18" text-anchor="middle" fill="#36465e">Нет</text>
+<text x="265" y="701.0" font-family="DejaVu Sans" font-size="18" text-anchor="middle" fill="#36465e">Да</text>
+<text x="780" y="701.0" font-family="DejaVu Sans" font-size="18" text-anchor="middle" fill="#36465e">Нет</text>
+<path d="M250 865V950H750V865M500 950H40V330H330" fill="none" stroke="#36465e" stroke-width="2"/>
+<path d="M40 330H330" fill="none" stroke="#36465e" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>

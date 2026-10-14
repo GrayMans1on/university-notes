@@ -1,0 +1,492 @@
+{
+  "reference": "User overlay; entrance and hall boundary explicitly marked by the user.",
+  "places": [
+    {
+      "id": "fok",
+      "name": "ФОК ЧелГУ",
+      "map_label": "",
+      "aliases": [
+        "ФОК",
+        "Физкультура",
+        "Спорткомплекс"
+      ],
+      "polygon": [
+        [
+          155,
+          210
+        ],
+        [
+          235,
+          210
+        ],
+        [
+          235,
+          250
+        ],
+        [
+          155,
+          250
+        ]
+      ],
+      "route_point": [
+        225,
+        250
+      ],
+      "description": "Прихожая и раздевалки. Вход отмечен иконкой; маршрут заканчивается у входа в ФОК."
+    },
+    {
+      "id": "fok-hall",
+      "name": "ФОК · спортивный зал",
+      "map_label": "ФОК",
+      "aliases": [
+        "Зал ФОКа"
+      ],
+      "polygon": [
+        [
+          155,
+          90
+        ],
+        [
+          235,
+          90
+        ],
+        [
+          235,
+          210
+        ],
+        [
+          155,
+          210
+        ]
+      ],
+      "route_point": [
+        225,
+        250
+      ],
+      "description": "Спортивный зал отделён от прихожей и раздевалок. Маршрут заканчивается у входа в ФОК."
+    }
+  ],
+  "buildings": [
+    [
+      [
+        222,
+        287
+      ],
+      [
+        318,
+        287
+      ],
+      [
+        318,
+        383
+      ],
+      [
+        222,
+        383
+      ]
+    ],
+    [
+      [
+        332,
+        287
+      ],
+      [
+        443,
+        287
+      ],
+      [
+        443,
+        383
+      ],
+      [
+        332,
+        383
+      ]
+    ]
+  ],
+  "paths": [
+    [
+      [
+        215,
+        280
+      ],
+      [
+        620,
+        280
+      ],
+      [
+        620,
+        940
+      ]
+    ],
+    [
+      [
+        215,
+        280
+      ],
+      [
+        215,
+        390
+      ],
+      [
+        450,
+        390
+      ]
+    ],
+    [
+      [
+        325,
+        280
+      ],
+      [
+        325,
+        940
+      ]
+    ],
+    [
+      [
+        325,
+        480
+      ],
+      [
+        620,
+        480
+      ]
+    ],
+    [
+      [
+        488.29575,
+        480
+      ],
+      [
+        488.29575,
+        498
+      ]
+    ],
+    [
+      [
+        225,
+        920
+      ],
+      [
+        225,
+        860
+      ],
+      [
+        620,
+        860
+      ]
+    ],
+    [
+      [
+        225,
+        250
+      ],
+      [
+        225,
+        280
+      ]
+    ],
+    [
+      [
+        450,
+        410
+      ],
+      [
+        465,
+        410
+      ]
+    ],
+    [
+      [
+        450,
+        280
+      ],
+      [
+        450,
+        480
+      ]
+    ],
+    [
+      [
+        475,
+        445
+      ],
+      [
+        475,
+        480
+      ]
+    ],
+    [
+      [
+        325,
+        800
+      ],
+      [
+        375,
+        800
+      ]
+    ]
+  ],
+  "routing_nodes": {
+    "outside-main": [
+      488.29575,
+      498
+    ],
+    "outside-junction": [
+      488.29575,
+      480
+    ],
+    "outside-west-junction": [
+      325,
+      480
+    ],
+    "outside-buildings": [
+      325,
+      390
+    ],
+    "outside-west": [
+      215,
+      390
+    ],
+    "outside-north": [
+      215,
+      280
+    ],
+    "outside-fok-path": [
+      225,
+      280
+    ],
+    "outside-fok-entry": [
+      225,
+      250
+    ],
+    "outside-lecture-entry": [
+      465,
+      410
+    ],
+    "outside-lecture-west": [
+      450,
+      410
+    ],
+    "outside-lecture-row": [
+      450,
+      480
+    ],
+    "outside-lecture-lower": [
+      475,
+      445
+    ],
+    "outside-lecture-lower-row": [
+      475,
+      480
+    ],
+    "outside-theatre-entry": [
+      375,
+      800
+    ],
+    "outside-theatre-row": [
+      325,
+      800
+    ],
+    "outside-lecture-north": [
+      450,
+      280
+    ],
+    "outside-lecture-crossing": [
+      450,
+      390
+    ]
+  },
+  "routing_edges": [
+    [
+      "outside-main",
+      "outside-junction"
+    ],
+    [
+      "outside-junction",
+      "outside-west-junction"
+    ],
+    [
+      "outside-west-junction",
+      "outside-buildings"
+    ],
+    [
+      "outside-buildings",
+      "outside-west"
+    ],
+    [
+      "outside-west",
+      "outside-north"
+    ],
+    [
+      "outside-north",
+      "outside-fok-path"
+    ],
+    [
+      "outside-fok-path",
+      "outside-fok-entry"
+    ],
+    [
+      "outside-fok-entry",
+      "icon-fok"
+    ],
+    [
+      "outside-fok-entry",
+      "icon-fok-hall"
+    ],
+    [
+      "outside-fok-entry",
+      "icon-fok-changing"
+    ],
+    [
+      "outside-fok-entry",
+      "icon-fok-entry"
+    ],
+    [
+      "outside-lecture-entry",
+      "outside-lecture-west"
+    ],
+    [
+      "outside-lecture-row",
+      "outside-west-junction"
+    ],
+    [
+      "outside-lecture-lower",
+      "outside-lecture-lower-row"
+    ],
+    [
+      "outside-lecture-lower-row",
+      "outside-lecture-row"
+    ],
+    [
+      "outside-theatre-entry",
+      "outside-theatre-row"
+    ],
+    [
+      "outside-theatre-row",
+      "outside-west-junction"
+    ],
+    [
+      "outside-lecture-north",
+      "outside-fok-path"
+    ],
+    [
+      "outside-lecture-north",
+      "outside-lecture-crossing"
+    ],
+    [
+      "outside-lecture-crossing",
+      "outside-buildings"
+    ],
+    [
+      "outside-lecture-crossing",
+      "outside-lecture-west"
+    ],
+    [
+      "outside-lecture-west",
+      "outside-lecture-row"
+    ]
+  ],
+  "connections": [
+    [
+      "road-road_lobby0_exit_theatre_auditorium_4_2-end",
+      "outside-main"
+    ],
+    [
+      "icon-exit",
+      "outside-main"
+    ],
+    [
+      "icon-a_exit",
+      "outside-lecture-entry"
+    ],
+    [
+      "icon-a_exit2",
+      "outside-lecture-lower"
+    ],
+    [
+      "icon-exit_2",
+      "outside-theatre-entry"
+    ]
+  ],
+  "path_width": 14,
+  "icons": [
+    {
+      "id": "fok-changing",
+      "source_id": "a_checkroom_icon",
+      "name": "Раздевалки ФОКа",
+      "description": "Раздевалки. Маршрут заканчивается у входа в ФОК.",
+      "aliases": [
+        "Раздевалки"
+      ],
+      "position": [
+        185,
+        230
+      ],
+      "width": 30,
+      "route_point": [
+        225,
+        250
+      ]
+    },
+    {
+      "id": "fok-entry",
+      "source_id": "exit",
+      "name": "Вход в ФОК",
+      "description": "Вход в ФОК.",
+      "aliases": [
+        "Вход ФОК"
+      ],
+      "position": [
+        225,
+        248
+      ],
+      "width": 24,
+      "route_point": [
+        225,
+        250
+      ]
+    }
+  ],
+  "path_widths": {
+    "4": 9.705
+  },
+  "entrances": [
+    {
+      "id": "fok",
+      "room": "fok",
+      "path": 6,
+      "end": "start",
+      "node": "outside-fok-entry"
+    },
+    {
+      "id": "lecture-west",
+      "wall": "a_walls2",
+      "path": 7,
+      "end": "end",
+      "node": "outside-lecture-entry"
+    },
+    {
+      "id": "lecture-south",
+      "wall": "a_walls2",
+      "path": 9,
+      "end": "start",
+      "node": "outside-lecture-lower"
+    },
+    {
+      "id": "main",
+      "wall": "main",
+      "path": 4,
+      "end": "end",
+      "node": "outside-main"
+    },
+    {
+      "id": "theatre",
+      "wall": "main",
+      "path": 10,
+      "end": "end",
+      "node": "outside-theatre-entry"
+    }
+  ]
+}

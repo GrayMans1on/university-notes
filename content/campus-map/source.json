@@ -1,0 +1,34 @@
+{
+  "origin": "https://map.csu.ru/",
+  "captured_at": "2026-10-09T16:42:51.208680+00:00",
+  "data_sha256": "43efb4daf4fd702429756bda9f0db8c350be58e730010058780d224416c657f7",
+  "upstream_js_sha256": "b509c6d7b07c8914a70482291b49bf5a888c205197e64c1be244bf86b6c902ee",
+  "upstream_css_sha256": "edb0562d1e2f3266ad20967c4e4986403702b17f0912004b6ade4a9a196c0e73",
+  "floors": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "rooms": 338,
+  "roads": 714,
+  "patches": [
+    {
+      "before": "const o4=\"https://map.csu.ru/api/map_data\",c4=\"DELETED(temporarily)\";",
+      "after": "const o4=\"/assets/campus-map/data.json\",c4=o4;"
+    },
+    {
+      "before": "fetch(\"https://map.csu.ru/api/feedback/saveFeedback\",{method:\"POST\",headers:{\"Content-Type\":\"application/json\"},body:JSON.stringify(A)})",
+      "after": "Promise.resolve({status:503})"
+    },
+    {
+      "before": "k.jsx(\"div\",{className:\"feedback\",onClick:A,children:\"Обратная связь\"})",
+      "after": "null"
+    },
+    {
+      "before": "k.jsx(\"div\",{className:`cat-easter-egg ${d?\"show\":\"\"}`,children:k.jsx(\"img\",{src:\"https://media.tenor.com/4YCgHLAsE3UAAAAi/rick-roll.gif\",alt:\"Рик Ролл\"})})",
+      "after": "null"
+    }
+  ]
+}

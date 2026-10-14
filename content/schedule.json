@@ -13,7 +13,8 @@
         1
       ],
       "url": "/notes/english/",
-      "subgroup": 1
+      "subgroup": 1,
+      "id": "lesson-001"
     },
     {
       "day": 0,
@@ -26,7 +27,8 @@
         2
       ],
       "url": "/notes/english/",
-      "subgroup": 2
+      "subgroup": 2,
+      "id": "lesson-002"
     },
     {
       "day": 0,
@@ -39,7 +41,8 @@
         1
       ],
       "url": "/notes/english/",
-      "subgroup": 1
+      "subgroup": 1,
+      "id": "lesson-003"
     },
     {
       "day": 0,
@@ -52,7 +55,8 @@
         2
       ],
       "url": "/notes/english/",
-      "subgroup": 2
+      "subgroup": 2,
+      "id": "lesson-004"
     },
     {
       "day": 0,
@@ -64,7 +68,8 @@
       "weeks": [
         2
       ],
-      "url": "/notes/discrete-math/"
+      "url": "/notes/discrete-math/",
+      "id": "lesson-005"
     },
     {
       "day": 0,
@@ -76,7 +81,8 @@
       "weeks": [
         2
       ],
-      "url": "/notes/discrete-math/"
+      "url": "/notes/discrete-math/",
+      "id": "lesson-006"
     },
     {
       "day": 1,
@@ -89,7 +95,8 @@
         1,
         2
       ],
-      "url": "/notes/statehood/"
+      "url": "/notes/statehood/",
+      "id": "lesson-007"
     },
     {
       "day": 1,
@@ -102,7 +109,8 @@
         1,
         2
       ],
-      "url": "/notes/statehood/"
+      "url": "/notes/statehood/",
+      "id": "lesson-008"
     },
     {
       "day": 1,
@@ -114,7 +122,8 @@
       "weeks": [
         1
       ],
-      "url": "/notes/discrete-math/"
+      "url": "/notes/discrete-math/",
+      "id": "lesson-009"
     },
     {
       "day": 1,
@@ -126,7 +135,8 @@
       "weeks": [
         2
       ],
-      "url": "/notes/history/"
+      "url": "/notes/history/",
+      "id": "lesson-010"
     },
     {
       "day": 1,
@@ -137,7 +147,8 @@
       "room": "132А",
       "weeks": [
         1
-      ]
+      ],
+      "id": "lesson-011"
     },
     {
       "day": 1,
@@ -150,7 +161,8 @@
         2
       ],
       "url": "/notes/modern-technologies/",
-      "note": "2–8 учебные недели"
+      "note": "2–8 учебные недели",
+      "id": "lesson-012"
     },
     {
       "day": 2,
@@ -163,7 +175,8 @@
         1,
         2
       ],
-      "url": "/notes/calculus/"
+      "url": "/notes/calculus/",
+      "id": "lesson-013"
     },
     {
       "day": 2,
@@ -175,7 +188,8 @@
       "weeks": [
         1
       ],
-      "url": "/notes/discrete-math/"
+      "url": "/notes/discrete-math/",
+      "id": "lesson-014"
     },
     {
       "day": 2,
@@ -187,7 +201,8 @@
       "weeks": [
         2
       ],
-      "url": "/notes/history/"
+      "url": "/notes/history/",
+      "id": "lesson-015"
     },
     {
       "day": 2,
@@ -200,7 +215,8 @@
         1
       ],
       "url": "/notes/english/",
-      "subgroup": 2
+      "subgroup": 2,
+      "id": "lesson-016"
     },
     {
       "day": 2,
@@ -213,7 +229,8 @@
         2
       ],
       "url": "/notes/english/",
-      "subgroup": 1
+      "subgroup": 1,
+      "id": "lesson-017"
     },
     {
       "day": 3,
@@ -226,7 +243,8 @@
         1,
         2
       ],
-      "url": "/notes/linear-algebra/"
+      "url": "/notes/linear-algebra/",
+      "id": "lesson-018"
     },
     {
       "day": 3,
@@ -239,7 +257,8 @@
         1,
         2
       ],
-      "place": "ФОК ЧелГУ"
+      "place": "ФОК ЧелГУ",
+      "id": "lesson-019"
     },
     {
       "day": 4,
@@ -252,7 +271,8 @@
         1
       ],
       "url": "/notes/modern-technologies/",
-      "note": "1–7 учебные недели"
+      "note": "1–7 учебные недели",
+      "id": "lesson-020"
     },
     {
       "day": 4,
@@ -264,7 +284,8 @@
       "weeks": [
         2
       ],
-      "url": "/notes/physics/"
+      "url": "/notes/physics/",
+      "id": "lesson-021"
     },
     {
       "day": 4,
@@ -277,7 +298,8 @@
         1,
         2
       ],
-      "url": "/notes/calculus/"
+      "url": "/notes/calculus/",
+      "id": "lesson-022"
     },
     {
       "day": 4,
@@ -290,7 +312,8 @@
         1,
         2
       ],
-      "url": "/notes/linear-algebra/"
+      "url": "/notes/linear-algebra/",
+      "id": "lesson-023"
     },
     {
       "day": 4,
@@ -303,7 +326,8 @@
         1,
         2
       ],
-      "url": "/notes/physics/"
+      "url": "/notes/physics/",
+      "id": "lesson-024"
     },
     {
       "day": 5,
@@ -315,7 +339,8 @@
       "weeks": [
         2
       ],
-      "url": "/notes/informatics/"
+      "url": "/notes/informatics/",
+      "id": "lesson-025"
     },
     {
       "day": 5,
@@ -328,7 +353,8 @@
         1
       ],
       "url": "https://github.com/GrayMans1on/UniversityProjects_Shparov/tree/main/lectures",
-      "note": "Онлайн"
+      "note": "Онлайн",
+      "id": "lesson-026"
     },
     {
       "day": 5,
@@ -340,7 +366,8 @@
       "weeks": [
         2
       ],
-      "url": "/notes/informatics/"
+      "url": "/notes/informatics/",
+      "id": "lesson-027"
     },
     {
       "day": 5,
@@ -352,7 +379,8 @@
       "weeks": [
         2
       ],
-      "url": "https://github.com/GrayMans1on/UniversityProjects_Shparov/tree/main/lectures"
+      "url": "https://github.com/GrayMans1on/UniversityProjects_Shparov/tree/main/lectures",
+      "id": "lesson-028"
     },
     {
       "day": 5,
@@ -365,7 +393,8 @@
         1
       ],
       "url": "https://github.com/GrayMans1on/UniversityProjects_Shparov/tree/main/lectures",
-      "note": "Онлайн"
+      "note": "Онлайн",
+      "id": "lesson-029"
     },
     {
       "day": 5,
@@ -380,7 +409,8 @@
       ],
       "url": "/notes/history/",
       "note": "Онлайн-курс · 22 часа",
-      "onlineCourse": true
+      "onlineCourse": true,
+      "id": "lesson-030"
     }
   ],
   "bells": {

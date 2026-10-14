@@ -4,7 +4,7 @@ on:
     branches: [main]
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 concurrency:
@@ -30,7 +30,10 @@ jobs:
           npm ci
           node scripts/build-notes.mjs
       - name: Validate current static build
-        run: python3 scripts/validate-site.py
+        run: |
+          python3 scripts/validate-site.py
+          node scripts/check-practice-variants.mjs
+          node scripts/check-schedule.mjs
       - name: Export for project hosting
         run: python3 scripts/export-pages.py
       - name: Prepare Android offline updates
@@ -38,6 +41,51 @@ jobs:
           python3 -m pip install CairoSVG==2.7.1
           python3 scripts/prepare-android.py
           python3 scripts/publish-android-feed.py
+      - name: Test mobile interface
+        run: node android/tests/mobile.test.cjs
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Install Android build tools
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Build and test Android
+        run: gradle -p android assembleRelease testDebugUnitTest lintRelease --console=plain
+      - name: Prepare signed release when the original key is available
+        id: apk
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: python3 scripts/package-android-release.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-${{ steps.apk.outputs.version }}
+          path: android/release-output/
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-checks
+          path: |
+            android/app/build/reports/tests/
+            android/app/build/reports/lint-results-release.*
+          if-no-files-found: ignore
+      - name: Publish signed APK release
+        if: steps.apk.outputs.signed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APP_VERSION: ${{ steps.apk.outputs.version }}
+        run: |
+          tag="android-v${APP_VERSION}"
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" android/release-output/app.apk android/release-output/app-release.json --target "$GITHUB_SHA" --title "Android ${APP_VERSION}" --notes "Системные панели, разовые изменения расписания и обновления APK по Wi-Fi."
+          fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -9,18 +9,60 @@
         const offset = Math.round((monday(date) - dateValue(anchor)) / (7 * dayMs));
         return ((offset % 2) + 2) % 2 + 1;
     }
-    function lessonsFor(data, date, subgroup) {
+    function lessonTime(data, lesson) {
+        return lesson.start && lesson.end ? [lesson.start, lesson.end] : data.bells[lesson.pair];
+    }
+    function lessonsFor(data, date, subgroup, group = data.group || 'default') {
         const day = (date.getUTCDay() + 6) % 7;
         const week = cycleWeek(date, data.anchor);
-        return data.lessons.filter((item) => item.day === day && item.weeks.includes(week)
-            && (!item.subgroup || item.subgroup === subgroup)).sort((a, b) => a.pair - b.pair);
+        const eligible = (item) => (!item.group || item.group === group)
+            && (!item.subgroup || item.subgroup === subgroup);
+        let result = data.lessons.filter((item) => item.day === day && item.weeks.includes(week) && eligible(item))
+            .map((item) => ({ ...item }));
+        const events = data.exceptions || [];
+        const superseded = new Set(events.flatMap((event) => event.supersedes || []));
+        const iso = isoDate(date);
+        for (const event of events) {
+            if (superseded.has(event.id) || event.action === 'revoke'
+                || event.groups && !event.groups.includes(group)
+                || event.subgroups && !event.subgroups.includes(subgroup)) {
+                continue;
+            }
+            const original = event.source && data.lessons.find((item) => item.id === event.source.lessonId);
+            if (original && !eligible(original)) {
+                continue;
+            }
+            if (event.source?.date === iso) {
+                result = result.filter((item) => item.id !== event.source.lessonId);
+            }
+            if (event.target?.date === iso) {
+                const lesson = { ...original, ...event.target.lesson, id: original?.id || event.id, exceptionId: event.id };
+                if (['room', 'place', 'note'].some((field) => Object.hasOwn(event.target.lesson, field))) {
+                    delete lesson.thumbnail;
+                    delete lesson.mapUrl;
+                    if (Object.hasOwn(event.target.lesson, 'room')) {
+                        delete lesson.place;
+                    }
+                    if (Object.hasOwn(event.target.lesson, 'place')) {
+                        delete lesson.room;
+                    }
+                }
+                Object.assign(lesson, event.target.lesson);
+                if (eligible(lesson)) {
+                    result.push(lesson);
+                }
+            }
+        }
+        return result.sort((a, b) => (lessonTime(data, a)?.[0] || '99:99')
+            .localeCompare(lessonTime(data, b)?.[0] || '99:99') || a.pair - b.pair);
     }
-    window.StudySchedule = { dateValue, isoDate, shift, monday, cycleWeek, lessonsFor };
+    window.StudySchedule = { dateValue, isoDate, shift, monday, cycleWeek, lessonsFor, lessonTime };
     const root = document.getElementById('schedule');
     if (!root) { return; }
     const data = JSON.parse(document.getElementById('schedule-data').textContent);
     const dateInput = root.querySelector('#schedule-date');
     const groupInput = root.querySelector('#schedule-group');
+    const academicInput = root.querySelector('#schedule-academic-group');
     const days = root.querySelector('.schedule-days');
     const agenda = root.querySelector('.schedule-agenda');
     const title = root.querySelector('#schedule-day-title');
@@ -36,7 +78,17 @@
     }
     let selected = today();
     let subgroup = 1;
+    let academicGroup = data.group || 'default';
     try { subgroup = localStorage.getItem('study-schedule-subgroup') === '2' ? 2 : 1; } catch {}
+    try {
+        const saved = localStorage.getItem('study-schedule-group');
+        if (data.groups?.some((item) => item.id === saved)) {
+            academicGroup = saved;
+        }
+    } catch {}
+    if (academicInput) {
+        academicInput.value = academicGroup;
+    }
     groupInput.value = String(subgroup);
     function element(tag, className, text) {
         const node = document.createElement(tag);
@@ -67,12 +119,12 @@
             if (iso < current) { button.classList.add('schedule-day-past'); }
             button.append(element('span', 'schedule-weekday', format(date, { weekday: 'short' })),
                 element('strong', 'schedule-day-number', String(date.getUTCDate())),
-                element('span', 'schedule-day-count', pairCount(lessonsFor(data, date, subgroup).filter((item) => !item.onlineCourse).length)));
+                element('span', 'schedule-day-count', pairCount(lessonsFor(data, date, subgroup, academicGroup).filter((item) => !item.onlineCourse).length)));
             button.addEventListener('click', () => { selected = date; render(); days.children[i].focus(); });
             days.append(button);
         }
         title.textContent = format(selected, { weekday: 'long', day: 'numeric', month: 'long' });
-        const lessons = lessonsFor(data, selected, subgroup);
+        const lessons = lessonsFor(data, selected, subgroup, academicGroup);
         agenda.replaceChildren();
         if (lessons.length === 0) { agenda.append(element('li', 'schedule-empty', 'По расписанию пар нет.')); }
         for (const item of lessons) {
@@ -82,7 +134,7 @@
             if (!item.onlineCourse) {
                 const number = element('div', 'schedule-pair');
                 number.append(element('span', '', `${item.pair}-я пара`));
-                const time = data.bells[item.pair];
+                const time = lessonTime(data, item);
                 if (time) { number.append(element('span', 'schedule-time', `${time[0]}–${time[1]}`)); }
                 row.append(number);
             }
@@ -98,6 +150,9 @@
             details.append(heading, element('p', 'schedule-meta',
                 [item.onlineCourse ? '' : item.kind, item.place || (item.room ? 'Ауд. ' + item.room : ''), item.note || ''].filter(Boolean).join(' · ')),
                 element('p', 'schedule-teacher', item.teacher));
+            if (item.exceptionId) {
+                details.append(element('p', 'schedule-meta', 'Разовое изменение'));
+            }
             if (item.mapUrl) {
                 const link = element('a', 'schedule-map-link', item.place ? 'Место на карте' : 'Кабинет на карте');
                 link.href = item.mapUrl;
@@ -126,5 +181,12 @@
         try { localStorage.setItem('study-schedule-subgroup', String(subgroup)); } catch {}
         render();
     });
+    if (academicInput) {
+        academicInput.addEventListener('change', () => {
+            academicGroup = academicInput.value;
+            try { localStorage.setItem('study-schedule-group', academicGroup); } catch {}
+            render();
+        });
+    }
     render();
 })();

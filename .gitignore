@@ -11,3 +11,5 @@
 *.jks
 *.keystore
 __pycache__/
+
+/android/release-output/

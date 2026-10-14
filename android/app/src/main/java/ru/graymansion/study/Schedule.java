@@ -22,36 +22,124 @@ final class Schedule {
         return Math.floorMod(ChronoUnit.WEEKS.between(anchor, monday), 2) + 1;
     }
 
+    static JSONArray time(JSONObject schedule, JSONObject lesson) throws Exception {
+        if (lesson.has("start") && lesson.has("end")) {
+            return new JSONArray().put(lesson.getString("start")).put(lesson.getString("end"));
+        }
+        return schedule.getJSONObject("bells").optJSONArray(String.valueOf(lesson.optInt("pair")));
+    }
+
+    private static boolean includes(JSONArray values, Object value) {
+        if (values == null) {
+            return true;
+        }
+        for (int i = 0; i < values.length(); i++) {
+            if (value.equals(values.opt(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean eligible(JSONObject lesson, int subgroup, String group) {
+        return (!lesson.has("subgroup") || lesson.optInt("subgroup") == subgroup)
+            && (!lesson.has("group") || lesson.optString("group").equals(group));
+    }
+
     static List<JSONObject> lessons(JSONObject data, LocalDate date, int subgroup) throws Exception {
+        return lessons(data, date, subgroup, data.getJSONObject("schedule").optString("group", "default"));
+    }
+
+    static List<JSONObject> lessons(JSONObject data, LocalDate date, int subgroup, String group) throws Exception {
         JSONObject schedule = data.getJSONObject("schedule");
         int cycle = week(date, LocalDate.parse(schedule.getString("anchor")));
         List<JSONObject> result = new ArrayList<>();
         JSONArray lessons = schedule.getJSONArray("lessons");
+        java.util.Map<String, JSONObject> originals = new java.util.HashMap<>();
         for (int i = 0; i < lessons.length(); i++) {
             JSONObject lesson = lessons.getJSONObject(i);
-            JSONArray weeks = lesson.getJSONArray("weeks");
-            boolean matches = false;
-            for (int j = 0; j < weeks.length(); j++) {
-                matches |= weeks.getInt(j) == cycle;
-            }
-            if (lesson.getInt("day") == date.getDayOfWeek().getValue() - 1 && matches
-                && (!lesson.has("subgroup") || lesson.getInt("subgroup") == subgroup)) {
-                result.add(lesson);
+            originals.put(lesson.optString("id"), lesson);
+            if (lesson.getInt("day") == date.getDayOfWeek().getValue() - 1
+                && includes(lesson.getJSONArray("weeks"), cycle) && eligible(lesson, subgroup, group)) {
+                result.add(new JSONObject(lesson.toString()));
             }
         }
-        result.sort(Comparator.comparingInt(lesson -> lesson.optInt("pair")));
+        JSONArray events = schedule.optJSONArray("exceptions");
+        java.util.Set<String> superseded = new java.util.HashSet<>();
+        if (events != null) {
+            for (int i = 0; i < events.length(); i++) {
+                JSONArray ids = events.getJSONObject(i).optJSONArray("supersedes");
+                if (ids != null) {
+                    for (int j = 0; j < ids.length(); j++) {
+                        superseded.add(ids.getString(j));
+                    }
+                }
+            }
+            for (int i = 0; i < events.length(); i++) {
+                JSONObject event = events.getJSONObject(i);
+                if (superseded.contains(event.getString("id")) || event.optString("action").equals("revoke")
+                    || !includes(event.optJSONArray("groups"), group) || !includes(event.optJSONArray("subgroups"), subgroup)) {
+                    continue;
+                }
+                JSONObject source = event.optJSONObject("source");
+                JSONObject original = source == null ? null : originals.get(source.optString("lessonId"));
+                if (original != null && !eligible(original, subgroup, group)) {
+                    continue;
+                }
+                if (source != null && source.optString("date").equals(date.toString())) {
+                    result.removeIf(lesson -> lesson.optString("id").equals(source.optString("lessonId")));
+                }
+                JSONObject target = event.optJSONObject("target");
+                if (target != null && target.optString("date").equals(date.toString())) {
+                    JSONObject lesson = original == null ? new JSONObject() : new JSONObject(original.toString());
+                    JSONObject patch = target.getJSONObject("lesson");
+                    if (patch.has("room") || patch.has("place") || patch.has("note")) {
+                        lesson.remove("thumbnail");
+                        lesson.remove("mapUrl");
+                        if (patch.has("room")) {
+                            lesson.remove("place");
+                        }
+                        if (patch.has("place")) {
+                            lesson.remove("room");
+                        }
+                    }
+                    java.util.Iterator<String> keys = patch.keys();
+                    while (keys.hasNext()) {
+                        String key = keys.next();
+                        lesson.put(key, patch.get(key));
+                    }
+                    lesson.put("id", original == null ? event.getString("id") : original.optString("id"));
+                    lesson.put("exceptionId", event.getString("id"));
+                    if (eligible(lesson, subgroup, group)) {
+                        result.add(lesson);
+                    }
+                }
+            }
+        }
+        result.sort(Comparator.comparing(lesson -> {
+            try {
+                JSONArray time = time(schedule, lesson);
+                return time == null ? "99:99" : time.getString(0);
+            } catch (Exception ignored) {
+                return "99:99";
+            }
+        }));
         return result;
     }
 
     static JSONObject next(JSONObject data, ZonedDateTime now, int subgroup) throws Exception {
-        JSONObject bells = data.getJSONObject("schedule").getJSONObject("bells");
+        return next(data, now, subgroup, data.getJSONObject("schedule").optString("group", "default"));
+    }
+
+    static JSONObject next(JSONObject data, ZonedDateTime now, int subgroup, String group) throws Exception {
+        JSONObject schedule = data.getJSONObject("schedule");
         for (int day = 0; day < 15; day++) {
             LocalDate date = now.toLocalDate().plusDays(day);
-            for (JSONObject lesson : lessons(data, date, subgroup)) {
+            for (JSONObject lesson : lessons(data, date, subgroup, group)) {
                 if (lesson.optBoolean("onlineCourse")) {
                     continue;
                 }
-                JSONArray time = bells.optJSONArray(String.valueOf(lesson.optInt("pair")));
+                JSONArray time = time(schedule, lesson);
                 if (time == null) {
                     continue;
                 }
@@ -67,6 +155,10 @@ final class Schedule {
             }
         }
         return null;
+    }
+
+    static String group(Context context) {
+        return context.getSharedPreferences("study", 0).getString("academic-group", "default");
     }
 
     static int subgroup(Context context) {

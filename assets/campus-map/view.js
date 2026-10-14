@@ -56,11 +56,13 @@ function refreshTodayRooms() {
     const iso = `${values.year}-${values.month}-${values.day}`;
     let subgroup = 1;
     try { subgroup = localStorage.getItem('study-schedule-subgroup') === '2' ? 2 : 1; } catch {}
-    const key = `${iso}:${subgroup}`;
+    let group = todaySchedule.group || 'default';
+    try { group = localStorage.getItem('study-schedule-group') || group; } catch {}
+    const key = `${iso}:${subgroup}:${group}`;
     if (key === todayKey) { return; }
     todayKey = key;
     const calendar = window.StudySchedule;
-    const lessons = calendar.lessonsFor(todaySchedule, calendar.dateValue(iso), subgroup);
+    const lessons = calendar.lessonsFor(todaySchedule, calendar.dateValue(iso), subgroup, group);
     store.setState({ todayRoomIds: campusRoomsForLessons(lessons, state().rooms) });
 }
 async function loadTodaySchedule() {

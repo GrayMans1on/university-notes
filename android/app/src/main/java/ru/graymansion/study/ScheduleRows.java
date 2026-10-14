@@ -27,7 +27,7 @@ public final class ScheduleRows extends RemoteViewsService {
                     ZonedDateTime now = ZonedDateTime.now(Schedule.ZONE);
                     int height = AppWidgetManager.getInstance(ScheduleRows.this).getAppWidgetOptions(widgetId)
                         .getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 70);
-                    timeline = WidgetTimeline.build(data, now.toLocalDate(), Schedule.subgroup(ScheduleRows.this),
+                    timeline = WidgetTimeline.build(data, now.toLocalDate(), Schedule.subgroup(ScheduleRows.this), Schedule.group(ScheduleRows.this),
                         now.getHour() * 60 + now.getMinute(), WidgetTimeline.viewport(height));
                 } catch (Exception ignored) {
                     timeline = new WidgetTimeline();

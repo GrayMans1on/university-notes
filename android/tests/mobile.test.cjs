@@ -17,6 +17,8 @@ function page(route) {
         put(key, value) { state.set(key, value); },
         subgroup(value) { if (value) { subgroup = value; } return subgroup; },
         sync() {}, applyUpdate() {}, printPage() {},
+        theme(value) { state.set('native-theme', value); },
+        installAppUpdate() { state.set('install-requested', true); },
     };
     const RealDate = window.Date;
     window.Date = class extends RealDate {
@@ -71,6 +73,19 @@ function page(route) {
     selects[3].value = '2';
     selects[3].dispatchEvent(new home.window.Event('change'));
     assert.equal(subgroup, 2);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.equal(state.get('native-theme'), true);
+    const admin = [...home.window.document.querySelectorAll('.app-panel button')]
+        .find((button) => button.textContent === 'Ввести код администратора');
+    assert.ok(admin.disabled, 'Admin access stays unavailable before a secure backend is configured');
+    home.window.dispatchEvent(new home.window.CustomEvent('native-status', {
+        detail: { status: 'Offline', appStatus: 'Ready', appReady: true, checked: 1 },
+    }));
+    const install = home.window.document.getElementById('app-install-update');
+    assert.equal(install.hidden, false);
+    assert.equal(state.get('install-requested'), undefined);
+    install.click();
+    assert.equal(state.get('install-requested'), true);
     home.window.close();
     console.log('Mobile UI: bookmarks, bulk removal, reading resume, next lesson, map preview, navigation and settings passed.');
 })();

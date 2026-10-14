@@ -2,5 +2,8 @@
   "dependencies": {
     "katex": "0.16.11",
     "marked": "16.4.1"
+  },
+  "devDependencies": {
+    "jsdom": "26.1.0"
   }
 }

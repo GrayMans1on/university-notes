@@ -160,7 +160,7 @@ final class Updater {
         context.getSharedPreferences("study", 0).edit().putLong("checked", System.currentTimeMillis()).apply();
     }
 
-    private static byte[] download(Context context, Network network, String path, int limit) throws Exception {
+    static byte[] download(Context context, Network network, String path, int limit) throws Exception {
         if (wifi(context) == null || !network.equals(wifi(context))) {
             throw new IOException("Wi-Fi required");
         }

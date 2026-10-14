@@ -1,3 +1,4 @@
+import { loadSchedule } from './schedule-data.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { marked, Renderer } from 'marked';
@@ -12,7 +13,7 @@ const output = path.join(root, 'dist');
 const assets = path.join(output, 'assets');
 fs.mkdirSync(assets, { recursive: true });
 fs.cpSync(path.join(root, 'assets'), assets, { recursive: true });
-fs.copyFileSync(path.join(root, 'content/schedule.json'), path.join(assets, 'campus-map/schedule.json'));
+fs.writeFileSync(path.join(assets, 'campus-map/schedule.json'), JSON.stringify(loadSchedule(root)));
 const capturedMap = JSON.parse(fs.readFileSync(path.join(root, 'content/campus-map/data.json'), 'utf8'));
 const mapCalibration = JSON.parse(fs.readFileSync(path.join(root, 'content/campus-map/calibration.json'), 'utf8'));
 const mapOutdoors = JSON.parse(fs.readFileSync(path.join(root, 'content/campus-map/outdoors.json'), 'utf8'));
@@ -423,14 +424,28 @@ const cards = orderedSubjects.map((subject, index) => {
 }).join('');
 const newest = updates[0];
 const updateHtml = `<section class="updates" aria-labelledby="update-title"><div class="update-title-row"><h2 id="update-title">Последнее обновление</h2><time datetime="${newest.date}">${newest.date.split('-').reverse().join('.')}</time></div><ul>${newest.items.map((item) => `<li><a href="${escapeHtml(item.url)}">${escapeHtml(item.text)}</a></li>`).join('')}</ul></section>`;
-const schedule = JSON.parse(fs.readFileSync(path.join(root, 'content/schedule.json'), 'utf8'));
+const schedule = loadSchedule(root);
 const campusMap = JSON.parse(fs.readFileSync(path.join(root, 'content/campus-map/data.json'), 'utf8'));
 const campusRooms = campusMap.layers.flatMap((layer) => layer.rooms);
 for (const lesson of schedule.lessons) {
     lesson.mapUrl = scheduleMapUrl(lesson, campusRooms);
 }
+for (const event of schedule.exceptions.filter((item) => item.target)) {
+    const patch = event.target.lesson;
+    if (event.action === 'add' || ['room', 'place', 'note'].some((field) => Object.hasOwn(patch, field))) {
+        const original = schedule.lessons.find((lesson) => lesson.id === event.source?.lessonId);
+        const effective = { ...original, ...patch };
+        if (Object.hasOwn(patch, 'room')) {
+            delete effective.place;
+        }
+        if (Object.hasOwn(patch, 'place')) {
+            delete effective.room;
+        }
+        patch.mapUrl = /онлайн/i.test(effective.note || '') ? null : scheduleMapUrl(effective, campusRooms);
+    }
+}
 const scheduleData = JSON.stringify(schedule);
-const scheduleHtml = `<section class="schedule" id="schedule" aria-labelledby="schedule-title"><link rel="stylesheet" href="/assets/schedule.css"><span class="eyebrow home-semester">1 курс, 1 семестр</span><div class="schedule-heading"><h1 id="schedule-title">Расписание<a class="heading-link" href="#schedule" aria-label="Ссылка на расписание">§</a></h1><div class="schedule-controls"><button type="button" data-schedule="previous" aria-label="Предыдущая неделя">Пред. неделя</button><button type="button" data-schedule="today">Сегодня</button><button type="button" data-schedule="tomorrow">Завтра</button><button type="button" data-schedule="next" aria-label="Следующая неделя">След. неделя</button></div></div><div class="schedule-filters"><label>Дата<input type="date" id="schedule-date"></label><label>Английский<select id="schedule-group"><option value="1">1-я подгруппа</option><option value="2">2-я подгруппа</option></select></label></div><p class="schedule-week-label"></p><div class="schedule-days" role="group" aria-label="Дни недели"></div><h3 id="schedule-day-title"></h3><ul class="schedule-agenda" aria-labelledby="schedule-day-title"></ul><p class="schedule-note">Двухнедельный цикл. Ограничения по учебным неделям указаны у занятий; изменения и отмены в календаре не учитываются.</p><span class="sr-only schedule-status" role="status" aria-live="polite"></span><noscript>Для переключения дней включите JavaScript.</noscript><script id="schedule-data" type="application/json">${scheduleData.replace(/</g, '\\u003c')}</script><script defer src="/assets/schedule.js"></script></section>`;
+const scheduleHtml = `<section class="schedule" id="schedule" aria-labelledby="schedule-title"><link rel="stylesheet" href="/assets/schedule.css"><span class="eyebrow home-semester">1 курс, 1 семестр</span><div class="schedule-heading"><h1 id="schedule-title">Расписание<a class="heading-link" href="#schedule" aria-label="Ссылка на расписание">§</a></h1><div class="schedule-controls"><button type="button" data-schedule="previous" aria-label="Предыдущая неделя">Пред. неделя</button><button type="button" data-schedule="today">Сегодня</button><button type="button" data-schedule="tomorrow">Завтра</button><button type="button" data-schedule="next" aria-label="Следующая неделя">След. неделя</button></div></div><div class="schedule-filters"><label>Дата<input type="date" id="schedule-date"></label><label>Учебная группа<select id="schedule-academic-group">${schedule.groups.map((group) => `<option value="${escapeHtml(group.id)}">${escapeHtml(group.title)}</option>`).join('')}</select></label><label>Английский<select id="schedule-group"><option value="1">1-я подгруппа</option><option value="2">2-я подгруппа</option></select></label></div><p class="schedule-week-label"></p><div class="schedule-days" role="group" aria-label="Дни недели"></div><h3 id="schedule-day-title"></h3><ul class="schedule-agenda" aria-labelledby="schedule-day-title"></ul><p class="schedule-note">Двухнедельный цикл. Ограничения по учебным неделям указаны у занятий; разовые изменения применяются только к указанным датам и группам.</p><span class="sr-only schedule-status" role="status" aria-live="polite"></span><noscript>Для переключения дней включите JavaScript.</noscript><script id="schedule-data" type="application/json">${scheduleData.replace(/</g, '\\u003c')}</script><script defer src="/assets/schedule.js"></script></section>`;
 writePage('', 'Расписание и дисциплины', 'Расписание, карта ЧелГУ и конспекты первого семестра.', `<div class="home-dashboard">${scheduleHtml}<hr class="home-divider"><section class="home-subjects" id="disciplines" aria-labelledby="disciplines-title"><div class="home-section-heading"><h2 id="disciplines-title">Дисциплины</h2></div><div class="subject-grid">${cards}</div></section></div>${updateHtml}`);
 
 writePage('map', 'Карта ЧелГУ', 'Карта ЧелГУ с поиском кабинетов, этажами и маршрутами.', `<div class="map-page-header"><div class="library-header"><span class="eyebrow">ЧелГУ</span><h1>Карта университета</h1></div><a class="map-source-link" href="/map/view/" target="_blank" rel="noopener noreferrer">Открыть карту отдельно<span class="sr-only"> в новой вкладке</span></a></div><p class="map-description">Выберите кабинет на схеме или найдите его через поиск. Маршрут и ссылки — в панели справа.</p><div class="campus-map"><iframe src="/map/view/" title="Интерактивная карта ЧелГУ" allow="clipboard-write" allowfullscreen></iframe></div><p class="map-hint">Масштабы корпусов и положение ФОКа уточнены по спутниковому снимку. Наружная схема приблизительная; расстояния в метрах не указаны. Основа — <a href="https://map.csu.ru/" target="_blank" rel="noopener noreferrer">карты ЧелГУ</a> · копия от 09.10.2026.</p><script type="module" src="/assets/campus-map/page.js"></script>`);

@@ -171,7 +171,7 @@ public final class MainActivity extends Activity {
                 if (Updater.wifi(MainActivity.this) != null) {
                     long checked = getSharedPreferences("study", 0).getLong("checked", 0);
                     if (System.currentTimeMillis() - checked > 60000) {
-                        Updater.start(MainActivity.this, null);
+                        Updater.start(MainActivity.this, () -> AppUpdater.start(MainActivity.this, false));
                     }
                 }
             }
@@ -179,7 +179,7 @@ public final class MainActivity extends Activity {
         getSystemService(ConnectivityManager.class).registerDefaultNetworkCallback(callback);
         SyncJob.schedule(this);
         Widgets.refresh(this);
-        Updater.start(this, null);
+        Updater.start(this, () -> AppUpdater.start(this, false));
     }
 
     private void showSystemBars() {
@@ -244,6 +244,7 @@ public final class MainActivity extends Activity {
         String active = getSharedPreferences("study", 0).getString("active", "");
         String script = "window.dispatchEvent(new CustomEvent('native-status',{detail:{status:"
             + JSONObject.quote(Updater.status) + ",available:" + (!active.isEmpty() && !active.equals(version))
+            + ",appStatus:" + JSONObject.quote(AppUpdater.status) + ",appReady:" + AppUpdater.ready
             + ",checked:" + getSharedPreferences("study", 0).getLong("checked", 0) + "}}));";
         web.evaluateJavascript(script, null);
     }
@@ -255,7 +256,7 @@ public final class MainActivity extends Activity {
         if (web != null) {
             web.onResume();
             Widgets.refresh(this);
-            Updater.start(this, null);
+            Updater.start(this, () -> AppUpdater.start(this, false));
             emitStatus();
         }
     }
@@ -310,7 +311,7 @@ public final class MainActivity extends Activity {
 
         @JavascriptInterface
         public String version() {
-            return "1.0.1";
+            return "1.0.2";
         }
 
         @JavascriptInterface
@@ -339,8 +340,34 @@ public final class MainActivity extends Activity {
         }
 
         @JavascriptInterface
+        public String academicGroup() {
+            return Schedule.group(MainActivity.this);
+        }
+
+        @JavascriptInterface
+        public void setAcademicGroup(String value) {
+            try {
+                org.json.JSONArray groups = ContentStore.data(MainActivity.this).getJSONObject("schedule").getJSONArray("groups");
+                for (int i = 0; i < groups.length(); i++) {
+                    if (groups.getJSONObject(i).getString("id").equals(value)) {
+                        getSharedPreferences("study", 0).edit().putString("academic-group", value).apply();
+                        runOnUiThread(() -> Widgets.refresh(MainActivity.this));
+                        return;
+                    }
+                }
+            } catch (Exception ignored) {
+                // Keep the previous group when data is unavailable.
+            }
+        }
+
+        @JavascriptInterface
         public void sync() {
-            Updater.start(MainActivity.this, null);
+            Updater.start(MainActivity.this, () -> AppUpdater.start(MainActivity.this, true));
+        }
+
+        @JavascriptInterface
+        public void installAppUpdate() {
+            AppUpdater.install(MainActivity.this);
         }
 
         @JavascriptInterface

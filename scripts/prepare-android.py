@@ -44,7 +44,7 @@ for file in SITE.rglob('*.html'):
     extra += '<script defer src="/assets/mobile.js"></script>'
     file.write_text(text.replace('</head>', extra + '</head>'))
 
-schedule = json.loads((ROOT / 'content/schedule.json').read_text())
+schedule = json.loads((ROOT / 'dist/assets/campus-map/schedule.json').read_text())
 map_data = json.loads((SITE / 'assets/campus-map/data.json').read_text())
 rooms = []
 for layer in map_data['layers']:
@@ -101,9 +101,22 @@ def shape(room, selected):
 thumbs = SITE / 'assets/room-thumbnails'
 thumbs.mkdir(exist_ok=True)
 created = {}
-for lesson in schedule['lessons']:
+preview_lessons = [(lesson, lesson) for lesson in schedule['lessons']]
+for event in schedule['exceptions']:
+    if not event.get('target'):
+        continue
+    patch = event['target']['lesson']
+    if event['action'] == 'add' or any(field in patch for field in ('room', 'place', 'note')):
+        original = next((lesson for lesson in schedule['lessons'] if lesson['id'] == event.get('source', {}).get('lessonId')), {})
+        effective = {**original, **patch}
+        if 'room' in patch:
+            effective.pop('place', None)
+        if 'place' in patch:
+            effective.pop('room', None)
+        preview_lessons.append((effective, patch))
+for lesson, output_lesson in preview_lessons:
     if lesson.get('onlineCourse') or 'онлайн' in lesson.get('note', '').lower():
-        lesson.pop('mapUrl', None)
+        output_lesson['mapUrl'] = None
         continue
     target = next(((r, l) for r, l in rooms if r['id'] == 'fok'), None) if lesson.get('place') == 'ФОК ЧелГУ' else None
     names = lesson.get('room', '').split('/')
@@ -115,8 +128,8 @@ for lesson in schedule['lessons']:
     room, layer = matches[0]
     key = hashlib.sha256(room['id'].encode()).hexdigest()[:16]
     file = 'assets/room-thumbnails/' + key + '.png'
-    lesson['thumbnail'] = file
-    lesson['mapUrl'] = '/map/?place=fok' if target is not None else '/map/?' + ('rooms=' if len(matches) > 1 else 'room=') + ','.join(r['id'] for r, _ in matches)
+    output_lesson['thumbnail'] = file
+    output_lesson['mapUrl'] = '/map/?place=fok' if target is not None else '/map/?' + ('rooms=' if len(matches) > 1 else 'room=') + ','.join(r['id'] for r, _ in matches)
     if key in created:
         continue
     c = center(room)

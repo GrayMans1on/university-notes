@@ -194,6 +194,19 @@
         const checked = node('p', 'app-note');
         checked.id = 'app-last-sync';
         checked.textContent = latestStatus.checked ? 'Проверено: ' + new Date(latestStatus.checked).toLocaleString('ru-RU') : 'Пока без проверок';
+        const appStatus = node('p', 'app-note', latestStatus.appStatus || 'Проверка версии приложения через Wi-Fi');
+        appStatus.id = 'app-version-status';
+        const install = node('button', '', 'Установить обновление приложения');
+        install.id = 'app-install-update';
+        install.type = 'button';
+        install.hidden = !latestStatus.appReady || typeof native.installAppUpdate !== 'function';
+        install.addEventListener('click', () => native.installAppUpdate());
+        overlay.append(appStatus, install);
+        const admin = node('button', '', 'Ввести код администратора');
+        admin.type = 'button';
+        admin.disabled = true;
+        overlay.append(node('h2', '', 'Администратор'), admin, node('p', 'app-note',
+            'Авторизация будет доступна после подключения защищённого сервера. Изменения расписания пока публикуются через GitHub.'));
         overlay.append(checked, node('p', 'app-note', 'Учёба · версия ' + (typeof native.version === 'function' ? native.version() : '1.0.0')
             + ' · расписание по времени Челябинска'));
     }
@@ -237,6 +250,14 @@
         const status = document.getElementById('app-sync-status');
         if (status) {
             status.textContent = latestStatus.status;
+        }
+        const appStatus = document.getElementById('app-version-status');
+        if (appStatus) {
+            appStatus.textContent = latestStatus.appStatus || '';
+        }
+        const install = document.getElementById('app-install-update');
+        if (install) {
+            install.hidden = !latestStatus.appReady || typeof native.installAppUpdate !== 'function';
         }
         const checked = document.getElementById('app-last-sync');
         if (checked && latestStatus.checked) {
@@ -282,8 +303,8 @@
         let day;
         for (let offset = 0; offset < 15 && !next; offset += 1) {
             day = window.StudySchedule.shift(window.StudySchedule.dateValue(now.date), offset);
-            next = window.StudySchedule.lessonsFor(schedule, day, native.subgroup()).find((lesson) => {
-                const bells = schedule.bells[lesson.pair];
+            next = window.StudySchedule.lessonsFor(schedule, day, native.subgroup(), typeof native.academicGroup === 'function' ? native.academicGroup() : schedule.group).find((lesson) => {
+                const bells = window.StudySchedule.lessonTime(schedule, lesson);
                 return !lesson.onlineCourse && bells && (offset > 0 || bells[1] > now.time);
             });
         }
@@ -298,7 +319,7 @@
         }
         nextCard.href = next.mapUrl || '/#schedule';
         const today = window.StudySchedule.isoDate(day) === now.date;
-        const bells = schedule.bells[next.pair];
+        const bells = window.StudySchedule.lessonTime(schedule, next);
         const ongoing = today && bells[0] <= now.time;
         body.firstChild.textContent = ongoing ? 'Ближайшая пара · сейчас идёт' : 'Ближайшая пара';
         const date = today ? 'Сегодня' : new Intl.DateTimeFormat('ru-RU', {
@@ -336,6 +357,18 @@
         }).catch(() => {
             nextCard.href = '/#schedule';
             nextCard.textContent = 'Ближайшая пара · открыть расписание';
+        });
+    }
+    const academicGroup = document.getElementById('schedule-academic-group');
+    if (academicGroup && typeof native.academicGroup === 'function') {
+        const saved = native.academicGroup();
+        if ([...academicGroup.options].some((option) => option.value === saved)) {
+            academicGroup.value = saved;
+            academicGroup.dispatchEvent(new Event('change'));
+        }
+        academicGroup.addEventListener('change', () => {
+            native.setAcademicGroup(academicGroup.value);
+            renderNext();
         });
     }
     const group = document.getElementById('schedule-group');

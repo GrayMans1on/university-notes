@@ -12,8 +12,8 @@ public class ScheduleTest {
         JSONObject schedule = new JSONObject().put("anchor", "2026-09-28");
         schedule.put("bells", new JSONObject("{\"1\":[\"08:00\",\"09:30\"],\"2\":[\"09:40\",\"11:10\"]}"));
         JSONArray lessons = new JSONArray();
-        lessons.put(new JSONObject("{\"day\":0,\"pair\":1,\"title\":\"English\",\"weeks\":[1],\"subgroup\":1}"));
-        lessons.put(new JSONObject("{\"day\":0,\"pair\":2,\"title\":\"Math\",\"weeks\":[1,2]}"));
+        lessons.put(new JSONObject("{\"id\":\"english\",\"day\":0,\"pair\":1,\"title\":\"English\",\"weeks\":[1],\"subgroup\":1}"));
+        lessons.put(new JSONObject("{\"id\":\"math\",\"day\":0,\"pair\":2,\"title\":\"Math\",\"weeks\":[1,2]}"));
         schedule.put("lessons", lessons);
         return new JSONObject().put("schedule", schedule);
     }
@@ -46,6 +46,37 @@ public class ScheduleTest {
         JSONObject next = Schedule.next(data(), ZonedDateTime.parse("2026-10-11T10:00:00+05:00"), 1);
         assertEquals("2026-10-12", next.getString("date"));
         assertEquals("08:00", next.getString("start"));
+    }
+
+    @Test
+    public void movedLessonUsesDateGroupAndExplicitTimeWithoutChangingCycle() throws Exception {
+        JSONObject data = data();
+        JSONObject schedule = data.getJSONObject("schedule");
+        String base = schedule.getJSONArray("lessons").toString();
+        JSONObject event = new JSONObject().put("id", "move-1").put("action", "move")
+            .put("groups", new JSONArray().put("default")).put("subgroups", new JSONArray().put(1))
+            .put("source", new JSONObject().put("date", "2026-10-12").put("lessonId", "english"))
+            .put("target", new JSONObject().put("date", "2026-10-13").put("lesson", new JSONObject()
+                .put("pair", 2).put("start", "10:00").put("end", "11:30").put("room", "326")));
+        JSONArray events = new JSONArray().put(event);
+        schedule.put("exceptions", events);
+        assertEquals(1, Schedule.lessons(data, LocalDate.parse("2026-10-12"), 1).size());
+        assertEquals(2, Schedule.lessons(data, LocalDate.parse("2026-10-12"), 1, "other").size());
+        assertEquals(0, Schedule.lessons(data, LocalDate.parse("2026-10-13"), 2).size());
+        JSONObject next = Schedule.next(data, ZonedDateTime.parse("2026-10-13T10:20:00+05:00"), 1);
+        assertEquals("10:00", next.getString("start"));
+        assertEquals("11:30", next.getString("end"));
+        assertEquals("326", next.getString("room"));
+        assertTrue(next.getBoolean("ongoing"));
+        WidgetTimeline timeline = WidgetTimeline.build(data, LocalDate.parse("2026-10-13"), 1, 620, 100);
+        assertEquals("10:00", timeline.rows.get(1).start);
+        assertTrue(timeline.rows.get(1).ongoing);
+        assertEquals(2, Schedule.lessons(data, LocalDate.parse("2026-10-26"), 1).size());
+        events.put(new JSONObject().put("id", "undo-1").put("action", "revoke")
+            .put("supersedes", new JSONArray().put("move-1")));
+        assertEquals(2, Schedule.lessons(data, LocalDate.parse("2026-10-12"), 1).size());
+        assertEquals(0, Schedule.lessons(data, LocalDate.parse("2026-10-13"), 1).size());
+        assertEquals(base, schedule.getJSONArray("lessons").toString());
     }
 
     @Test

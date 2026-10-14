@@ -48,15 +48,19 @@ final class WidgetTimeline {
     }
 
     static WidgetTimeline build(JSONObject data, LocalDate date, int subgroup, int minute, int viewport) throws Exception {
+        return build(data, date, subgroup, data.getJSONObject("schedule").optString("group", "default"), minute, viewport);
+    }
+
+    static WidgetTimeline build(JSONObject data, LocalDate date, int subgroup, String group, int minute, int viewport) throws Exception {
         WidgetTimeline result = new WidgetTimeline();
         int padding = Math.max(0, (viewport - LESSON_HEIGHT) / 2);
         result.rows.add(new Row(null, 0, padding, "", "", minute));
         int previousEnd = -1;
         int selected = -1;
         int last = -1;
-        JSONObject bells = data.getJSONObject("schedule").getJSONObject("bells");
-        for (JSONObject lesson : Schedule.lessons(data, date, subgroup)) {
-            JSONArray time = lesson.optBoolean("onlineCourse") ? null : bells.optJSONArray(String.valueOf(lesson.optInt("pair")));
+        JSONObject schedule = data.getJSONObject("schedule");
+        for (JSONObject lesson : Schedule.lessons(data, date, subgroup, group)) {
+            JSONArray time = lesson.optBoolean("onlineCourse") ? null : Schedule.time(schedule, lesson);
             String start = time == null ? "" : time.getString(0);
             String end = time == null ? "" : time.getString(1);
             if (time != null && previousEnd >= 0 && minutes(start) > previousEnd) {

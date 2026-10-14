@@ -28,7 +28,7 @@ public final class SyncJob extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters parameters) {
-        Updater.start(this, () -> jobFinished(parameters, false));
+        Updater.start(this, () -> AppUpdater.start(this, false, () -> jobFinished(parameters, false)));
         return true;
     }
 

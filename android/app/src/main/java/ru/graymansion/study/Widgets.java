@@ -30,7 +30,7 @@ final class Widgets {
         ZonedDateTime now = ZonedDateTime.now(Schedule.ZONE);
         try {
             JSONObject data = ContentStore.data(context);
-            List<JSONObject> today = Schedule.lessons(data, now.toLocalDate(), Schedule.subgroup(context));
+            List<JSONObject> today = Schedule.lessons(data, now.toLocalDate(), Schedule.subgroup(context), Schedule.group(context));
             for (int id : manager.getAppWidgetIds(new ComponentName(context, ScheduleWidget.class))) {
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_schedule);
                 views.setTextViewText(R.id.widget_title, "Сегодня · " + now.format(
@@ -45,14 +45,14 @@ final class Widgets {
                 views.setPendingIntentTemplate(R.id.widget_list, template);
                 int height = manager.getAppWidgetOptions(id).getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, 70);
                 views.setViewVisibility(R.id.widget_title, height < 80 ? View.GONE : View.VISIBLE);
-                WidgetTimeline timeline = WidgetTimeline.build(data, now.toLocalDate(), Schedule.subgroup(context),
+                WidgetTimeline timeline = WidgetTimeline.build(data, now.toLocalDate(), Schedule.subgroup(context), Schedule.group(context),
                     now.getHour() * 60 + now.getMinute(), WidgetTimeline.viewport(height));
                 views.setScrollPosition(R.id.widget_list, timeline.scroll);
                 views.setOnClickPendingIntent(R.id.widget_root, open(context, "/#schedule", id));
                 manager.updateAppWidget(id, views);
                 manager.notifyAppWidgetViewDataChanged(id, R.id.widget_list);
             }
-            JSONObject next = Schedule.next(data, now, Schedule.subgroup(context));
+            JSONObject next = Schedule.next(data, now, Schedule.subgroup(context), Schedule.group(context));
             for (int id : manager.getAppWidgetIds(new ComponentName(context, NextWidget.class))) {
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_next);
                 views.setTextViewText(R.id.widget_title, next != null && next.optBoolean("ongoing") ? "Сейчас идёт" : "Ближайшая пара");

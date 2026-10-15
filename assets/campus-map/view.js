@@ -6,15 +6,19 @@ const materialIcon = (name) => `<span class="material-icon" aria-hidden="true" s
 ui.innerHTML = `<div class="map-toolbar" aria-label="Инструменты карты">
     <label class="map-search"><span class="visually-hidden">Найти кабинет</span>
         <input id="room-search" type="search" list="map-rooms" placeholder="Кабинет или ФОК" autocomplete="off"></label>
+    <button id="toggle-tools" type="button" aria-label="Инструменты карты" aria-controls="map-tools" aria-expanded="false">${materialIcon('tune')}</button>
+    <div id="map-tools" class="map-tools">
     <button id="open-route" type="button" aria-controls="route-panel" aria-expanded="false">Маршрут</button>
     <button id="share-map" type="button">Ссылка на карту</button>
     <label class="map-theme"><span class="visually-hidden">Тема карты</span><select id="map-theme">
         <option value="auto">Авто</option><option value="light">Светлая</option><option value="dark">Тёмная</option>
-    </select></label></div>
-    <nav class="map-floors" aria-label="Этажи">${[0, 1, 2, 3, 4].map((floor) =>
-        `<button type="button" data-floor="${floor}" aria-label="${floor === 0 ? 'Цоколь' : floor + ' этаж'}">${floor === 0 ? 'Ц' : floor}</button>`).join('')}</nav>
+    </select></label>
     <div class="map-zoom" aria-label="Масштаб карты"><button id="zoom-in" type="button" aria-label="Приблизить">${materialIcon('add')}</button>
         <button id="zoom-out" type="button" aria-label="Отдалить">${materialIcon('remove')}</button><button id="map-reset" type="button">Вся схема</button></div>
+    </div></div>
+    <nav class="map-floors" aria-label="Этажи">${[0, 1, 2, 3, 4].map((floor) =>
+        `<button type="button" data-floor="${floor}" aria-label="${floor === 0 ? 'Цоколь' : floor + ' этаж'}">${floor === 0 ? 'Ц' : floor}</button>`).join('')}</nav>
+    <button id="map-selection" class="map-selection" type="button" aria-controls="route-panel" aria-expanded="false" hidden></button>
     <aside id="route-panel" class="map-route-panel" aria-labelledby="route-title" hidden>
         <div class="map-panel-heading"><h2 id="route-title">Маршрут</h2><button id="close-route" type="button" aria-label="Закрыть маршрут">${materialIcon('close')}</button></div>
         <div id="room-choices" class="map-room-choices" hidden></div>
@@ -48,6 +52,28 @@ let todayKey = '';
 const floorLabel = (floor) => floor === 0 ? 'цоколь' : `${floor} этаж`;
 const label = (room) => room ? `${room.name || room.description} — ${room.outdoor ? 'территория' : floorLabel(room.floorIndex)}` : '';
 const state = () => store.getState();
+const compact = () => window.matchMedia('(max-width:700px)').matches;
+function toggleTools(open) {
+    document.body.classList.toggle('tools-open', open);
+    $('toggle-tools').setAttribute('aria-expanded', String(open));
+    if (open && panelOpen && compact()) { closePanel(); }
+}
+function updateSelection() {
+    const summary = $('map-selection');
+    summary.hidden = !compact() || panelOpen || (!destination && !externalPlace && !choices.length);
+    summary.textContent = choices.length ? 'Выбрать кабинет · ' + choices.length
+        : `${destination ? label(destination) : 'ФОК ЧелГУ'} · ${store?.getState().calculatedPath ? 'Шаги маршрута' : 'Подробнее / маршрут'}`;
+    summary.setAttribute('aria-expanded', String(panelOpen));
+}
+function layoutMap() {
+    const panel = $('route-panel');
+    const bottom = compact() ? innerHeight - ui.querySelector('.map-floors').getBoundingClientRect().top : 0;
+    const panelHeight = compact() && panelOpen ? panel.getBoundingClientRect().height + 8 : 0;
+    const selectionHeight = compact() && !$('map-selection').hidden ? 52 : 0;
+    document.documentElement.style.setProperty('--map-top', `${ui.querySelector('.map-toolbar').getBoundingClientRect().bottom + 8}px`);
+    document.documentElement.style.setProperty('--map-bottom', `${bottom + panelHeight + selectionHeight}px`);
+}
+
 function refreshTodayRooms() {
     if (!todaySchedule || !store || !state().rooms.length) { return; }
     const parts = new Intl.DateTimeFormat('en-CA', { timeZone: todaySchedule.timeZone,
@@ -77,9 +103,21 @@ async function loadTodaySchedule() {
     }
 }
 function viewport() {
+    if (compact()) {
+        const top = document.querySelector('.map-toolbar').getBoundingClientRect().bottom + 8;
+        const bottom = panelOpen ? $('route-panel').getBoundingClientRect().top - 8
+            : !$('map-selection').hidden ? $('map-selection').getBoundingClientRect().top - 8
+            : ui.querySelector('.map-floors').getBoundingClientRect().top - 8;
+        return { width: innerWidth, height: Math.max(60, bottom - top), top };
+    }
     if (!panelOpen) { return { width: innerWidth, height: innerHeight - 80, top: 64 }; }
-    if (innerWidth > 700) { return { width: innerWidth - Math.min(360, innerWidth * 0.4), height: innerHeight - 80, top: 64 }; }
-    return { width: innerWidth, height: Math.max(60, $('route-panel').getBoundingClientRect().top - 160), top: 150 };
+    return { width: innerWidth - Math.min(360, innerWidth * 0.4), height: innerHeight - 80, top: 64 };
+}
+function moveViewport(previous) {
+    if (!compact() || !window.CampusMapCamera) { return; }
+    const next = viewport();
+    const camera = window.CampusMapCamera.get();
+    window.CampusMapCamera.set({ ...camera, y: camera.y + next.top + next.height / 2 - previous.top - previous.height / 2 });
 }
 function center(room) {
     const point = boundsForRoom(room);
@@ -99,18 +137,27 @@ function fit() {
     window.CampusMapCamera.set({ scale, x: view.width / 2 - 650 * scale, y: view.top + view.height / 2 - 760 * scale });
 }
 function openPanel(focus = false) {
+    const previous = viewport();
     if (!panelOpen) { returnFocus = document.activeElement; }
     panelOpen = true;
     $('route-panel').hidden = false;
     document.body.classList.add('route-open');
     $('open-route').setAttribute('aria-expanded', 'true');
+    toggleTools(false);
+    updateSelection();
+    layoutMap();
+    moveViewport(previous);
     if (focus) { $('route-from').focus(); }
 }
 function closePanel() {
+    const previous = viewport();
     panelOpen = false;
     $('route-panel').hidden = true;
     document.body.classList.remove('route-open');
     $('open-route').setAttribute('aria-expanded', 'false');
+    updateSelection();
+    layoutMap();
+    moveViewport(previous);
     if (returnFocus?.isConnected) { returnFocus.focus(); }
 }
 function clearPath(extra = {}) {
@@ -121,8 +168,9 @@ function choose(room, move = true) {
     externalPlace = null;
     choices = [];
     destination = room;
+    if (compact()) { toggleTools(false); }
     lastSelected = room.id;
-    openPanel();
+    if (compact() && !panelOpen) { updateSelection(); layoutMap(); } else { openPanel(); }
     clearPath({ toRoom: room, selectedRoom: room, currentMapFloor: room.floorIndex });
     if (move) { center(room); }
     refresh();
@@ -174,6 +222,7 @@ function build() {
     $('route-status').textContent = 'Строим маршрут…';
     state().triggerRouteBuild();
     state().setCurrentMapFloor(fromRoom.floorIndex);
+    if (compact()) { closePanel(); }
     center(fromRoom);
 }
 function refresh() {
@@ -262,22 +311,28 @@ function refresh() {
         }
         if (latest.calculatedPath) { $('route-status').textContent = 'Маршрут показан синими стрелками. Нажмите на шаг, чтобы перейти к нему.'; }
     }
+    updateSelection();
+    layoutMap();
     publishPosition();
 }
 function scheduleRefresh() {
     if (!queued) { queued = true; queueMicrotask(() => { queued = false; refresh(); }); }
 }
 window.addEventListener('campus-camera-ready', scheduleRefresh);
-window.addEventListener('resize', scheduleRefresh);
+window.addEventListener('resize', () => { updateSelection(); layoutMap(); scheduleRefresh(); });
+new ResizeObserver(layoutMap).observe($('route-panel'));
+new ResizeObserver(layoutMap).observe(ui.querySelector('.map-toolbar'));
 window.addEventListener('focus', refreshTodayRooms);
 window.addEventListener('pageshow', refreshTodayRooms);
 window.addEventListener('storage', (event) => {
     if (event.key === 'study-schedule-subgroup' || event.key === null) { refreshTodayRooms(); }
 });
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { refreshTodayRooms(); } });
+$('toggle-tools').addEventListener('click', () => toggleTools(!document.body.classList.contains('tools-open')));
+$('map-selection').addEventListener('click', () => openPanel());
 $('open-route').addEventListener('click', () => openPanel(true));
 $('close-route').addEventListener('click', closePanel);
-$('map-reset').addEventListener('click', fit);
+$('map-reset').addEventListener('click', () => { toggleTools(false); fit(); });
 for (const button of ui.querySelectorAll('[data-floor]')) {
     button.addEventListener('click', () => { if (ready) { state().setCurrentMapFloor(Number(button.dataset.floor)); } });
 }
@@ -326,7 +381,12 @@ $('share-room').addEventListener('click', () => {
     if (destination) { copyLink(mapLinkParams({ room: destination.id }), destination.outdoor ? 'Ссылка на место скопирована.' : 'Ссылка на кабинет скопирована.'); }
 });
 $('close-share').addEventListener('click', () => { ui.querySelector('.map-share-fallback').hidden = true; });
-document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && panelOpen) { closePanel(); } });
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        if (panelOpen) { closePanel(); }
+        toggleTools(false);
+    }
+});
 $('map-theme').value = window.StudyPreferences.get().theme;
 $('map-theme').addEventListener('change', () => window.StudyPreferences.set('theme', $('map-theme').value));
 new MutationObserver(() => { $('map-theme').value = window.StudyPreferences.get().theme; })

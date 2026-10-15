@@ -1,4 +1,5 @@
 import { mapLinkParams, parseMapLink } from './model.mjs';
+document.body.classList.add('campus-map-page');
 const frame = document.querySelector('.campus-map iframe');
 const separate = document.querySelector('.map-source-link');
 if (frame) {

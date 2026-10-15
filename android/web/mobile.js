@@ -65,6 +65,13 @@
         nav.append(link);
     }
     document.body.append(nav);
+    const sizeNavigation = () => document.documentElement.style.setProperty('--app-nav-height', `${nav.getBoundingClientRect().height}px`);
+    if (typeof ResizeObserver === 'function') {
+        new ResizeObserver(sizeNavigation).observe(nav);
+    } else {
+        window.addEventListener('resize', sizeNavigation);
+    }
+    sizeNavigation();
     const overlay = node('section', 'app-panel');
     overlay.hidden = true;
     document.querySelector('.workspace').append(overlay);

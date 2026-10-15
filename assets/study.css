@@ -381,3 +381,11 @@ button:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px
     .practice-example > summary::after { display: none; }
     .example-content { padding-inline: 0; border: 0; }
 }
+
+@media (max-width: 700px) {
+    .campus-map-page .topbar { position: relative; top: auto; }
+    .campus-map-page .campus-map iframe { min-height: 0; height: 78dvh; }
+    .campus-map-page .map-page-header { gap: .5rem; margin-bottom: .5rem; }
+    .campus-map-page .map-page-header h1 { font-size: 1.35rem; }
+    .campus-map-page .map-description { font-size: .8rem; margin-bottom: .5rem; }
+}

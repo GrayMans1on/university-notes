@@ -7,3 +7,26 @@ body{padding-bottom:84px}.sidebar,.nav-backdrop,.menu-button,.topbar .reading-se
 body.campus-map-page .campus-map{position:fixed;inset:0 0 var(--app-nav-height,80px);height:auto!important;min-height:0;border:0;border-radius:0;z-index:30}
 body.campus-map-page .campus-map iframe{height:100%;min-height:0}
 body.campus-map-page .topbar{display:none!important}
+
+.app-nav{grid-template-columns:repeat(6,minmax(0,1fr))}.app-nav a{font-size:9px;min-width:0;gap:3px}.app-nav .app-icon{width:22px;height:22px}
+body:has(#disciplines) .topbar{display:none!important}
+body:has(#disciplines) .library-layout{padding:14px 12px!important}
+body:has(#disciplines) .home-section-heading h1{font-size:22px;margin:0}
+body:has(#disciplines) .home-section-heading{margin:0 0 10px}
+body:has(#disciplines) .subject-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+body:has(#disciplines) .subject-card{min-height:56px;padding:8px;display:flex;align-items:center;gap:8px;border-radius:12px}
+body:has(#disciplines) .subject-card .card-heading{margin:0;flex-shrink:0}
+body:has(#disciplines) .subject-card .card-icon{width:30px;height:30px;padding:6px;border-radius:8px}
+body:has(#disciplines) .subject-card .card-icon svg{width:18px;height:18px}
+body:has(#disciplines) .subject-card h2{font-size:12px;line-height:1.25;margin:0;overflow-wrap:anywhere}
+body:has(#disciplines) .subject-card p,body:has(#disciplines) .card-number,body:has(#disciplines) .card-topics{display:none}
+body:has(#disciplines) .app-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+body:has(#disciplines) .app-card{padding:10px;gap:6px;min-height:100px;position:relative;align-items:flex-start}
+body:has(#disciplines) .app-card strong{font-size:13px;line-height:1.25}
+body:has(#disciplines) .app-card-label{font-size:10px;margin-bottom:5px}
+body:has(#disciplines) .app-card small{font-size:10px;line-height:1.3}
+body:has(#disciplines) .app-card img{display:none}
+body:has(#disciplines) .site-credit{display:none}
+.app-textbook{border:1px solid var(--app-line);background:var(--app-panel);border-radius:14px;padding:14px;margin:12px 0}
+.app-textbook h2{font-size:17px;margin:0 0 6px}.app-textbook p{font-size:13px;line-height:1.5}
+.app-textbook button{min-height:44px;padding:8px 14px;background:var(--app-panel);color:var(--app-blue);border:1px solid var(--app-line);border-radius:9px;font:inherit}

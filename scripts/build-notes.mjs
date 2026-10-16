@@ -422,6 +422,18 @@ const cards = orderedSubjects.map((subject, index) => {
     }
     return `<a class="subject-card" href="/notes/${subject.slug}/">${number}<h2>${escapeHtml(subject.title)}</h2><p>${escapeHtml(subject.description)}</p><span class="card-topics">${subject.topics} ${subject.topics % 10 === 1 && subject.topics !== 11 ? 'тема' : subject.topics % 10 >= 2 && subject.topics % 10 <= 4 && (subject.topics < 12 || subject.topics > 14) ? 'темы' : 'тем'}</span></a>`;
 }).join('');
+const textbooks = JSON.parse(fs.readFileSync(path.join(root, 'content/textbooks.json'), 'utf8'));
+if (textbooks.schema !== 1 || !Array.isArray(textbooks.books)) { throw new Error('Invalid textbook catalog'); }
+const bookIds = new Set();
+for (const book of textbooks.books) {
+    if (!/^[a-z0-9-]{1,80}$/.test(book.id || '') || bookIds.has(book.id) || !book.title
+        || !/^https:\/\//.test(book.url || '') || !/^[a-f0-9]{64}$/.test(book.sha256 || '')
+        || !Number.isSafeInteger(book.size) || book.size < 5 || book.size > 200 * 1024 * 1024) {
+        throw new Error('Invalid textbook entry: ' + book.id);
+    }
+    bookIds.add(book.id);
+}
+fs.writeFileSync(path.join(assets, 'textbooks.json'), JSON.stringify(textbooks));
 const newest = updates[0];
 const updateHtml = `<section class="updates" aria-labelledby="update-title"><div class="update-title-row"><h2 id="update-title">Последнее обновление</h2><time datetime="${newest.date}">${newest.date.split('-').reverse().join('.')}</time></div><ul>${newest.items.map((item) => `<li><a href="${escapeHtml(item.url)}">${escapeHtml(item.text)}</a></li>`).join('')}</ul></section>`;
 const schedule = loadSchedule(root);
@@ -454,6 +466,13 @@ for (const event of [...schedule.exceptions.filter((item) => item.target), ...sc
 const scheduleData = JSON.stringify(schedule);
 const scheduleHtml = `<section class="schedule" id="schedule" aria-labelledby="schedule-title"><link rel="stylesheet" href="/assets/schedule.css"><span class="eyebrow home-semester">1 курс, 1 семестр</span><div class="schedule-heading"><h1 id="schedule-title">Расписание<a class="heading-link" href="#schedule" aria-label="Ссылка на расписание">§</a></h1><div class="schedule-controls"><button type="button" data-schedule="previous" aria-label="Предыдущая неделя">Пред. неделя</button><button type="button" data-schedule="today">Сегодня</button><button type="button" data-schedule="tomorrow">Завтра</button><button type="button" data-schedule="next" aria-label="Следующая неделя">След. неделя</button></div></div><div class="schedule-filters"><label>Дата<input type="date" id="schedule-date"></label><label>Английский<select id="schedule-group"><option value="1">1-я подгруппа</option><option value="2">2-я подгруппа</option></select></label></div><p class="schedule-week-label"></p><div class="schedule-days" role="group" aria-label="Дни недели"></div><h3 id="schedule-day-title"></h3><ul class="schedule-agenda" aria-labelledby="schedule-day-title"></ul><p class="schedule-note">Двухнедельный цикл. Ограничения по учебным неделям указаны у занятий; разовые изменения применяются только к указанным датам и группам.</p><span class="sr-only schedule-status" role="status" aria-live="polite"></span><noscript>Для переключения дней включите JavaScript.</noscript><script id="schedule-data" type="application/json">${scheduleData.replace(/</g, '\\u003c')}</script></section>`;
 writePage('', 'Расписание и дисциплины', 'Расписание, карта ЧелГУ и конспекты первого семестра.', `<div class="home-dashboard">${scheduleHtml}<hr class="home-divider"><section class="home-subjects" id="disciplines" aria-labelledby="disciplines-title"><div class="home-section-heading"><h2 id="disciplines-title">Дисциплины</h2></div><div class="subject-grid">${cards}</div></section></div>${updateHtml}`);
+
+writePage('disciplines', 'Дисциплины', 'Конспекты по дисциплинам первого семестра.', `<section class="home-subjects" id="disciplines"><div class="home-section-heading"><h1>Дисциплины</h1></div><div class="subject-grid">${cards}</div></section>`);
+writePage('schedule', 'Расписание', 'Расписание первого семестра.', scheduleHtml);
+writePage('textbooks', 'Учебники', 'Учебники в PDF для скачивания и офлайн-чтения.', `<section id="textbook-library"><h1>Учебники</h1><p class="app-note">${textbooks.books.length ? 'Выберите учебник в приложении, чтобы скачать его и читать офлайн.' : 'Учебники ещё не добавлены. Здесь появятся PDF по дисциплинам.'}</p></section>`);
+for (const [route, title] of [['bookmarks', 'Закладки'], ['settings', 'Настройки']]) {
+    writePage(route, title, title + ' приложения.', `<h1>${title}</h1><p>Этот раздел доступен в Android-приложении.</p>`);
+}
 
 writePage('map', 'Карта ЧелГУ', 'Карта ЧелГУ с поиском кабинетов, этажами и маршрутами.', `<div class="map-page-header"><div class="library-header"><span class="eyebrow">ЧелГУ</span><h1>Карта университета</h1></div><a class="map-source-link" href="/map/view/" target="_blank" rel="noopener noreferrer">Открыть карту отдельно<span class="sr-only"> в новой вкладке</span></a></div><p class="map-description">Выберите кабинет на схеме или найдите его через поиск. Маршрут и ссылки доступны в инструментах карты.</p><div class="campus-map"><iframe src="/map/view/" title="Интерактивная карта ЧелГУ" allow="clipboard-write" allowfullscreen></iframe></div><p class="map-hint">Масштабы корпусов и положение ФОКа уточнены по спутниковому снимку. Наружная схема приблизительная; расстояния в метрах не указаны. Основа — <a href="https://map.csu.ru/" target="_blank" rel="noopener noreferrer">карты ЧелГУ</a> · копия от 09.10.2026.</p><script type="module" src="/assets/campus-map/page.js"></script>`);
 
@@ -537,7 +556,7 @@ fs.writeFileSync(path.join(assets, 'widget-stages.js'), 'window.StudyStages=' + 
 fs.writeFileSync(path.join(assets, 'study-catalog.json'), JSON.stringify(catalog.map(({ subject, slug, title, key }) => ({ subject, slug, title, key }))));
 fs.writeFileSync(path.join(root, 'validation-report.json'), JSON.stringify({
     subjects: subjects.map(({ title, slug, topics }) => ({ title, slug, topics })),
-    utilityPages: ['', 'reference', 'check', 'map', 'map/view'],
+    utilityPages: ['', 'reference', 'check', 'map', 'map/view', 'disciplines', 'schedule', 'textbooks', 'bookmarks', 'settings'],
     searchSections: searchIndex.length, mathCount, mathErrors, studyTopics: catalog.length,
     referenceEntries: formulaGroups.reduce((sum, group) => sum + group.formulas.length, 0),
     formulaGroups: formulaGroups.length,

@@ -28,14 +28,6 @@ final class Updater {
     static volatile String status = "Материалы доступны офлайн";
     static volatile Runnable listener;
 
-    static Network wifi(Context context) {
-        ConnectivityManager manager = context.getSystemService(ConnectivityManager.class);
-        Network network = manager.getActiveNetwork();
-        NetworkCapabilities caps = manager.getNetworkCapabilities(network);
-        return caps != null && caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-            && caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) ? network : null;
-    }
-
     static void announce(String value) {
         status = value;
         Runnable current = listener;
@@ -55,12 +47,12 @@ final class Updater {
         EXECUTOR.execute(() -> {
             File stage = null;
             try {
-                Network network = wifi(app);
+                Network network = NetworkPolicy.available(app);
                 if (network == null) {
-                    announce("Офлайн · обновление при подключении к Wi-Fi");
+                    announce("Нет разрешённой сети · " + NetworkPolicy.label(app) + "");
                     return;
                 }
-                announce("Проверка обновлений через Wi-Fi…");
+                announce("Проверка обновлений · " + NetworkPolicy.label(app) + "…");
                 byte[] manifestBytes = download(app, network, "manifest.json", 2 * 1024 * 1024);
                 JSONObject manifest = new JSONObject(new String(manifestBytes, StandardCharsets.UTF_8));
                 if (manifest.getInt("schema") != 1) {
@@ -78,7 +70,7 @@ final class Updater {
                 JSONObject old = ContentStore.manifest(app, previous);
                 if (version.equals(old.optString("version"))) {
                     checked(app);
-                    announce("Материалы актуальны · только Wi-Fi");
+                    announce("Материалы актуальны · " + NetworkPolicy.label(app) + "");
                     return;
                 }
                 JSONObject files = manifest.getJSONObject("files");
@@ -104,8 +96,8 @@ final class Updater {
                         || total > 128 * 1024 * 1024 || !hash.matches("[a-f0-9]{64}")) {
                         throw new IOException("Invalid update file");
                     }
-                    if (wifi(app) == null) {
-                        throw new IOException("Wi-Fi disconnected");
+                    if (NetworkPolicy.available(app) == null) {
+                        throw new IOException("Allowed network disconnected");
                     }
                     File target = new File(stage, path);
                     File parent = target.getParentFile();
@@ -142,7 +134,7 @@ final class Updater {
                 announce("Загружены новые материалы · нажмите «Применить»");
                 Widgets.refresh(app);
             } catch (Exception error) {
-                announce(wifi(app) == null ? "Офлайн · обновление продолжится через Wi-Fi"
+                announce(NetworkPolicy.available(app) == null ? "Нет разрешённой сети · сохранённые материалы доступны"
                     : "Обновление не завершено. Сохранённые материалы доступны");
             } finally {
                 if (stage != null && stage.exists()) {
@@ -161,8 +153,8 @@ final class Updater {
     }
 
     static byte[] download(Context context, Network network, String path, int limit) throws Exception {
-        if (wifi(context) == null || !network.equals(wifi(context))) {
-            throw new IOException("Wi-Fi required");
+        if (NetworkPolicy.available(context) == null || !network.equals(NetworkPolicy.available(context))) {
+            throw new IOException("Allowed network required");
         }
         URL url = new URL(ContentStore.REMOTE + path);
         HttpURLConnection connection = (HttpURLConnection) network.openConnection(url);
@@ -178,7 +170,7 @@ final class Updater {
                 byte[] buffer = new byte[32768];
                 int size;
                 while ((size = input.read(buffer)) != -1) {
-                    if (!network.equals(wifi(context)) || output.size() + size > limit) {
+                    if (!network.equals(NetworkPolicy.available(context)) || output.size() + size > limit) {
                         throw new IOException("Transfer interrupted");
                     }
                     output.write(buffer, 0, size);

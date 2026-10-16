@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Locale;
 
 final class Schedule {
+    static String nextTime(JSONObject next) {
+        return next.optBoolean("ongoing") ? "до " + next.optString("end") : next.optString("start");
+    }
+
     static final ZoneId ZONE = ZoneId.of("Asia/Yekaterinburg");
 
     static int week(LocalDate date, LocalDate anchor) {

@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 final class AppUpdater {
     private static final AtomicBoolean BUSY = new AtomicBoolean();
-    static volatile String status = "Проверка версии приложения через Wi-Fi";
+    static volatile String status = "Проверка версии приложения";
     static volatile boolean ready;
 
     private static void announce(String message) {
@@ -62,9 +62,9 @@ final class AppUpdater {
                         return;
                     }
                 }
-                Network network = Updater.wifi(app);
+                Network network = NetworkPolicy.available(app);
                 if (network == null) {
-                    announce("Обновление приложения ожидает Wi-Fi");
+                    announce("Обновление приложения ожидает разрешённую сеть");
                     return;
                 }
                 long checked = app.getSharedPreferences("study", 0).getLong("apk-checked", 0);
@@ -91,7 +91,7 @@ final class AppUpdater {
                 if (!stage.getParentFile().isDirectory() && !stage.getParentFile().mkdirs()) {
                     throw new java.io.IOException("Cannot create APK staging directory");
                 }
-                announce("Загрузка версии " + manifest.getString("versionName") + " через Wi-Fi…");
+                announce("Загрузка версии " + manifest.getString("versionName") + " · " + NetworkPolicy.label(app) + "…");
                 download(app, network, stage, manifest.getLong("size"));
                 if (!compatible(app, stage, manifest)) {
                     throw new java.io.IOException("APK checksum, package or signer mismatch");
@@ -157,8 +157,8 @@ final class AppUpdater {
     }
 
     private static void download(Context context, Network network, File target, long limit) throws Exception {
-        if (!network.equals(Updater.wifi(context))) {
-            throw new java.io.IOException("Wi-Fi required");
+        if (!network.equals(NetworkPolicy.available(context))) {
+            throw new java.io.IOException("Allowed network required");
         }
         HttpURLConnection connection = (HttpURLConnection) network.openConnection(new URL(ContentStore.REMOTE + "app.apk"));
         connection.setInstanceFollowRedirects(false);
@@ -174,7 +174,7 @@ final class AppUpdater {
                 int size;
                 while ((size = input.read(buffer)) != -1) {
                     total += size;
-                    if (!network.equals(Updater.wifi(context)) || total > limit) {
+                    if (!network.equals(NetworkPolicy.available(context)) || total > limit) {
                         throw new java.io.IOException("APK transfer interrupted");
                     }
                     output.write(buffer, 0, size);

@@ -19,6 +19,14 @@ public class ScheduleTest {
     }
 
     @Test
+    public void ongoingWidgetShowsEndAndUpcomingShowsStart() throws Exception {
+        JSONObject next = new JSONObject("{\"start\":\"09:40\",\"end\":\"11:10\",\"ongoing\":true}");
+        assertEquals("до 11:10", Schedule.nextTime(next));
+        next.put("ongoing", false);
+        assertEquals("09:40", Schedule.nextTime(next));
+    }
+
+    @Test
     public void cycleUsesMondayAndHandlesEarlierDates() {
         LocalDate anchor = LocalDate.parse("2026-09-28");
         assertEquals(1, Schedule.week(LocalDate.parse("2026-10-04"), anchor));

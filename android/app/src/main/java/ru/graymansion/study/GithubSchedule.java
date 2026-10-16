@@ -17,7 +17,7 @@ final class GithubSchedule {
             || method.equals("PUT") && !path.equals("content/schedule.json"));
     }
 
-    static JSONObject request(String method, String path, String token, String body) {
+    static JSONObject request(android.content.Context context, String method, String path, String token, String body) {
         JSONObject result = new JSONObject();
         HttpURLConnection connection = null;
         try {
@@ -26,7 +26,11 @@ final class GithubSchedule {
             }
             URL url = new URL("https://api.github.com/repos/GrayMans1on/university-notes/contents/" + path
                 + (method.equals("GET") ? "?ref=main" : ""));
-            connection = (HttpURLConnection) url.openConnection();
+            android.net.Network network = NetworkPolicy.available(context);
+            if (network == null) {
+                return result.put("status", 503).put("body", "Нет сети, разрешённой в настройках приложения");
+            }
+            connection = (HttpURLConnection) network.openConnection(url);
             connection.setInstanceFollowRedirects(false);
             connection.setConnectTimeout(15000);
             connection.setReadTimeout(20000);
@@ -58,6 +62,9 @@ final class GithubSchedule {
                     byte[] buffer = new byte[16384];
                     int size;
                     while ((size = input.read(buffer)) != -1) {
+                        if (!NetworkPolicy.permitted(context, network)) {
+                            throw new java.io.IOException("Allowed network disconnected");
+                        }
                         if (output.size() + size > 4 * 1024 * 1024) {
                             throw new java.io.IOException("Schedule response too large");
                         }

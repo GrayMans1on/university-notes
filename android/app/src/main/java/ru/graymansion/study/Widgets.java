@@ -48,7 +48,7 @@ final class Widgets {
                 WidgetTimeline timeline = WidgetTimeline.build(data, now.toLocalDate(), Schedule.subgroup(context), Schedule.group(context),
                     now.getHour() * 60 + now.getMinute(), WidgetTimeline.viewport(height));
                 views.setScrollPosition(R.id.widget_list, timeline.scroll);
-                views.setOnClickPendingIntent(R.id.widget_root, open(context, "/#schedule", id));
+                views.setOnClickPendingIntent(R.id.widget_root, open(context, "/schedule/", id));
                 manager.updateAppWidget(id, views);
                 manager.notifyAppWidgetViewDataChanged(id, R.id.widget_list);
             }
@@ -58,7 +58,7 @@ final class Widgets {
                 views.setTextViewText(R.id.widget_title, next != null && next.optBoolean("ongoing") ? "Сейчас идёт" : "Ближайшая пара");
                 views.setTextViewText(R.id.widget_details, next == null ? "Пар в расписании нет"
                     : next.optString("title"));
-                views.setTextViewText(R.id.widget_meta, next == null ? "" : Schedule.room(next) + " · " + next.optString("start"));
+                views.setTextViewText(R.id.widget_meta, next == null ? "" : Schedule.room(next) + " · " + Schedule.nextTime(next));
                 if (next != null && !next.optString("date").equals(now.toLocalDate().toString())) {
                     views.setTextViewText(R.id.widget_title, "Ближайшая · " + LocalDate.parse(next.optString("date"))
                         .format(DateTimeFormatter.ofPattern("d MMM", new Locale("ru"))));
@@ -74,7 +74,7 @@ final class Widgets {
                     }
                 }
                 views.setOnClickPendingIntent(R.id.widget_root, open(context,
-                    next == null ? "/#schedule" : next.optString("mapUrl", "/#schedule"), id));
+                    next == null ? "/schedule/" : next.optString("mapUrl", "/schedule/"), id));
                 manager.updateAppWidget(id, views);
             }
         } catch (Exception ignored) {

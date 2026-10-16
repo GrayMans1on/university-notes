@@ -4,6 +4,11 @@
         return;
     }
     const native = window.StudyNative;
+    if (location.pathname === '/') {
+        const legacy = { '#schedule': '/schedule/', '#bookmarks': '/bookmarks/', '#settings': '/settings/' };
+        location.replace(legacy[location.hash] || '/disciplines/');
+        return;
+    }
     const updateSystemTheme = () => {
         if (typeof native.theme === 'function') {
             native.theme(document.documentElement.dataset.theme === 'dark');
@@ -54,9 +59,9 @@
     const nav = node('nav', 'app-nav');
     nav.setAttribute('aria-label', 'Главное меню');
     const navigation = [
-        ['Расписание', '/#schedule', 'calendar_month'], ['Карта', '/map/', 'map'],
-        ['Дисциплины', '/#disciplines', 'menu_book'], ['Закладки', '/#bookmarks', 'bookmark'],
-        ['Настройки', '/#settings', 'tune'],
+        ['Дисциплины', '/disciplines/', 'grid_on'], ['Расписание', '/schedule/', 'calendar_month'],
+        ['Карта', '/map/', 'map'], ['Учебники', '/textbooks/', 'menu_book'],
+        ['Закладки', '/bookmarks/', 'bookmark'], ['Настройки', '/settings/', 'tune'],
     ];
     for (const [label, url, name] of navigation) {
         const link = node('a', '');
@@ -193,18 +198,29 @@
         });
         label.append(group);
         overlay.append(label, node('h2', '', 'Офлайн и обновления'));
+        const networkLabel = node('label', '', 'Использовать сеть');
+        const network = document.createElement('select');
+        network.id = 'network-mode';
+        for (const [value, title] of [['wifi', 'Wi-Fi'], ['any', 'Wi-Fi или мобильный интернет'], ['mobile', 'Мобильный интернет']]) {
+            network.append(new Option(title, value));
+        }
+        network.value = typeof native.networkMode === 'function' ? native.networkMode() : 'wifi';
+        network.disabled = typeof native.setNetworkMode !== 'function';
+        network.addEventListener('change', () => native.setNetworkMode(network.value));
+        networkLabel.append(network);
+        overlay.append(networkLabel);
         const status = node('p', 'app-status', latestStatus.status);
         status.id = 'app-sync-status';
         const check = node('button', '', 'Проверить обновления');
         check.type = 'button';
         check.addEventListener('click', () => native.sync());
         overlay.append(status, check, node('p', 'app-note',
-            'Материалы загружаются только через Wi-Fi. В фоне время проверки определяет Android. '
-            + 'При открытом приложении проверка начинается после подключения к Wi-Fi.'));
+            'Выбранная сеть используется для материалов, APK, учебников и управления расписанием. '
+            + 'Скачанные материалы и учебники открываются офлайн. В фоне время проверки определяет Android.'));
         const checked = node('p', 'app-note');
         checked.id = 'app-last-sync';
         checked.textContent = latestStatus.checked ? 'Проверено: ' + new Date(latestStatus.checked).toLocaleString('ru-RU') : 'Пока без проверок';
-        const appStatus = node('p', 'app-note', latestStatus.appStatus || 'Проверка версии приложения через Wi-Fi');
+        const appStatus = node('p', 'app-note', latestStatus.appStatus || 'Проверка версии приложения');
         appStatus.id = 'app-version-status';
         const install = node('button', '', 'Установить обновление приложения');
         install.id = 'app-install-update';
@@ -221,28 +237,18 @@
             + ' · расписание по времени Челябинска'));
     }
     function route() {
-        const home = location.pathname === '/';
-        const panel = home && ['#bookmarks', '#settings'].includes(location.hash);
+        const panel = ['/bookmarks/', '/settings/'].includes(location.pathname);
         document.body.classList.toggle('app-overlay', panel);
         overlay.hidden = !panel;
         if (panel) {
-            if (location.hash === '#bookmarks') {
-                showBookmarks();
-            } else {
-                showSettings();
-            }
+            if (location.pathname === '/bookmarks/') { showBookmarks(); } else { showSettings(); }
             window.scrollTo(0, 0);
         }
-        [...nav.children].forEach((link, index) => {
-            const active = index === 1 ? location.pathname.startsWith('/map/')
-                : index === 2 ? location.pathname.startsWith('/notes/') || home && location.hash === '#disciplines'
-                : home && (location.hash || '#schedule') === new URL(link.href).hash;
-            if (active) {
-                link.setAttribute('aria-current', 'page');
-            } else {
-                link.removeAttribute('aria-current');
-            }
-        });
+        for (const link of nav.children) {
+            const active = location.pathname.startsWith(new URL(link.href).pathname)
+                || link.pathname === '/disciplines/' && location.pathname.startsWith('/notes/');
+            if (active) { link.setAttribute('aria-current', 'page'); } else { link.removeAttribute('aria-current'); }
+        }
     }
     window.addEventListener('hashchange', route);
     route();
@@ -323,11 +329,11 @@
         body.append(node('span', 'app-card-label', 'Ближайшая пара'));
         nextCard.append(body);
         if (!next) {
-            nextCard.href = '/#schedule';
+            nextCard.href = '/schedule/';
             body.append(node('strong', '', 'Пар в расписании нет'));
             return;
         }
-        nextCard.href = next.mapUrl || '/#schedule';
+        nextCard.href = next.mapUrl || '/schedule/';
         const today = window.StudySchedule.isoDate(day) === now.date;
         const bells = window.StudySchedule.lessonTime(schedule, next);
         const ongoing = today && bells[0] <= now.time;
@@ -336,7 +342,7 @@
             day: 'numeric', month: 'short', timeZone: 'UTC',
         }).format(day);
         const room = /онлайн/i.test(next.note || '') ? 'Онлайн' : next.place || (next.room ? 'Ауд. ' + next.room : 'Кабинет не указан');
-        body.append(node('strong', '', next.title), node('small', '', `${room} · ${date} · ${bells[0]}–${bells[1]}`));
+        body.append(node('strong', '', next.title), node('small', '', `${room} · ${date} · ${ongoing ? "до " + bells[1] : bells[0] + "–" + bells[1]}`));
         if (next.thumbnail && !/онлайн/i.test(next.note || '')) {
             const image = document.createElement('img');
             const dark = document.documentElement.dataset.theme === 'dark';
@@ -345,7 +351,7 @@
             nextCard.append(image);
         }
     }
-    if (location.pathname === '/') {
+    if (location.pathname === '/disciplines/') {
         const actions = node('section', 'app-actions');
         actions.setAttribute('aria-label', 'Быстрый доступ');
         nextCard = node('a', 'app-card');
@@ -353,7 +359,7 @@
         const resumeBody = node('div', 'app-card-body');
         resumeBody.append(node('span', 'app-card-label', 'Продолжить чтение'));
         const last = read('mobile-last', null);
-        resume.href = last ? last.path + '#' + encodeURIComponent(last.anchor) : '/#disciplines';
+        resume.href = last ? last.path + '#' + encodeURIComponent(last.anchor) : '/disciplines/';
         resumeBody.append(node('strong', '', last ? last.title : 'Выберите первую тему'));
         if (last) {
             resumeBody.append(node('small', '', last.subject));
@@ -366,7 +372,7 @@
             renderNext();
             setInterval(renderNext, 30000);
         }).catch(() => {
-            nextCard.href = '/#schedule';
+            nextCard.href = '/schedule/';
             nextCard.textContent = 'Ближайшая пара · открыть расписание';
         });
     }

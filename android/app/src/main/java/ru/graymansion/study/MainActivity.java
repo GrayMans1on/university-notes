@@ -168,7 +168,7 @@ public final class MainActivity extends Activity {
         callback = new ConnectivityManager.NetworkCallback() {
             @Override
             public void onCapabilitiesChanged(Network network, NetworkCapabilities capabilities) {
-                if (Updater.wifi(MainActivity.this) != null) {
+                if (NetworkPolicy.available(MainActivity.this) != null) {
                     long checked = getSharedPreferences("study", 0).getLong("checked", 0);
                     if (System.currentTimeMillis() - checked > 60000) {
                         Updater.start(MainActivity.this, () -> AppUpdater.start(MainActivity.this, false));
@@ -226,7 +226,7 @@ public final class MainActivity extends Activity {
     }
 
     private static String safeRoute(String route) {
-        return route != null && route.startsWith("/") && !route.startsWith("//") && !route.contains("\\") ? route : "/";
+        return route != null && route.startsWith("/") && !route.startsWith("//") && !route.contains("\\") ? route : "/disciplines/";
     }
 
     private static WebResourceResponse denied() {
@@ -311,7 +311,7 @@ public final class MainActivity extends Activity {
 
         @JavascriptInterface
         public String version() {
-            return "1.0.3";
+            return "1.1.0";
         }
 
         @JavascriptInterface
@@ -363,7 +363,7 @@ public final class MainActivity extends Activity {
         @JavascriptInterface
         public void githubRequest(int id, String method, String path, String token, String body) {
             Updater.EXECUTOR.execute(() -> {
-                JSONObject result = GithubSchedule.request(method, path, token, body);
+                JSONObject result = GithubSchedule.request(MainActivity.this, method, path, token, body);
                 try {
                     result.put("id", id);
                 } catch (Exception ignored) {
@@ -372,6 +372,21 @@ public final class MainActivity extends Activity {
                 runOnUiThread(() -> web.evaluateJavascript("window.dispatchEvent(new CustomEvent('study-github',"
                     + "{detail:" + result.toString() + "}));", null));
             });
+        }
+
+        @JavascriptInterface
+        public String networkMode() {
+            return NetworkPolicy.mode(MainActivity.this);
+        }
+
+        @JavascriptInterface
+        public void setNetworkMode(String value) {
+            if (!java.util.Arrays.asList("wifi", "any", "mobile").contains(value)) {
+                return;
+            }
+            getSharedPreferences("study", 0).edit().putString("network-mode", value).apply();
+            SyncJob.schedule(MainActivity.this);
+            sync();
         }
 
         @JavascriptInterface

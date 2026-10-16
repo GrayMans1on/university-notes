@@ -51,7 +51,12 @@
     "reference",
     "check",
     "map",
-    "map/view"
+    "map/view",
+    "disciplines",
+    "schedule",
+    "textbooks",
+    "bookmarks",
+    "settings"
   ],
   "searchSections": 535,
   "mathCount": 5544,

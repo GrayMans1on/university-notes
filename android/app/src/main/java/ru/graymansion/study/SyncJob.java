@@ -12,14 +12,15 @@ import android.os.Build;
 
 public final class SyncJob extends JobService {
     static void schedule(Context context) {
-        if (context.getSystemService(JobScheduler.class).getPendingJob(101) != null) {
-            return;
-        }
         JobInfo.Builder builder = new JobInfo.Builder(101, new ComponentName(context, SyncJob.class))
             .setPeriodic(60 * 60 * 1000L).setPersisted(true);
         if (Build.VERSION.SDK_INT >= 28) {
-            builder.setRequiredNetwork(new NetworkRequest.Builder().addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).build());
+            NetworkRequest.Builder request = new NetworkRequest.Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+            String mode = NetworkPolicy.mode(context);
+            if (!mode.equals("mobile")) { request.addTransportType(NetworkCapabilities.TRANSPORT_WIFI); }
+            if (!mode.equals("wifi")) { request.addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR); }
+            builder.setRequiredNetwork(request.build());
         } else {
             builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
         }

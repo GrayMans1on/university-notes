@@ -160,6 +160,7 @@
             renderEditor();
             say('Свежая версия загружена. Изменения появятся у всех после сохранения и публикации GitHub Actions.');
         } catch (error) {
+            renderEditor();
             say(error.message);
         } finally {
             busy = false;
@@ -343,6 +344,12 @@
         if (typeof preview.scrollIntoView === 'function') {
             preview.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+        const commands = form.querySelector('.schedule-admin-actions');
+        if (commands && !commands.querySelector('[data-save-draft]')) {
+            const save = button('Сохранить подготовленный черновик', publish);
+            save.dataset.saveDraft = 'true';
+            commands.append(save);
+        }
         say('Черновик сохранён на устройстве. Публичное расписание пока не изменилось.');
     }
     async function publish() {
@@ -478,7 +485,14 @@
             } catch (error) {
                 say(error.message);
             }
-        }), button('Сохранить в GitHub', publish));
+        }), button('Сохранить изменение', async () => {
+            try { stage(mode, makeEvent()); await publish(); } catch (error) { say(error.message); }
+        }));
+        if (draft) {
+            const save = button('Сохранить подготовленный черновик', publish);
+            save.dataset.saveDraft = 'true';
+            commands.append(save);
+        }
         form.append(commands, el('div', draft ? describe(draft.kind, draft.event) : 'Черновика пока нет', 'schedule-admin-preview'));
         area.append(form);
         const fields = controls();
@@ -523,8 +537,7 @@
             }
             unlocked = true;
             write('study-admin-unlocked', true);
-            renderEditor();
-            say('Режим администратора включён на этом устройстве.');
+            loadRemote();
         };
         input.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
@@ -581,7 +594,8 @@
             }
         }
         if (unlocked) {
-            renderEditor();
+            await loadRemote();
+            if (!form?.isConnected) { renderEditor(); }
         } else {
             showLogin();
         }

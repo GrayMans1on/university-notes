@@ -101,6 +101,7 @@ function page(route) {
     const adminCode = settings.window.document.querySelector('.schedule-admin-content input');
     adminCode.value = 'CSU2410';
     settings.window.document.querySelector('.schedule-admin-content button').click();
+    await new Promise((resolve) => setTimeout(resolve, 0));
     assert.ok(settings.window.document.querySelector('.schedule-admin-content form'));
     assert.equal(settings.window.localStorage.getItem('study-admin-unlocked'), 'true');
     settings.window.dispatchEvent(new settings.window.CustomEvent('native-status', {

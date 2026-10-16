@@ -60,6 +60,7 @@ jobs:
         run: |
           node android/tests/mobile.test.cjs
           node android/tests/admin.test.cjs
+          node android/tests/controls.test.cjs
       - uses: actions/setup-java@v4
         if: steps.native.outputs.build == 'true'
         with:

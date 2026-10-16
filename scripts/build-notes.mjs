@@ -565,7 +565,7 @@ fs.writeFileSync(path.join(root, 'validation-report.json'), JSON.stringify({
     practiceTypes: [...new Set(Object.values(practice).flat().map((task) => task.type))],
     widgets: Object.values(interactiveTopics).flat().length,
 }, null, 2));
-console.log(JSON.stringify({ pages: subjects.length + catalog.length + Object.keys(quizAliases).length + 5, searchSections: searchIndex.length, mathCount, mathErrors, studyTopics: catalog.length }));
+console.log(JSON.stringify({ pages: subjects.length + catalog.length + Object.keys(quizAliases).length + 10, searchSections: searchIndex.length, mathCount, mathErrors, studyTopics: catalog.length }));
 if (mathErrors.length > 0) {
     process.exitCode = 1;
 }

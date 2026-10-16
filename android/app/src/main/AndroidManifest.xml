@@ -10,6 +10,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PdfActivity" android:exported="false" />
         <provider android:name=".ApkProvider" android:authorities="${applicationId}.apk" android:exported="false" android:grantUriPermissions="true" />
         <service android:name=".SyncJob" android:permission="android.permission.BIND_JOB_SERVICE" android:exported="true" />
         <service android:name=".ScheduleRows" android:permission="android.permission.BIND_REMOTEVIEWS" android:exported="false" />

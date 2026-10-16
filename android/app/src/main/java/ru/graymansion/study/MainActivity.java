@@ -375,6 +375,25 @@ public final class MainActivity extends Activity {
         }
 
         @JavascriptInterface
+        public String textbookStatus() {
+            return Textbooks.status(MainActivity.this);
+        }
+
+        @JavascriptInterface
+        public void downloadTextbook(String id) {
+            if (id == null || !id.matches("[a-z0-9-]{1,80}")) { return; }
+            Textbooks.download(MainActivity.this, id, () -> runOnUiThread(() -> web.evaluateJavascript(
+                "window.dispatchEvent(new Event('study-textbooks'));", null)));
+        }
+
+        @JavascriptInterface
+        public void openTextbook(String id) {
+            if (id == null || !id.matches("[a-z0-9-]{1,80}")) { return; }
+            runOnUiThread(() -> startActivity(new Intent(MainActivity.this, PdfActivity.class)
+                .putExtra("book", id).putExtra("dark", darkTheme)));
+        }
+
+        @JavascriptInterface
         public String networkMode() {
             return NetworkPolicy.mode(MainActivity.this);
         }

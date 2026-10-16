@@ -14,7 +14,7 @@ SITE = OUTPUT / 'site'
 if OUTPUT.exists():
     shutil.rmtree(OUTPUT)
 SITE.mkdir(parents=True)
-shutil.copytree(ROOT / 'dist', SITE, dirs_exist_ok=True)
+shutil.copytree(ROOT / 'dist', SITE, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.pdf', '*.PDF'))
 renamed = {}
 for file in list(SITE.rglob('*')):
     if file.is_file() and not file.name.isascii():
@@ -35,6 +35,9 @@ for name in ('mobile.js', 'mobile.css'):
     shutil.copyfile(ROOT / 'android/web' / name, SITE / 'assets' / name)
 shutil.copyfile(ROOT / 'android/web/bookmark.svg', SITE / 'assets/material-icons/bookmark.svg')
 for file in SITE.rglob('*.html'):
+    text = file.read_text()
+    controls = '<link rel="stylesheet" href="/assets/form-controls.css"><script defer src="/assets/form-controls.js"></script>'
+    file.write_text(text.replace('</head>', controls + '</head>'))
     if file.relative_to(SITE).as_posix() == 'map/view/index.html':
         continue
     text = file.read_text()

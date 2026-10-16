@@ -1,0 +1,15 @@
+.app-control-source{display:none!important}
+.app-control-trigger{display:inline-flex;align-items:center;justify-content:space-between;gap:12px;max-width:100%;min-height:44px;padding:9px 12px;background:var(--surface,#fff);color:var(--ink,#182333);border:1px solid var(--line,#e2e7f0);border-radius:10px;font:inherit;text-align:left;cursor:pointer}
+.app-control-trigger::after{content:'⌄';flex-shrink:0;color:var(--muted,#68758a)}.app-control-trigger:disabled{opacity:.5;cursor:default}.app-control-trigger[hidden]{display:none!important}
+.app-picker-layer{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:12px;background:#0008;overscroll-behavior:contain}
+.app-picker{box-sizing:border-box;width:min(100%,420px);max-height:85dvh;overflow:auto;padding:14px;border:1px solid var(--line,#e2e7f0);border-radius:18px;background:var(--surface,#fff);color:var(--ink,#182333);box-shadow:0 16px 60px #0004;font:14px/1.4 sans-serif}
+.app-picker *{box-sizing:border-box}.app-picker button,.app-picker input{font:inherit;color:var(--ink,#182333);background:var(--surface,#fff);border:1px solid var(--line,#e2e7f0);border-radius:9px;min-height:44px;padding:8px;cursor:pointer}
+.app-picker button:disabled{opacity:.35;cursor:default}.app-picker button:focus-visible,.app-control-trigger:focus-visible{outline:2px solid var(--blue,#254cce);outline-offset:2px}
+.app-picker-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.app-picker-heading strong{font-size:17px}.app-picker-heading button{font-size:12px}
+.app-picker-options{display:grid;gap:6px}.app-picker-options button{text-align:left;white-space:normal;overflow-wrap:anywhere;width:100%}
+.app-picker [aria-selected=true],.app-picker [aria-pressed=true]{background:var(--hover,#edf2ff);color:var(--blue,#254cce);border-color:var(--blue,#254cce)}
+.app-calendar-navigation{display:grid;grid-template-columns:36px 36px minmax(0,1fr) 36px 36px;align-items:center;gap:2px;margin-bottom:10px}.app-calendar-navigation strong{text-align:center;font-size:12px}.app-calendar-navigation button{font-size:22px;padding:2px}
+.app-calendar-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center;align-items:center}.app-calendar-days>span{font-size:12px;color:var(--muted,#68758a)}.app-calendar-days button{min-width:0;padding:4px;min-height:40px}.app-calendar-days [aria-current=date]{text-decoration:underline}
+.app-picker-actions{display:flex;gap:8px;margin-top:12px}.app-clock{display:flex;gap:12px}.app-clock label{flex:1}.app-clock input{display:block;width:100%;font-size:22px;margin-top:6px}
+.app-panel label>.app-control-trigger{max-width:65%}.schedule-admin-content label>.app-control-trigger{display:flex;width:100%}
+.map-theme .app-control-trigger{width:100%;font-size:13px}.schedule-filters .app-control-trigger{font-size:13px}

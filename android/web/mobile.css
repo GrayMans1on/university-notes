@@ -25,7 +25,7 @@ body:has(#disciplines) .app-card{padding:10px;gap:6px;min-height:100px;position:
 body:has(#disciplines) .app-card strong{font-size:13px;line-height:1.25}
 body:has(#disciplines) .app-card-label{font-size:10px;margin-bottom:5px}
 body:has(#disciplines) .app-card small{font-size:10px;line-height:1.3}
-body:has(#disciplines) .app-card img{display:none}
+body:has(#disciplines) .app-card img{width:40px;height:40px;border-radius:7px;align-self:center}
 body:has(#disciplines) .site-credit{display:none}
 .app-textbook{border:1px solid var(--app-line);background:var(--app-panel);border-radius:14px;padding:14px;margin:12px 0}
 .app-textbook h2{font-size:17px;margin:0 0 6px}.app-textbook p{font-size:13px;line-height:1.5}

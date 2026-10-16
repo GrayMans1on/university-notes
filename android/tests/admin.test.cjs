@@ -69,6 +69,7 @@ const wait = () => new Promise((resolve) => setTimeout(resolve, 15));
     assert.equal(window.document.querySelector('.schedule-admin-content form'), null);
     input.value = 'CSU2410';
     click('Войти');
+    await wait();
     assert.ok(window.document.querySelector('.schedule-admin-content form'));
     click('Загрузить свежую версию из GitHub');
     await wait();

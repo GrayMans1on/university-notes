@@ -8,7 +8,8 @@
     const ACTIONS = { replace: 'Изменение', move: 'Перенос', cancel: 'Отмена', add: 'Дополнительная пара', revoke: 'Откат' };
     const native = window.StudyNative;
     let token = '';
-    let nextRequest = 1;
+    let service = { url: '' };
+    let nextRequest = Math.floor(Math.random() * 1e9) + 1;
     const pending = new Map();
     let schedule;
     let histories = { permanent: { schema: 1, events: [] }, once: { schema: 1, events: [] } };
@@ -124,6 +125,31 @@
             throw new Error('GitHub недоступен. Изменение осталось в черновике.');
         }
         return JSON.parse(response.body);
+    }
+    async function serviceWrite(saving) {
+        const body = JSON.stringify({ code: CODE, kind: saving.kind, sha: saving.sha, event: saving.event });
+        let response;
+        if (native) {
+            if (typeof native.scheduleServiceRequest !== 'function') {
+                throw new Error('Для сохранения по коду установите APK 1.1.1. Черновик сохранён.');
+            }
+            response = await new Promise((resolve, reject) => {
+                const id = nextRequest++;
+                const timeout = setTimeout(() => { pending.delete(id); reject(new Error('Сервис не ответил. Черновик сохранён.')); }, 45000);
+                pending.set(id, (result) => { clearTimeout(timeout); resolve(result); });
+                native.scheduleServiceRequest(id, body);
+            });
+        } else {
+            const result = await fetch(service.url, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body, cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(45000) });
+            response = { status: result.status, body: await result.text() };
+        }
+        let result;
+        try { result = JSON.parse(response.body); } catch { throw new Error('Сервис не подтвердил запись. Черновик сохранён.'); }
+        if (response.status !== 200 || !result.content?.sha || !Array.isArray(result.history?.events)) {
+            throw new Error(result.message || 'Сервис не подтвердил запись. Черновик сохранён.');
+        }
+        return result;
     }
     async function getFile(path, accessToken = token) {
         const result = await request('GET', path, null, accessToken);
@@ -361,7 +387,7 @@
             say('Загрузите свежую версию из GitHub и пересоздайте черновик перед сохранением.');
             return;
         }
-        if (!token) {
+        if (!token && !service.url) {
             say('Введите GitHub-токен с правом Contents: Read and write для university-notes. Код администратора открывает интерфейс.');
             return;
         }
@@ -369,21 +395,28 @@
         busy = true;
         say('Сохранение в GitHub…');
         try {
-            const current = await getFile(PATHS[saving.kind]);
-            if (saving.sha && saving.sha !== current.sha) {
-                throw new Error('Журнал изменился в GitHub. Загрузите свежую версию и пересоздайте черновик.');
+            let result;
+            let updated;
+            if (service.url) {
+                result = await serviceWrite(saving);
+                updated = result.history;
+            } else {
+                const current = await getFile(PATHS[saving.kind]);
+                if (saving.sha && saving.sha !== current.sha) {
+                    throw new Error('Журнал изменился в GitHub. Загрузите свежую версию и пересоздайте черновик.');
+                }
+                if (current.data.events.some((event) => event.id === saving.event.id)) {
+                    throw new Error('Этот черновик уже сохранён в GitHub. Загрузите свежую версию.');
+                }
+                updated = { ...current.data, events: [...current.data.events, saving.event] };
+                if (saving.kind === 'permanent') {
+                    window.StudyScheduleOverrides.validate(updated, schedule);
+                }
+                result = await request('PUT', PATHS[saving.kind], {
+                    branch: 'main', sha: current.sha, content: encode(JSON.stringify(updated) + '\n'),
+                    message: (saving.kind === 'permanent' ? 'Permanent schedule: ' : 'Dated schedule: ') + ACTIONS[saving.event.action],
+                });
             }
-            if (current.data.events.some((event) => event.id === saving.event.id)) {
-                throw new Error('Этот черновик уже сохранён в GitHub. Загрузите свежую версию.');
-            }
-            const updated = { ...current.data, events: [...current.data.events, saving.event] };
-            if (saving.kind === 'permanent') {
-                window.StudyScheduleOverrides.validate(updated, schedule);
-            }
-            const result = await request('PUT', PATHS[saving.kind], {
-                branch: 'main', sha: current.sha, content: encode(JSON.stringify(updated) + '\n'),
-                message: (saving.kind === 'permanent' ? 'Permanent schedule: ' : 'Dated schedule: ') + ACTIONS[saving.event.action],
-            });
             histories[saving.kind] = updated;
             shas[saving.kind] = result.content.sha;
             bindHistories();
@@ -433,6 +466,7 @@
         area.replaceChildren();
         const connection = el('details');
         connection.append(el('summary', 'Запись и обмен через GitHub'));
+        if (!service.url) {
         const credential = field('token', 'GitHub-токен для этого сеанса', 'password');
         const input = credential.querySelector('input');
         input.value = token;
@@ -443,7 +477,11 @@
         help.href = 'https://github.com/settings/personal-access-tokens/new?name=University%20Notes&contents=write';
         help.target = '_blank';
         help.rel = 'noopener noreferrer';
-        connection.append(help, button('Загрузить свежую версию из GitHub', loadRemote));
+        connection.append(help);
+        } else {
+            connection.append(el('p', 'Запись по коду администратора. GitHub-токен на устройстве не нужен.', 'schedule-admin-note'));
+        }
+        connection.append(button('Загрузить свежую версию из GitHub', loadRemote));
         area.append(connection);
         const tabs = el('div', undefined, 'schedule-admin-actions');
         for (const [value, title] of [['permanent', 'Постоянные изменения'], ['once', 'Разовые изменения']]) {
@@ -569,6 +607,14 @@
         status.setAttribute('role', 'status');
         box.append(heading, status, el('div', undefined, 'schedule-admin-content'));
         shell.replaceChildren(box);
+        try {
+            const response = await fetch('/assets/schedule-service.json');
+            const config = await response.json();
+            const url = new URL(config.url);
+            service = config.schema === 1 && url.protocol === 'https:' && url.hostname.endsWith('.workers.dev')
+                && !url.username && !url.password && !url.port && !url.search && !url.hash && url.pathname === '/changes'
+                ? { url: url.href } : { url: '' };
+        } catch { service = { url: '' }; }
         if (!schedule) {
             try {
                 const response = await fetch('/assets/campus-map/schedule.json');

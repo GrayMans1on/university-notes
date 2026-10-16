@@ -312,7 +312,7 @@ public final class MainActivity extends Activity {
 
         @JavascriptInterface
         public String version() {
-            return "1.1.0";
+            return "1.1.1";
         }
 
         @JavascriptInterface
@@ -370,6 +370,16 @@ public final class MainActivity extends Activity {
                 } catch (Exception ignored) {
                     // The request ID is an integer and remains serializable.
                 }
+                runOnUiThread(() -> web.evaluateJavascript("window.dispatchEvent(new CustomEvent('study-github',"
+                    + "{detail:" + result.toString() + "}));", null));
+            });
+        }
+
+        @JavascriptInterface
+        public void scheduleServiceRequest(int id, String body) {
+            Updater.EXECUTOR.execute(() -> {
+                JSONObject result = ScheduleService.request(MainActivity.this, body);
+                try { result.put("id", id); } catch (Exception ignored) { /* Integer IDs are serializable. */ }
                 runOnUiThread(() -> web.evaluateJavascript("window.dispatchEvent(new CustomEvent('study-github',"
                     + "{detail:" + result.toString() + "}));", null));
             });

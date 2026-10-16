@@ -21,6 +21,15 @@ const mapIcons = JSON.parse(fs.readFileSync(path.join(root, 'content/campus-map/
 fs.writeFileSync(path.join(assets, 'campus-map/data.json'), JSON.stringify(calibrateCampusMap(capturedMap, mapCalibration, mapOutdoors, mapIcons)));
 fs.cpSync(path.join(root, 'node_modules/katex/dist/fonts'), path.join(assets, 'fonts'), { recursive: true });
 fs.copyFileSync(path.join(root, 'node_modules/katex/dist/katex.min.css'), path.join(assets, 'katex.min.css'));
+const serviceConfig = JSON.parse(fs.readFileSync(path.join(root, 'assets/schedule-service.json'), 'utf8'));
+if (serviceConfig.schema !== 1 || typeof serviceConfig.url !== 'string') { throw new Error('Invalid schedule service config'); }
+if (serviceConfig.url) {
+    const url = new URL(serviceConfig.url);
+    if (url.href !== serviceConfig.url || url.protocol !== 'https:' || !url.hostname.endsWith('.workers.dev')
+        || url.username || url.password || url.port || url.search || url.hash || url.pathname !== '/changes') {
+        throw new Error('Invalid schedule service endpoint');
+    }
+}
 const subjects = JSON.parse(fs.readFileSync(path.join(root, 'content/subjects.json'), 'utf8'));
 const disciplineIcons = JSON.parse(fs.readFileSync(path.join(root, 'scripts/subject-icons.json'), 'utf8'));
 const interfaceIcons = JSON.parse(fs.readFileSync(path.join(root, 'scripts/interface-icons.json'), 'utf8'));

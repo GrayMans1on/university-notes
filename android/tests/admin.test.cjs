@@ -16,6 +16,9 @@ const documents = {
 };
 const versions = { 'content/schedule.json': 'base-sha', [permanentPath]: 'permanent-0', [oncePath]: 'once-0' };
 const writes = [];
+let serviceEnabled = false;
+let serviceSaves = 0;
+let serviceFailure = false;
 const wait = () => new Promise((resolve) => setTimeout(resolve, 15));
 (async () => {
     const dom = new JSDOM(fs.readFileSync(path.join(root, 'dist/index.html'), 'utf8'), {
@@ -32,6 +35,22 @@ const wait = () => new Promise((resolve) => setTimeout(resolve, 15));
         constructor(...args) { super(...(args.length ? args : ['2026-10-14T06:00:00Z'])); }
     };
     window.fetch = async (url, options = {}) => {
+        if (url.endsWith('/assets/schedule-service.json')) {
+            return { json: async () => ({ schema: 1, url: serviceEnabled ? 'https://test.workers.dev/changes' : '' }) };
+        }
+        if (url === 'https://test.workers.dev/changes') {
+            assert.equal(options.headers.Authorization, undefined);
+            const body = JSON.parse(options.body);
+            assert.equal(body.code, 'CSU2410');
+            if (serviceFailure) { return { status: 503, text: async () => JSON.stringify({ message: 'Service unavailable' }) }; }
+            const file = body.kind === 'permanent' ? permanentPath : oncePath;
+            assert.equal(body.sha, versions[file]);
+            documents[file].events.push(body.event);
+            versions[file] = 'b'.repeat(40);
+            serviceSaves++;
+            return { status: 200, text: async () => JSON.stringify({ content: { sha: versions[file] },
+                history: documents[file], commit: { html_url: 'https://github.com/GrayMans1on/university-notes/commit/service-test' } }) };
+        }
         if (!url.startsWith('https://api.github.com/')) {
             return { ok: true, json: async () => ({ ...base, permanentChanges: [], exceptions: [] }) };
         }
@@ -133,6 +152,26 @@ const wait = () => new Promise((resolve) => setTimeout(resolve, 15));
     assert.ok(JSON.parse(window.localStorage.getItem('study-admin-draft')));
     assert.ok(!JSON.stringify(Object.entries(window.localStorage)).includes('test-token'));
     assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root, 'content/schedule.json'))), base);
+    serviceEnabled = true;
+    versions[permanentPath] = 'a'.repeat(40);
+    await window.StudyAdmin.open();
+    assert.equal(window.document.querySelector('input[name=token]'), null);
+    values = fields();
+    values.lesson.value = lesson.id;
+    values.lesson.dispatchEvent(new window.Event('change'));
+    values.room.value = '137';
+    click('Сохранить изменение');
+    await wait();
+    assert.equal(serviceSaves, 1);
+    assert.equal(window.localStorage.getItem('study-admin-draft'), 'null');
+    serviceFailure = true;
+    values = fields();
+    values.room.value = '138';
+    click('Сохранить изменение');
+    await wait();
+    assert.equal(serviceSaves, 1);
+    assert.ok(JSON.parse(window.localStorage.getItem('study-admin-draft')));
+    assert.match(window.document.querySelector('.schedule-admin-status').textContent, /Service unavailable/);
     window.close();
     console.log('Admin: code gate, separate modes, append-only writes, rollback, conflict handling and token privacy passed.');
 })().catch((error) => { console.error(error); process.exitCode = 1; });

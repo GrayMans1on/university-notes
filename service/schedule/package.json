@@ -1,0 +1,7 @@
+{
+  "name": "university-notes-schedule-service",
+  "private": true,
+  "type": "module",
+  "scripts": { "check": "wrangler deploy --dry-run --outdir=dist" },
+  "devDependencies": { "wrangler": "4.151.1" }
+}

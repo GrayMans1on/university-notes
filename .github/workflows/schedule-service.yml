@@ -1,0 +1,61 @@
+name: Schedule service
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'service/schedule/**'
+      - 'scripts/schedule-validation.mjs'
+      - 'assets/schedule-overrides.js'
+      - '.github/workflows/schedule-service.yml'
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Deploy the service using configured repository secrets
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: schedule-service
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: service/schedule
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: service/schedule/package-lock.json
+      - run: npm ci
+      - run: node --test worker.test.mjs
+      - run: npm run check
+      - name: Deploy only when explicitly requested
+        if: github.event_name == 'workflow_dispatch' && inputs.deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SCHEDULE_ADMIN_CODE: ${{ secrets.SCHEDULE_ADMIN_CODE }}
+          SCHEDULE_GITHUB_APP_ID: ${{ secrets.SCHEDULE_GITHUB_APP_ID }}
+          SCHEDULE_GITHUB_INSTALLATION_ID: ${{ secrets.SCHEDULE_GITHUB_INSTALLATION_ID }}
+          SCHEDULE_GITHUB_APP_PRIVATE_KEY: ${{ secrets.SCHEDULE_GITHUB_APP_PRIVATE_KEY }}
+        run: |
+          secret_path="$RUNNER_TEMP/schedule-secrets.json"
+          export SCHEDULE_SECRET_PATH="$secret_path"
+          trap 'rm -f "$SCHEDULE_SECRET_PATH"' EXIT
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          const mapping = { ADMIN_CODE: 'SCHEDULE_ADMIN_CODE', GITHUB_APP_ID: 'SCHEDULE_GITHUB_APP_ID',
+            GITHUB_INSTALLATION_ID: 'SCHEDULE_GITHUB_INSTALLATION_ID', GITHUB_APP_PRIVATE_KEY: 'SCHEDULE_GITHUB_APP_PRIVATE_KEY' };
+          for (const name of ['CLOUDFLARE_API_TOKEN', 'CLOUDFLARE_ACCOUNT_ID', ...Object.values(mapping)]) {
+            if (!process.env[name]) { throw new Error('Missing secret: ' + name); }
+          }
+          const values = Object.fromEntries(Object.entries(mapping).map(([key, name]) => [key, process.env[name]]));
+          fs.writeFileSync(process.env.SCHEDULE_SECRET_PATH, JSON.stringify(values), { mode: 0o600 });
+          JS
+          npm exec -- wrangler deploy
+          npm exec -- wrangler secret bulk "$SCHEDULE_SECRET_PATH"

@@ -13,3 +13,9 @@
 __pycache__/
 
 /android/release-output/
+
+/service/schedule/node_modules/
+/service/schedule/dist/
+/service/schedule/.wrangler/
+/service/schedule/.dev.vars*
+*.pem

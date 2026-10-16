@@ -67,6 +67,7 @@ public final class MainActivity extends Activity {
         setContentView(frame);
         showSystemBars();
         frame.requestApplyInsets();
+        ContentStore.upgrade(this);
         content = ContentStore.active(this);
         File pinned = content;
         Updater.EXECUTOR.execute(() -> {

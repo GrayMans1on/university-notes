@@ -12,6 +12,21 @@ final class ContentStore {
     static final String ORIGIN = "https://study.local";
     static final String REMOTE = "https://graymans1on.github.io/university-notes/android/";
 
+    static boolean preferBundled(JSONObject cached, JSONObject bundled) {
+        return cached.optInt("minAppVersion", 1) < bundled.optInt("minAppVersion", 1);
+    }
+
+    static void upgrade(Context context) {
+        File current = active(context);
+        if (current == null) { return; }
+        try {
+            if (!preferBundled(manifest(context, current), manifest(context, null))) { return; }
+        } catch (Exception ignored) {
+            // Use the packaged interface if cached compatibility metadata is unavailable.
+        }
+        context.getSharedPreferences("study", 0).edit().remove("active").commit();
+    }
+
     static File active(Context context) {
         String version = context.getSharedPreferences("study", 0).getString("active", "");
         if (!version.matches("[a-f0-9]{64}")) {

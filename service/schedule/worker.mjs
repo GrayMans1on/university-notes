@@ -114,7 +114,8 @@ export function createWorker(send = fetch) {
             if (new URL(request.url).pathname === '/health' && request.method === 'GET') {
                 return reply({ ready: Boolean(env.ADMIN_CODE && env.GITHUB_APP_ID && env.GITHUB_INSTALLATION_ID && env.GITHUB_APP_PRIVATE_KEY) });
             }
-            if (new URL(request.url).pathname !== '/changes') { throw new Failure(404, 'Путь не найден'); }
+            const path = new URL(request.url).pathname;
+            if (!['/changes', '/verify'].includes(path)) { throw new Failure(404, 'Путь не найден'); }
             if (request.method === 'OPTIONS') {
                 headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS';
                 headers['Access-Control-Allow-Headers'] = 'Content-Type';
@@ -130,6 +131,11 @@ export function createWorker(send = fetch) {
                 throw new Failure(400, 'Некорректный JSON');
             }
             if (!body || body.code !== env.ADMIN_CODE) { throw new Failure(401, 'Код не совпадает'); }
+            if (path === '/verify') {
+                const token = await appToken(env, send);
+                const ref = await api(send, token, 'GET', '/repos/' + REPO + '/git/ref/heads/main');
+                return reply({ ready: true, head: ref.object.sha });
+            }
             if (!Object.hasOwn(PATHS, body.kind) || !/^[a-f0-9]{40}$/.test(body.sha || '')) { throw new Failure(400, 'Некорректный журнал или SHA'); }
             validateEvent(body.kind, body.event);
             const token = await appToken(env, send);

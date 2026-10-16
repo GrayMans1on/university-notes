@@ -125,3 +125,13 @@ test('dated moves use the dated journal and reject a source on the wrong weekday
     assert.equal((await second.worker.fetch(request(payload), env)).status, 400);
     assert.equal(second.writes.length, 0);
 });
+
+test('authenticated deployment verification reads GitHub but never changes the schedule', async () => {
+    const { worker, writes } = setup();
+    const response = await worker.fetch(new Request('https://test.workers.dev/verify', {
+        method: 'POST', headers: { Origin: 'https://study.local' }, body: JSON.stringify({ code: 'CSU2410' }),
+    }), env);
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { ready: true, head: 'head' });
+    assert.equal(writes.length, 0);
+});

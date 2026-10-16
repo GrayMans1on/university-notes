@@ -22,7 +22,7 @@ openssl pkcs8 -topk8 -nocrypt -in app-private.pem -out app-pkcs8.pem
 
 4. В GitHub repository Actions secrets записать CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, SCHEDULE_ADMIN_CODE (текущий код CSU2410), SCHEDULE_GITHUB_APP_ID, SCHEDULE_GITHUB_INSTALLATION_ID, SCHEDULE_GITHUB_APP_PRIVATE_KEY (содержимое app-pkcs8.pem). Закрытые ключи не добавлять в Git, клиентский JSON или APK.
 5. Запустить Actions → Schedule service → Run workflow с deploy=true. На обычный push выполняются только тесты и сухая сборка; развёртывание автоматически не запускается. Workflow прекращается до deploy при отсутствии любого секрета.
-6. Проверить реальный URL Worker и `/health`. ready означает наличие четырёх настроек, а не проверенную запись в GitHub. Для рабочего сохранения App должна действительно иметь доступ к репозиторию. Не создавать выдуманные изменения расписания ради проверки.
+6. Проверить реальный URL Worker и `/health`. Затем выполнить POST `/verify` с JSON `{code: "CSU2410"}`: ответ ready=true и head подтверждает выдачу installation token и чтение реального main, не меняя расписание. ready означает наличие четырёх настроек, а не проверенную запись в GitHub. Для рабочего сохранения App должна действительно иметь доступ к репозиторию. Не создавать выдуманные изменения расписания ради проверки.
 7. Только после настройки указать точный адрес `https://university-notes-schedule.<account>.workers.dev/changes` в assets/schedule-service.json и опубликовать его через Pages. До этого URL остаётся пустым. В Android для сервиса нужен APK 1.1.1; сайт работает без обновления APK. Сетевая политика Android соблюдается.
 
 Локально без публикации:

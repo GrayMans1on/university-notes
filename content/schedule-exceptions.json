@@ -1,4 +1,1 @@
-{
-  "schema": 1,
-  "events": []
-}
+{"schema":1,"events":[{"id":"1ddcfea9-fe4f-4216-b360-29485ef7ee5b","createdAt":"2026-10-17T04:26:24.898Z","action":"replace","source":{"date":"2026-10-17","lessonId":"lesson-026"},"target":{"date":"2026-10-17","lesson":{"start":"12:00","end":"13:30"}}}]}

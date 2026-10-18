@@ -1,0 +1,10 @@
+.textbook-list { display: grid; gap: 1rem; margin-top: 1.5rem; }
+.textbook { padding: 1.25rem; border: 1px solid var(--line); border-radius: 1rem; background: var(--surface); min-width: 0; }
+.textbook h2 { font-size: 1.15rem; margin: .5rem 0; overflow-wrap: anywhere; }
+.textbook p { margin: .5rem 0; }
+.textbook-subject { color: var(--blue); font-weight: 650; }
+.textbook-meta, .textbook-status { color: var(--muted); font-size: .9rem; }
+.textbook-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1rem; }
+.textbook-actions a, .textbook-actions button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .65rem .9rem; border: 1px solid var(--blue); border-radius: .6rem; font: inherit; text-decoration: none; background: var(--surface); color: var(--blue); }
+.textbook-actions .textbook-online { background: var(--blue); color: var(--surface); }
+.textbook-actions button:disabled { opacity: .6; cursor: wait; }

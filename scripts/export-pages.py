@@ -10,7 +10,7 @@ OUTPUT = ROOT / 'pages-output'
 PREFIX = '/university-notes'
 ORIGIN = 'https://graymans1on.github.io'
 OLD_ORIGIN = 'https://vlad-study-notes.graymansiongamedev.chatgpt.site'
-LOCAL_PATH = re.compile(r'''(["'`(])(/(?=(?:assets|notes|check|map|reference|downloads)(?:/|["'`)?#])))''')
+LOCAL_PATH = re.compile(r'''(["'`(])(/(?=(?:assets|notes|check|map|reference|downloads|textbooks)(?:/|["'`)?#])))''')
 
 if OUTPUT.exists():
     shutil.rmtree(OUTPUT)

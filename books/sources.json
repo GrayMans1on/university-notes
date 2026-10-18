@@ -1,0 +1,217 @@
+{
+  "schema": 1,
+  "books": [
+    {
+      "id": "cudravcev-1",
+      "fileName": "cudravcev-1.pdf",
+      "size": 4894433,
+      "sha256": "faeecd44143bfd934cb0cae74b346f8288878e00d7ac13da816ad414d57fcf35",
+      "parts": [
+        {
+          "path": "books/source/cudravcev-1/000.bin",
+          "size": 4894433,
+          "sha256": "faeecd44143bfd934cb0cae74b346f8288878e00d7ac13da816ad414d57fcf35"
+        }
+      ]
+    },
+    {
+      "id": "berman",
+      "fileName": "berman.pdf",
+      "size": 7653908,
+      "sha256": "2d5235458aac20b5bd552c162013707dfc047e6a16b7f0cd3e389fc3b39d0968",
+      "parts": [
+        {
+          "path": "books/source/berman/000.bin",
+          "size": 4194304,
+          "sha256": "ac500fbe3ad1e5d907fb346aa0b53ca10123a6c36e298274cc8372aba67cfbbb"
+        },
+        {
+          "path": "books/source/berman/001.bin",
+          "size": 3459604,
+          "sha256": "3c3cac3d1950fafdd5e86d2dc5642eaa8f18b8ae2001267b20d02bf0ce45da59"
+        }
+      ]
+    },
+    {
+      "id": "kostrikin",
+      "fileName": "kostrikin.pdf",
+      "size": 15384453,
+      "sha256": "a6c7b1b0905b3b4315cb537edddf2cdcb1782c326ca7f2c0168fbdf9fe2ab9d7",
+      "parts": [
+        {
+          "path": "books/source/kostrikin/000.bin",
+          "size": 4194304,
+          "sha256": "745940462cb0d1b6a7a5811d255db0d02911be0df5182285056ba00dbf04b607"
+        },
+        {
+          "path": "books/source/kostrikin/001.bin",
+          "size": 4194304,
+          "sha256": "5ccc32626bf31ea9475818927293c1f16413e8fe2174572dfbcf656235c6757a"
+        },
+        {
+          "path": "books/source/kostrikin/002.bin",
+          "size": 4194304,
+          "sha256": "b29e7d4da09565362b1c7ba708fe4a1fb85cb4b4779705b5d4f636ec4dd8f837"
+        },
+        {
+          "path": "books/source/kostrikin/003.bin",
+          "size": 2801541,
+          "sha256": "e7c531e4fea741ac6b89c641a84a5c35b4d5e1d11a3ec79b73f66b8d8865f368"
+        }
+      ]
+    },
+    {
+      "id": "infotech",
+      "fileName": "infotech.pdf",
+      "size": 119354091,
+      "sha256": "149c4703255abb9aef5a17099fcb0cf3bfb187e5ac2a141de580308aa1ac01b4",
+      "parts": [
+        {
+          "path": "books/source/infotech/000.bin",
+          "size": 4194304,
+          "sha256": "148e48065af5d8d1d1845cbefba22b58e3d8be12de4e58c37597141778d2d054"
+        },
+        {
+          "path": "books/source/infotech/001.bin",
+          "size": 4194304,
+          "sha256": "4a7e1eae7a1225c337d2841d4934bf8c12851e2290b186ddd940b566ce108fdb"
+        },
+        {
+          "path": "books/source/infotech/002.bin",
+          "size": 4194304,
+          "sha256": "37ea529cb623c316798851677c22caceba157eb6dbed982436238df44160db7f"
+        },
+        {
+          "path": "books/source/infotech/003.bin",
+          "size": 4194304,
+          "sha256": "21e14bdcc3e9fc1c98a115c4e83c1d41a72420980378c1d7574c3cbd428f70a4"
+        },
+        {
+          "path": "books/source/infotech/004.bin",
+          "size": 4194304,
+          "sha256": "45e9c35b6d655a8744357cebc6ccc1c9fe5da3213d178b862a04a053153940b3"
+        },
+        {
+          "path": "books/source/infotech/005.bin",
+          "size": 4194304,
+          "sha256": "5ac8645fccc5dd63b51ab1019aeec4240a685af3f22c8ca84527f60f7c9f6a12"
+        },
+        {
+          "path": "books/source/infotech/006.bin",
+          "size": 4194304,
+          "sha256": "ef4cf08fa5122a06516b6ef845b56de7caf5f1300008afac713adac157731bd7"
+        },
+        {
+          "path": "books/source/infotech/007.bin",
+          "size": 4194304,
+          "sha256": "4218c46c1cff3b140c3c1e2e062b54ac7622f0542eeb71f287acc0ccdb6ed64a"
+        },
+        {
+          "path": "books/source/infotech/008.bin",
+          "size": 4194304,
+          "sha256": "03a7a03ec396bb214ae1ba598e48c688911ff2c48ba0f44d67ada333c229b8e7"
+        },
+        {
+          "path": "books/source/infotech/009.bin",
+          "size": 4194304,
+          "sha256": "abd0fcd230a4542498f1b5750cebcb943ab7688ae14f147c6ebf5c5329e5891b"
+        },
+        {
+          "path": "books/source/infotech/010.bin",
+          "size": 4194304,
+          "sha256": "05f52dbdf480067a7f21ca5a67f9184a79d63e058e7a2f5d5d2930d8ed7ffc70"
+        },
+        {
+          "path": "books/source/infotech/011.bin",
+          "size": 4194304,
+          "sha256": "0b4202a280d3fa8f0bd1a27fbddd59d014dc96d1fa5f91e56b61be9c016ff3d5"
+        },
+        {
+          "path": "books/source/infotech/012.bin",
+          "size": 4194304,
+          "sha256": "9eab4ac8a3c74787554a2d039beba4e0151b42f33f7cb400d6f3006b4cadc91c"
+        },
+        {
+          "path": "books/source/infotech/013.bin",
+          "size": 4194304,
+          "sha256": "9e892ece7920ee12fa889f9a756b0e34699218cc262c08c33fb2cbd7242a67f6"
+        },
+        {
+          "path": "books/source/infotech/014.bin",
+          "size": 4194304,
+          "sha256": "fee709c32e560a705641fe882c5e146b85d934466e81eebbfea023bffe0525c6"
+        },
+        {
+          "path": "books/source/infotech/015.bin",
+          "size": 4194304,
+          "sha256": "b5a2bcd320d5ceeb886bc692fd2e66fd0a5a0f56906bc826cf3eba0379918f27"
+        },
+        {
+          "path": "books/source/infotech/016.bin",
+          "size": 4194304,
+          "sha256": "5a0849d6ce3c0596e50536987f22a8de4494f4d1deabbf251c4625d2d0f2a6e4"
+        },
+        {
+          "path": "books/source/infotech/017.bin",
+          "size": 4194304,
+          "sha256": "29b8c4205d4c488f5dc5d67df6e739cac3fbe1faccaf302928d5d71892f35a13"
+        },
+        {
+          "path": "books/source/infotech/018.bin",
+          "size": 4194304,
+          "sha256": "85b4d913acbe64cd915e2d4a6e3f3d5d448f763ff257b8b41aa42226aa6cac50"
+        },
+        {
+          "path": "books/source/infotech/019.bin",
+          "size": 4194304,
+          "sha256": "556fc6fd819dd6c565043e68019a285aaa847debeecdec319352f423dcf039f7"
+        },
+        {
+          "path": "books/source/infotech/020.bin",
+          "size": 4194304,
+          "sha256": "c046c93178d13b078102832a15ad5bb0f081c71a8b2799f73b75daf242d52282"
+        },
+        {
+          "path": "books/source/infotech/021.bin",
+          "size": 4194304,
+          "sha256": "db201c6c26bff536419aa5bfbe73e5eb4dedb5e01c3c625fb54af7a338c9dd53"
+        },
+        {
+          "path": "books/source/infotech/022.bin",
+          "size": 4194304,
+          "sha256": "24b57c55f5f0bd02971461468df71c8de4ca4d0cda62e5a5cf58b2574d5beb73"
+        },
+        {
+          "path": "books/source/infotech/023.bin",
+          "size": 4194304,
+          "sha256": "4e86d244f0bafd0efa4920de31ec88ede34e0cbde77ce10e515fb301d4aa43eb"
+        },
+        {
+          "path": "books/source/infotech/024.bin",
+          "size": 4194304,
+          "sha256": "6cba38d8ee12a6af984a8274ecc9dae43bb655ff0cf8f5524b5f6eacb753ef5f"
+        },
+        {
+          "path": "books/source/infotech/025.bin",
+          "size": 4194304,
+          "sha256": "6b76316db27869806bd3f6b2193436b78b3a8d29242268296dcff997b7b173e6"
+        },
+        {
+          "path": "books/source/infotech/026.bin",
+          "size": 4194304,
+          "sha256": "f013c47609899798d36cff5fb24b368e21a85f52e98d700c861ad5c6ce02e5c9"
+        },
+        {
+          "path": "books/source/infotech/027.bin",
+          "size": 4194304,
+          "sha256": "1acd6b3ed3524d38fbb2dda62ee8f43b2d69ed77db49c2e0885a17e649134b41"
+        },
+        {
+          "path": "books/source/infotech/028.bin",
+          "size": 1913579,
+          "sha256": "f965b54f6225e58e5bf096a6a942fe67a511141e4c594936ebc09a05c7892557"
+        }
+      ]
+    }
+  ]
+}

@@ -57,8 +57,11 @@ jobs:
           python3 -m pip install CairoSVG==2.7.1
           python3 scripts/prepare-android.py
           python3 scripts/publish-android-feed.py
+      - name: Assemble textbooks for the website only
+        run: python3 scripts/prepare-textbooks.py
       - name: Test mobile interface
         run: |
+          node tests/textbooks.test.cjs
           node android/tests/mobile.test.cjs
           node android/tests/admin.test.cjs
           node android/tests/controls.test.cjs

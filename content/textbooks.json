@@ -1,1 +1,45 @@
-{"schema":1,"books":[]}
+{
+  "schema": 1,
+  "books": [
+    {
+      "id": "cudravcev-1",
+      "title": "Сборник задач по математическому анализу. Том 1",
+      "author": "Л. Д. Кудрявцев, А. Д. Кутасов, В. И. Чехлов, М. И. Шабунин",
+      "subject": "Математический анализ",
+      "pages": 495,
+      "url": "https://graymans1on.github.io/university-notes/books/cudravcev-1.pdf?v=faeecd44143bfd934cb0cae74b346f8288878e00d7ac13da816ad414d57fcf35",
+      "size": 4894433,
+      "sha256": "faeecd44143bfd934cb0cae74b346f8288878e00d7ac13da816ad414d57fcf35"
+    },
+    {
+      "id": "berman",
+      "title": "Сборник задач по курсу математического анализа",
+      "author": "Г. Н. Берман",
+      "subject": "Математический анализ",
+      "pages": 216,
+      "url": "https://graymans1on.github.io/university-notes/books/berman.pdf?v=2d5235458aac20b5bd552c162013707dfc047e6a16b7f0cd3e389fc3b39d0968",
+      "size": 7653908,
+      "sha256": "2d5235458aac20b5bd552c162013707dfc047e6a16b7f0cd3e389fc3b39d0968"
+    },
+    {
+      "id": "kostrikin",
+      "title": "Сборник задач по алгебре",
+      "author": "Под ред. А. И. Кострикина",
+      "subject": "Линейная алгебра и аналитическая геометрия",
+      "pages": 464,
+      "url": "https://graymans1on.github.io/university-notes/books/kostrikin.pdf?v=a6c7b1b0905b3b4315cb537edddf2cdcb1782c326ca7f2c0168fbdf9fe2ab9d7",
+      "size": 15384453,
+      "sha256": "a6c7b1b0905b3b4315cb537edddf2cdcb1782c326ca7f2c0168fbdf9fe2ab9d7"
+    },
+    {
+      "id": "infotech",
+      "title": "Infotech: English for Computer Users. Fourth Edition",
+      "author": "Santiago Remacha Esteras",
+      "subject": "Английский язык",
+      "pages": 172,
+      "url": "https://graymans1on.github.io/university-notes/books/infotech.pdf?v=149c4703255abb9aef5a17099fcb0cf3bfb187e5ac2a141de580308aa1ac01b4",
+      "size": 119354091,
+      "sha256": "149c4703255abb9aef5a17099fcb0cf3bfb187e5ac2a141de580308aa1ac01b4"
+    }
+  ]
+}

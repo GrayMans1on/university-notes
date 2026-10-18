@@ -376,42 +376,6 @@
             nextCard.textContent = 'Ближайшая пара · открыть расписание';
         });
     }
-    if (location.pathname === '/textbooks/') {
-        const library = document.getElementById('textbook-library');
-        let books = [];
-        const renderBooks = () => {
-            library.replaceChildren(node('h1', '', 'Учебники'));
-            if (!books.length) {
-                library.append(node('p', 'app-note', 'Учебники ещё не добавлены. Здесь появятся PDF по дисциплинам.'));
-                return;
-            }
-            const states = typeof native.textbookStatus === 'function' ? JSON.parse(native.textbookStatus()) : {};
-            for (const book of books) {
-                const status = states[book.id] || {};
-                const item = node('article', 'app-textbook');
-                item.append(node('h2', '', book.title), node('p', '', [book.subject, (book.size / 1048576).toFixed(1) + ' МБ'].filter(Boolean).join(' · ')));
-                const message = node('p', 'app-note', status.message || (status.saved ? 'Скачан · доступен офлайн' : 'PDF ещё не скачан'));
-                message.setAttribute('role', 'status');
-                const action = node('button', '', status.saved ? 'Открыть' : status.busy ? 'Загрузка…' : 'Скачать');
-                action.type = 'button';
-                action.disabled = Boolean(status.busy) || typeof native.downloadTextbook !== 'function';
-                action.addEventListener('click', () => {
-                    if (status.saved) { native.openTextbook(book.id); } else {
-                        action.disabled = true;
-                        message.textContent = 'Загрузка…';
-                        native.downloadTextbook(book.id);
-                    }
-                });
-                item.append(message, action);
-                library.append(item);
-            }
-        };
-        window.addEventListener('study-textbooks', renderBooks);
-        fetch('/assets/textbooks.json').then((response) => response.json()).then((data) => {
-            books = data.books;
-            renderBooks();
-        }).catch(() => library.append(node('p', 'app-note', 'Каталог недоступен. Проверьте обновление материалов.')));
-    }
     const academicGroup = document.getElementById('schedule-academic-group');
     if (academicGroup && typeof native.academicGroup === 'function') {
         const saved = native.academicGroup();

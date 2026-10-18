@@ -7,6 +7,7 @@ import re
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / 'dist'
+TEXTBOOK_URLS = {book['url'] for book in json.loads((ROOT / 'content/textbooks.json').read_text())['books']}
 
 
 class PageParser(HTMLParser):
@@ -65,7 +66,7 @@ for file in DIST.rglob('*.html'):
 def validate_link(source, link):
     url = urlparse(link)
     if url.scheme:
-        assert link in {
+        assert link in TEXTBOOK_URLS or link in {
             'https://github.com/GrayMans1on/UniversityProjects_Shparov/tree/main/lectures',
             'https://map.csu.ru/',
         }, link

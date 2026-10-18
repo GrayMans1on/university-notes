@@ -404,5 +404,42 @@
       "Операции над бинарными отношениями",
       "Композиция отношений и булево произведение"
     ]
+  },
+  {
+    "subject": "Матанализ",
+    "slug": "calculus",
+    "title": "Производные и условия",
+    "id": "formulas-calculus-derivatives",
+    "sources": [
+      "Производные: таблица и правила",
+      "Вычисление производных"
+    ],
+    "formulas": [
+      "$(x^\\alpha)\\prime=\\alpha x^{\\alpha-1}$; для произвольного $\\alpha\\in\\mathbb R$: $x>0$.",
+      "$(a^x)\\prime=a^x\\ln a$, $a>0$; $(\\log_a x)\\prime=1/(x\\ln a)$, $x>0$, $a>0$, $a\\ne1$.",
+      "$(\\sin x)\\prime=\\cos x$, $(\\cos x)\\prime=-\\sin x$.",
+      "$(\\tan x)\\prime=1/\\cos^2x$, $\\cos x\\ne0$; $(\\cot x)\\prime=-1/\\sin^2x$, $\\sin x\\ne0$.",
+      "$(\\arcsin x)\\prime=1/\\sqrt{1-x^2}$, $(\\arccos x)\\prime=-1/\\sqrt{1-x^2}$; $|x|<1$.",
+      "$(\\arctan x)\\prime=1/(1+x^2)$; $(\\operatorname{arccot}x)\\prime=-1/(1+x^2)$.",
+      "$(uv)\\prime=u\\prime v+uv\\prime$; $(u/v)\\prime=(u\\prime v-uv\\prime)/v^2$, $v\\ne0$.",
+      "$(u(v(x)))\\prime=u\\prime(v(x))v\\prime(x)$.",
+      "$(\\operatorname{sh}x)\\prime=\\operatorname{ch}x$, $(\\operatorname{ch}x)\\prime=\\operatorname{sh}x$.",
+      "$(\\operatorname{th}x)\\prime=1/\\operatorname{ch}^2x$, $(\\operatorname{cth}x)\\prime=-1/\\operatorname{sh}^2x$, $x\\ne0$ для $\\operatorname{cth}$."
+    ]
+  },
+  {
+    "subject": "Линал",
+    "slug": "linear-algebra",
+    "title": "Подпространства, базис и размерность",
+    "id": "formulas-linear-vector-spaces",
+    "sources": [
+      "Векторное пространство и подпространство",
+      "Базис и размерность"
+    ],
+    "formulas": [
+      "$L\\ne\\varnothing$, $L\\subseteq V$: $x,y\\in L\\Rightarrow x+y\\in L$, $\\alpha\\in P,x\\in L\\Rightarrow\\alpha x\\in L$.",
+      "$v=\\sum_{i=1}^n\\alpha_i a_i$; базис — порождающая и линейно независимая система.",
+      "$\\dim\\mathbb R^n=n$, $\\dim P_n[x]=n+1$, $\\dim M_{m\\times n}(P)=mn$."
+    ]
   }
 ]

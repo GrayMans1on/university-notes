@@ -559,7 +559,7 @@ for (const [oldKey, newKey] of Object.entries(quizAliases)) {
 }
 
 searchIndex.push({ subject: 'Программирование', slug: 'programming', title: 'Лекции в GitHub',
-    text: 'Массивы, списки, возврат нескольких значений, структуры и классы. Программирование C#.', url: github });
+    text: 'Массивы, списки, возврат нескольких значений, структуры и классы, исключения try catch finally throw, рекурсия и стек вызовов. Программирование C#.', url: github });
 fs.writeFileSync(path.join(assets, 'search-index.json'), JSON.stringify(searchIndex));
 fs.writeFileSync(path.join(assets, 'widget-stages.js'), 'window.StudyStages=' + JSON.stringify(widgetStages) + ';');
 fs.writeFileSync(path.join(assets, 'study-catalog.json'), JSON.stringify(catalog.map(({ subject, slug, title, key }) => ({ subject, slug, title, key }))));

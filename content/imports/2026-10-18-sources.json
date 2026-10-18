@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "importDate": "2026-10-18",
+  "files": [
+    {
+      "file": "13 окт., 11.21​ (transcribed on 14-Oct-2026 12-54-43).txt",
+      "bytes": 66213,
+      "sha256": "541d73c2677ec7eeebffd715cd830b83406475a20ed3b32ecbebb70121d37d91"
+    },
+    {
+      "file": "13 окт., 11.34​ (transcribed on 14-Oct-2026 12-57-31).txt",
+      "bytes": 91012,
+      "sha256": "ae6f698b66e8862fed26b551fb236adbcb96a77fad23efb946731295932919fa"
+    },
+    {
+      "file": "13 октября ОРГ (transcribed on 14-Oct-2026 13-02-07).txt",
+      "bytes": 103255,
+      "sha256": "7bc1614bc440ae574edeaa23fc95d59f4ef6ba6d9312a915686e4b2c8fa3e683"
+    },
+    {
+      "file": "Дискретная математика 13.10.26.zip",
+      "bytes": 38557299,
+      "sha256": "0b1c07adb840192afa5f299e44a15b7e6290f54e8b470c88e429892f0dd79d8d"
+    },
+    {
+      "file": "Конспекты Блокнот 18.10.26.zip",
+      "bytes": 107576219,
+      "sha256": "cf78c6c584c2ce89e9cbd3c85bf845fe697d37b9df0d0254c3232d1b31231da2"
+    },
+    {
+      "file": "ОРГ 13.10.26.zip",
+      "bytes": 11557194,
+      "sha256": "d7143f5bcfd35103c46f2e1fc95ab1871d5728229a701208070fd1cc8b248558"
+    },
+    {
+      "file": "Прога лекция 17 окт (transcribed on 17-Oct-2026 15-15-11)(1).txt",
+      "bytes": 81374,
+      "sha256": "a3501b23ef7145aa9b4cc1652ba15d6bc2a5d6b0ebc7808c5f621831a664ed7d"
+    },
+    {
+      "file": "Программирование практика 17 окт (transcribed on 17-Oct-2026 15-19-45)(1).txt",
+      "bytes": 94173,
+      "sha256": "92b243679671e5e07a742d0a83537179911c2a952f88df95152e0b2c4e6dd290"
+    },
+    {
+      "file": "Совтех (transcribed on 17-Oct-2026 15-22-56).txt",
+      "bytes": 63572,
+      "sha256": "bce9c35ce3826f11d9ce0496344a131f6a0fe09dd2f1a0d4729244bf8cbd4df1"
+    }
+  ],
+  "note": "Дата импорта не является датой занятия. Оригиналы остаются у владельца; фотографии и аудио не включаются в APK.",
+  "programming": {
+    "repository": "GrayMans1on/UniversityProjects_Shparov",
+    "commit": "85879f2",
+    "path": "lectures/sem-1-lecture-03-arrays-exceptions-recursion.md",
+    "action": "Existing lecture verified; external programming link preserved."
+  }
+}

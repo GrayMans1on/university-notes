@@ -13,7 +13,7 @@
     {
       "title": "Линал",
       "slug": "linear-algebra",
-      "topics": 13
+      "topics": 15
     },
     {
       "title": "Совр технологии",
@@ -28,12 +28,12 @@
     {
       "title": "Английский",
       "slug": "english",
-      "topics": 7
+      "topics": 9
     },
     {
       "title": "Матанализ",
       "slug": "calculus",
-      "topics": 19
+      "topics": 22
     },
     {
       "title": "Информатика",
@@ -58,14 +58,14 @@
     "bookmarks",
     "settings"
   ],
-  "searchSections": 561,
-  "mathCount": 5655,
+  "searchSections": 618,
+  "mathCount": 6262,
   "mathErrors": [],
-  "studyTopics": 94,
-  "referenceEntries": 119,
-  "formulaGroups": 24,
-  "questions": 292,
-  "practiceTasks": 845,
+  "studyTopics": 101,
+  "referenceEntries": 132,
+  "formulaGroups": 26,
+  "questions": 307,
+  "practiceTasks": 863,
   "practiceTypes": [
     "multi",
     "matching",

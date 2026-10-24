@@ -60,8 +60,8 @@
     nav.setAttribute('aria-label', 'Главное меню');
     const navigation = [
         ['Дисциплины', '/disciplines/', 'grid_on'], ['Расписание', '/schedule/', 'calendar_month'],
-        ['Учебники', '/textbooks/', 'menu_book'], ['Закладки', '/bookmarks/', 'bookmark'],
-        ['Доп. функции', '/tools/', 'account_tree'], ['Настройки', '/settings/', 'tune'],
+        ['Карта', '/map/', 'map'], ['Учебники', '/textbooks/', 'menu_book'],
+        ['Закладки', '/bookmarks/', 'bookmark'], ['Настройки', '/settings/', 'tune'],
     ];
     for (const [label, url, name] of navigation) {
         const link = node('a', '');
@@ -245,8 +245,7 @@
             window.scrollTo(0, 0);
         }
         for (const link of nav.children) {
-            const active = link.pathname === '/tools/' && location.pathname.startsWith('/map/')
-                || location.pathname.startsWith(new URL(link.href).pathname)
+            const active = location.pathname.startsWith(new URL(link.href).pathname)
                 || link.pathname === '/disciplines/' && location.pathname.startsWith('/notes/');
             if (active) { link.setAttribute('aria-current', 'page'); } else { link.removeAttribute('aria-current'); }
         }
@@ -334,7 +333,7 @@
             body.append(node('strong', '', 'Пар в расписании нет'));
             return;
         }
-        nextCard.href = '/schedule/';
+        nextCard.href = next.mapUrl || '/schedule/';
         const today = window.StudySchedule.isoDate(day) === now.date;
         const bells = window.StudySchedule.lessonTime(schedule, next);
         const ongoing = today && bells[0] <= now.time;

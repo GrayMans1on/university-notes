@@ -66,13 +66,13 @@ function page(route) {
     search.value = '';
     search.dispatchEvent(new home.window.Event('input'));
     assert.deepEqual([...home.window.document.querySelectorAll('.app-nav a')].map((a) => a.pathname),
-        ['/disciplines/', '/schedule/', '/textbooks/', '/bookmarks/', '/tools/', '/settings/']);
+        ['/disciplines/', '/schedule/', '/map/', '/textbooks/', '/bookmarks/', '/settings/']);
     const cards = home.window.document.querySelectorAll('.app-card');
     assert.equal(cards.length, 2);
     assert.match(cards[1].href, /\/notes\/informatics\/#/);
     assert.ok(cards[0].querySelector('strong').textContent.length > 0);
     assert.ok(cards[0].querySelector('img'), 'Classroom card includes a map preview');
-    assert.equal(cards[0].pathname, '/schedule/', 'Next lesson opens the schedule');
+    assert.equal(cards[0].pathname, '/map/', 'Next lesson restores the classroom map');
     const saved = page('/bookmarks/');
     assert.equal(saved.window.document.querySelectorAll('.app-bookmarks-list li').length, 2);
     saved.window.document.querySelector('.app-bookmarks-list input').checked = true;

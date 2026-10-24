@@ -31,6 +31,5 @@ body:has(#disciplines) .site-credit{display:none}
 .app-textbook h2{font-size:17px;margin:0 0 6px}.app-textbook p{font-size:13px;line-height:1.5}
 .app-textbook button{min-height:44px;padding:8px 14px;background:var(--app-panel);color:var(--app-blue);border:1px solid var(--app-line);border-radius:9px;font:inherit}
 
-.topbar .tool-nav{display:none!important}
-
-body:has(#disciplines) .topbar{display:flex!important}
+/* Keep both discipline filtering and full-text search visible. */
+body:has(#disciplines) .topbar{display:flex!important}.discipline-search{display:block;margin:10px 0 12px}.discipline-search input{width:100%;padding:10px 12px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;font:inherit}.subject-card[hidden]{display:none!important}

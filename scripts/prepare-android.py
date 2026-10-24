@@ -15,6 +15,19 @@ if OUTPUT.exists():
     shutil.rmtree(OUTPUT)
 SITE.mkdir(parents=True)
 shutil.copytree(ROOT / 'dist', SITE, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.pdf', '*.PDF', '.*'))
+# Site-only tools must never enter the offline application or its update feed.
+shutil.rmtree(SITE / 'tools', ignore_errors=True)
+for name in ('tools.css', 'tool-core.js', 'reader-tools.js', 'tools.js', 'tools-v2.js',
+             'flow-editor.js', 'flow-runtime.js', 'math-tools.js', 'math-runtime.js',
+             'tool-catalog.json', 'teachers.json', 'announcements.json', 'katex.min.js'):
+    (SITE / 'assets' / name).unlink(missing_ok=True)
+shutil.rmtree(SITE / 'assets/mathlive', ignore_errors=True)
+shutil.rmtree(SITE / 'assets/compute-engine', ignore_errors=True)
+for page in SITE.rglob('*.html'):
+    text = page.read_text()
+    text = re.sub(r'<(?:script|link)\b[^>]*(?:tools\.css|tool-core\.js|reader-tools\.js|tools\.js|tools-v2\.js|flow-editor\.js|flow-runtime\.js|math-tools\.js|math-runtime\.js)[^>]*>(?:</script>)?', '', text)
+    text = re.sub(r'<a\b[^>]*href="/tools/[^"\s]*"[^>]*>.*?</a>', '', text, flags=re.S)
+    page.write_text(text)
 renamed = {}
 for file in list(SITE.rglob('*')):
     if file.is_file() and not file.name.isascii():

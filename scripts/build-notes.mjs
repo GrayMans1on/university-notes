@@ -1,6 +1,7 @@
 import { buildToolPages, toolPages } from './tool-pages.mjs';
 import { loadSchedule } from './schedule-data.mjs';
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { marked, Renderer } from 'marked';
 import { anchor, splitTopics, topicKey, classifyStatements, relatedTopics, interactiveTopics, widgetTitles } from './study-tools.mjs';
@@ -247,10 +248,20 @@ function shell(title, description, content, current = null, toc = '', route = ''
 <main id="main" class="${current ? 'reader-layout' : 'library-layout' + (content.includes('home-dashboard') ? ' home-layout' : route === 'map' ? ' map-layout' : '')}" tabindex="-1">${content}${toc}</main><footer class="site-credit"><p>Сделано с помощью ChatGPT. Соавтор — Влад Шпаров.</p><p>Не официальный сайт ЧелГУ</p></footer></div></body></html>`;
 }
 
+const toolAssetVersions = new Map();
+function versionToolAssets(html) {
+    return html.replace(/(src|href)="(\/assets\/(?:tools(?:-v2)?\.css|tool-core\.js|reader-tools\.js|tools\.js|math-runtime\.js|math-tools\.js|flow-runtime\.js|flow-editor\.js|compute-engine\/compute-engine\.js|mathlive\/mathlive\.min\.js))"/g, (match, attribute, url) => {
+        if (!toolAssetVersions.has(url)) {
+            const bytes = fs.readFileSync(path.join(output, url));
+            toolAssetVersions.set(url, createHash('sha256').update(bytes).digest('hex').slice(0, 12));
+        }
+        return `${attribute}="${url}?v=${toolAssetVersions.get(url)}"`;
+    });
+}
 function writePage(route, title, description, content, current = null, toc = '') {
     const folder = path.join(output, route);
     fs.mkdirSync(folder, { recursive: true });
-    fs.writeFileSync(path.join(folder, 'index.html'), shell(title, description, content, current, toc, route));
+    fs.writeFileSync(path.join(folder, 'index.html'), versionToolAssets(shell(title, description, content, current, toc, route)));
 }
 
 function md(value) {

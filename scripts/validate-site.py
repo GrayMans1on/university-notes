@@ -87,7 +87,7 @@ for file, parser in pages.items():
     for link in parser.links:
         validate_link(file, link)
     for resource in parser.resources:
-        assert (DIST / resource.lstrip('/')).is_file(), 'Missing asset: ' + resource
+        assert (DIST / unquote(urlparse(resource).path).lstrip('/')).is_file(), 'Missing asset: ' + resource
 
 search = json.loads((DIST / 'assets/search-index.json').read_text())
 for entry in search:

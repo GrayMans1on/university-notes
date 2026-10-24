@@ -28,7 +28,7 @@ jobs:
         run: |
           if [ "$EVENT_NAME" = workflow_dispatch ] || [ "$BEFORE_SHA" = 0000000000000000000000000000000000000000 ]; then
             echo 'build=true' >> "$GITHUB_OUTPUT"
-          elif git diff --name-only "$BEFORE_SHA" "$GITHUB_SHA" | grep -Eq '^(android/(app/|build.gradle|settings.gradle|gradle.properties)|scripts/package-android-release.py)'; then
+          elif git diff --name-only "$BEFORE_SHA" "$GITHUB_SHA" | grep -Eq '^(android/(app/|build.gradle|settings.gradle|gradle.properties)|scripts/package-android-release.py|android/release-candidate.json)'; then
             echo 'build=true' >> "$GITHUB_OUTPUT"
           else
             echo 'build=false' >> "$GITHUB_OUTPUT"
@@ -90,6 +90,7 @@ jobs:
         if: steps.native.outputs.build == 'true'
         id: apk
         env:
+          GH_TOKEN: ${{ github.token }}
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}

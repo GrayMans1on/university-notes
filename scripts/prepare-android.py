@@ -14,7 +14,7 @@ SITE = OUTPUT / 'site'
 if OUTPUT.exists():
     shutil.rmtree(OUTPUT)
 SITE.mkdir(parents=True)
-shutil.copytree(ROOT / 'dist', SITE, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.pdf', '*.PDF'))
+shutil.copytree(ROOT / 'dist', SITE, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.pdf', '*.PDF', '.*'))
 renamed = {}
 for file in list(SITE.rglob('*')):
     if file.is_file() and not file.name.isascii():

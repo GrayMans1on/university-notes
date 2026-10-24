@@ -122,7 +122,7 @@ jobs:
             gh release create "$tag" android/release-output/app.apk android/release-output/app-release.json --target "$GITHUB_SHA" --title "Android ${APP_VERSION}" --notes "Возвращён прежний интерфейс приложения. Сохранён поиск дисциплин; учебные инструменты остаются только на сайте."
           fi
       - name: Preserve the published APK feed during material-only updates
-        if: steps.native.outputs.build != 'true'
+        if: steps.apk.outputs.signed != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

@@ -20,6 +20,7 @@ async function page(route, scripts = ['assets/tool-core.js', 'assets/math-runtim
         get value() { return this._value || ''; }
         set value(value) { this._value = value; }
         insert(value) { this.value += value; }
+        connectedCallback() { this.dispatchEvent(new dom.window.Event('mount')); }
     }
     dom.window.customElements.define('math-field', MathField);
     dom.window.MathfieldElement = MathField;

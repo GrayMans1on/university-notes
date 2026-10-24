@@ -56,17 +56,17 @@
                 const node = doc.nodes.find((item) => item.id === group.dataset.node);
                 group.classList.toggle('selected', node.id === selected);
                 group.classList.toggle('executing', node.id === runner?.current?.id);
-                const ports = node.type === 'decision' ? [[45, 'Да'], [125, 'Нет']] : node.type === 'end' ? [] : [[85, '']];
-                for (const [x, branch] of ports) {
+                const ports = node.type === 'decision' ? [[170, 38, 'Да'], [85, 76, 'Нет']] : node.type === 'end' ? [] : [[85, 76, '']];
+                for (const [x, y, branch] of ports) {
                     const port = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                    port.setAttribute('cx', x); port.setAttribute('cy', '76'); port.setAttribute('r', '9');
+                    port.setAttribute('cx', x); port.setAttribute('cy', y); port.setAttribute('r', '9');
                     port.setAttribute('class', 'flow-port'); port.dataset.port = node.id; port.dataset.branch = branch;
                     port.setAttribute('role', 'button'); port.setAttribute('tabindex', '0');
                     port.setAttribute('aria-label', 'Протянуть стрелку' + (branch ? ': ' + branch : ''));
                     group.append(port);
                     if (branch) {
                         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                        text.setAttribute('x', x); text.setAttribute('y', '104'); text.setAttribute('text-anchor', 'middle');
+                        text.setAttribute('x', x); text.setAttribute('y', y + 24); text.setAttribute('text-anchor', 'middle');
                         text.setAttribute('class', 'flow-port-label'); text.textContent = branch; group.append(text);
                     }
                 }
@@ -77,8 +77,9 @@
             });
             if (drag?.kind === 'edge') {
                 const a = doc.nodes.find((node) => node.id === drag.from); const path = document.createElementNS(svg.namespaceURI, 'path');
-                const x = a.x + (drag.branch === 'Да' ? 45 : drag.branch === 'Нет' ? 125 : 85);
-                path.setAttribute('d', `M${x} ${a.y + 76}L${drag.point.x} ${drag.point.y}`);
+                const x = a.x + (drag.branch === 'Да' ? 170 : 85);
+                const y = a.y + (drag.branch === 'Да' ? 38 : 76);
+                path.setAttribute('d', `M${x} ${y}L${drag.point.x} ${drag.point.y}`);
                 path.setAttribute('class', 'flow-draft-edge'); svg.append(path);
             }
             board.append(menu);
@@ -292,7 +293,9 @@
             } finally { URL.revokeObjectURL(url); }
         })));
         const layout = element('div', undefined, 'flow-workbench'); layout.append(board, inspector);
-        consolePanel.append(runStatus, inputPanel, element('h3', 'Переменные'), variables, element('h3', 'Вывод'), output);
+        const variableSection = element('section'); variableSection.append(element('h3', 'Переменные'), variables);
+        const outputSection = element('section'); outputSection.append(element('h3', 'Вывод'), output);
+        consolePanel.append(runStatus, inputPanel, variableSection, outputSection);
         root.append(row(button('Новая схема', create), button('Запустить', run, 'primary'), button('Шаг', step),
             button('Стоп', () => { stop(); renderCanvas(); })), bar.node, row(picker.label, title.label, exports), file, layout, consolePanel);
         new MutationObserver(renderCanvas).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });

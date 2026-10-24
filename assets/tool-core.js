@@ -184,24 +184,26 @@
         const parts = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1220 1020" role="img" aria-label="${escape(flow.title)}"><title>${escape(flow.title)}</title><defs><marker id="flow-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="${ink}"/></marker></defs>`];
         for (const edge of flow.edges) {
             const a = flow.nodes.find((n) => n.id === edge.from); const b = flow.nodes.find((n) => n.id === edge.to);
-            let path; let labelX; let labelY;
+            const yes = a.type === 'decision' && ['да', 'true', '1'].includes(edge.label.toLowerCase().trim());
+            const sx = a.x + (yes ? 170 : 85); const sy = a.y + (yes ? 38 : 76);
+            let path; let labelX = sx + 12; let labelY = sy + 22;
             if (a.id === b.id) {
-                path = `M${a.x + 170} ${a.y + 38}h25v-60h-110v22`;
-                labelX = a.x + 190; labelY = a.y - 22;
+                const outer = a.x + 210;
+                path = yes ? `M${sx} ${sy}H${outer}V${a.y - 25}H${a.x + 85}V${a.y}`
+                    : `M${sx} ${sy}v25H${outer}V${a.y - 25}H${a.x + 85}V${a.y}`;
             } else if (b.y > a.y + 105) {
                 const mid = (a.y + 76 + b.y) / 2;
-                path = `M${a.x + 85} ${a.y + 76}V${mid}H${b.x + 85}V${b.y}`;
-                labelX = (a.x + b.x) / 2 + 93; labelY = mid - 7;
-            } else if (b.x >= a.x + 190 || b.x + 190 <= a.x) {
-                const right = b.x > a.x;
-                const x = a.x + (right ? 170 : 0); const target = b.x + (right ? 0 : 170);
-                const mid = (x + target) / 2;
-                path = `M${x} ${a.y + 38}H${mid}V${b.y + 38}H${target}`;
-                labelX = mid + 8; labelY = (a.y + b.y) / 2 + 30;
+                path = yes ? `M${sx} ${sy}h30V${mid}H${b.x + 85}V${b.y}`
+                    : `M${sx} ${sy}V${mid}H${b.x + 85}V${b.y}`;
+                labelX = yes ? sx + 20 : sx + 10; labelY = yes ? sy - 8 : sy + 23;
+            } else if (b.x >= a.x + 200 && yes) {
+                const mid = (sx + b.x) / 2;
+                path = `M${sx} ${sy}H${mid}V${b.y + 38}H${b.x}`;
+                labelX = sx + 18; labelY = sy - 8;
             } else {
-                const x = Math.max(a.x, b.x) + 195;
-                path = `M${a.x + 170} ${a.y + 38}H${x}V${b.y + 38}H${b.x + 170}`;
-                labelX = x + 8; labelY = (a.y + b.y) / 2 + 30;
+                const outer = Math.max(a.x, b.x) + 205;
+                path = yes ? `M${sx} ${sy}H${outer}V${b.y + 38}H${b.x + 170}`
+                    : `M${sx} ${sy}v25H${outer}V${b.y + 38}H${b.x + 170}`;
             }
             parts.push(`<path d="${path}" fill="none" stroke="${ink}" stroke-width="2" marker-end="url(#flow-arrow)"/><text x="${labelX}" y="${labelY}" fill="${ink}" font-size="16">${escape(edge.label)}</text>`);
         }

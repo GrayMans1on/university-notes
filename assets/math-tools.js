@@ -8,13 +8,16 @@
         const input = document.createElement('math-field');
         input.setAttribute('aria-label', title); input.value = value;
         input.mathVirtualKeyboardPolicy = 'manual';
-        input.inlineShortcuts = { ...input.inlineShortcuts, sum: '\\sum_{n=1}^{\\placeholder{}}\\placeholder{}',
+        const shortcuts = { sum: '\\sum_{n=1}^{\\placeholder{}}\\placeholder{}',
             prod: '\\prod_{n=1}^{\\placeholder{}}\\placeholder{}', sqrt: '\\sqrt{\\placeholder{}}',
             sinh: '\\sinh', cosh: '\\cosh', tanh: '\\tanh', asin: '\\arcsin', acos: '\\arccos',
             atan: '\\arctan', acot: '\\operatorname{arccot}', asinh: '\\operatorname{arsinh}', acosh: '\\operatorname{arcosh}',
             atanh: '\\operatorname{artanh}', exp: '\\exp', floor: '\\lfloor\\placeholder{}\\rfloor',
             round: '\\operatorname{round}', sign: '\\operatorname{sign}',
             ceil: '\\lceil\\placeholder{}\\rceil', abs: '\\left|\\placeholder{}\\right|' };
+        input.addEventListener('mount', () => {
+            input.inlineShortcuts = { ...input.inlineShortcuts, ...shortcuts };
+        });
         label.append(input); return { label, input };
     }
     function setup() {

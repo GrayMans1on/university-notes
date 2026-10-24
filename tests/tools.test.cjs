@@ -121,6 +121,7 @@ function input(window, label, value, event = 'input') {
     assert.ok(w.document.querySelectorAll('.teacher-card').length > 3);
     assert.equal(w.document.querySelectorAll('#tool-root textarea, #tool-root input[type=password], #tool-root button').length, 0);
     assert.ok(w.document.querySelector('.teacher-subjects a[href*=notes]'));
+    assert.ok(w.document.querySelector('.teacher-subjects a[href*="discrete-math"]')); 
     assert.ok(!w.document.querySelector('#tool-root').textContent.includes('Кафедра')); dom.window.close();
     dom = await page('tools/announcements'); w = dom.window;
     assert.equal(w.document.querySelectorAll('#tool-root input, #tool-root button, #tool-root textarea').length, 0); dom.window.close();

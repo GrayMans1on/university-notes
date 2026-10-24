@@ -143,7 +143,7 @@
                         || (/иностранн/i.test(name) && item.slug === 'english')
                         || (name.includes('анализ') && item.slug === 'calculus')
                         || (name.includes('алгебр') && item.slug === 'linear-algebra')
-                        || (name.includes('дискрет') && item.slug === 'discrete-math')
+                        || (/дискрет/i.test(name) && item.slug === 'discrete-math')
                         || (name.includes('технолог') && item.slug === 'modern-technologies')
                         || (name.includes('государствен') && item.slug === 'statehood'));
                     const link = element(subject || /программирован/i.test(name) ? 'a' : 'span', name);

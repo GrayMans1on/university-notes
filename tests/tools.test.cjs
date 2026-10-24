@@ -5,7 +5,7 @@ const { JSDOM } = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const wait = () => new Promise((resolve) => setTimeout(resolve, 15));
 const memory = new Map();
-async function page(route, scripts = ['assets/tool-core.js', 'assets/tools.js'], native = null) {
+async function page(route, scripts = ['assets/tool-core.js', 'assets/math-runtime.js', 'assets/math-tools.js', 'assets/flow-runtime.js', 'assets/flow-editor.js', 'assets/tools.js'], native = null) {
     const dom = new JSDOM(fs.readFileSync(path.join(root, 'dist', route, 'index.html'), 'utf8'), {
         url: 'https://study.local/' + route + '/', runScripts: 'outside-only', pretendToBeVisual: true,
     });
@@ -14,6 +14,17 @@ async function page(route, scripts = ['assets/tool-core.js', 'assets/tools.js'],
     dom.window.TextDecoder = TextDecoder;
     dom.window.matchMedia = () => ({ matches: false, addEventListener() {} });
     dom.window.scrollTo = () => {};
+    dom.window.ComputeEngine = require('@cortex-js/compute-engine');
+    dom.window.ResizeObserver = class { observe() {} disconnect() {} };
+    class MathField extends dom.window.HTMLElement {
+        get value() { return this._value || ''; }
+        set value(value) { this._value = value; }
+        insert(value) { this.value += value; }
+    }
+    dom.window.customElements.define('math-field', MathField);
+    dom.window.MathfieldElement = MathField;
+    dom.window.SVGElement.prototype.getBoundingClientRect = () => ({ left: 0, top: 0, width: 1220, height: 1020 });
+    dom.window.HTMLElement.prototype.setPointerCapture = () => {};
     if (native) { dom.window.StudyNative = native; }
     for (const [key, value] of memory) { dom.window.localStorage.setItem(key, value); }
     dom.window.fetch = async (url) => ({ ok: true, json: async () => JSON.parse(fs.readFileSync(path.join(root, 'dist', String(url).replace(/^\//, '')), 'utf8')) });
@@ -27,7 +38,7 @@ function click(window, text) {
 }
 function input(window, label, value, event = 'input') {
     const field = [...window.document.querySelectorAll('label')].find((e) => e.firstChild?.textContent === label);
-    assert.ok(field, label); const control = field.querySelector('input,textarea,select');
+    assert.ok(field, label); const control = field.querySelector('input,textarea,select,math-field');
     control.value = value; control.dispatchEvent(new window.Event(event, { bubbles: true })); return control;
 }
 (async () => {
@@ -65,50 +76,53 @@ function input(window, label, value, event = 'input') {
     assert.equal(w.document.querySelector('textarea').value, 'Не потерять после обновления');
     click(w, 'Повторить'); assert.equal(w.document.querySelector('textarea').value, 'Изменённый текст'); dom.window.close();
 
-    let exported;
-    dom = await page('tools/flowcharts', undefined, { get() { return ''; }, put() {}, exportDocument(...args) { exported = args; }, importFlowchart() {} }); w = dom.window;
-    click(w, 'Новая схема'); input(w, 'Тип блока', 'decision', 'change'); click(w, 'Добавить блок');
-    input(w, 'Текст блока', 'x > 0?'); click(w, 'Применить блок'); click(w, 'Добавить связь'); click(w, 'Сохранить файл');
-    assert.equal(exported[0], 'flowchart.csuflow'); assert.equal(exported[1], 'application/json');
-    const file = JSON.parse(exported[2]); assert.equal(file.nodes.length, 2); assert.equal(file.edges.length, 1);
-    const before = JSON.parse(w.localStorage.getItem('study-workspace')).flows.length;
-    w.dispatchEvent(new w.CustomEvent('study-flow-import', { detail: { text: '{"format":"wrong"}' } }));
-    assert.equal(JSON.parse(w.localStorage.getItem('study-workspace')).flows.length, before);
-    w.dispatchEvent(new w.CustomEvent('study-flow-import', { detail: { text: exported[2] } }));
-    assert.equal(JSON.parse(w.localStorage.getItem('study-workspace')).flows.length, before + 1);
-    assert.ok(JSON.parse(w.localStorage.getItem('study-workspace')).notes.some((n) => n.title === 'Личная запись'));
-    click(w, 'Отменить'); assert.equal(JSON.parse(w.localStorage.getItem('study-workspace')).flows.length, before); dom.window.close();
-
-    dom = await page('tools/graphs'); w = dom.window;
-    assert.equal(w.document.querySelectorAll('.graph-canvas path[clip-path]').length, 2);
-    input(w, 'Функции, по одной на строку (до 4)', '1/x\nsqrt(x)'); click(w, 'Построить');
-    assert.equal(w.document.querySelectorAll('.graph-canvas path[clip-path]').length, 2);
-    input(w, 'x до', '-20'); click(w, 'Построить'); assert.match(w.document.getElementById('tool-status').textContent, /границы|Границы/); dom.window.close();
-
-    dom = await page('tools/formula-editor', ['assets/tool-core.js', 'dist/assets/katex.min.js', 'assets/tools.js']); w = dom.window;
-    assert.ok(w.document.querySelector('.tool-preview .katex')); click(w, 'Сохранить формулу');
-    input(w, 'Формула LaTeX', '\\sqrt{x}'); assert.ok(w.document.querySelector('.tool-preview .katex'));
-    click(w, 'Отменить'); assert.match(w.document.querySelector('textarea').value, /frac/); dom.window.close();
-
-    dom = await page('tools/teachers'); w = dom.window;
-    assert.ok(w.document.querySelectorAll('.tool-card-panel').length > 3);
-    const description = w.document.querySelector('textarea'); description.value = 'Требования к сдаче'; description.dispatchEvent(new w.Event('input'));
-    assert.ok(Object.values(JSON.parse(w.localStorage.getItem('study-workspace')).teacherNotes).some((x) => x.description === 'Требования к сдаче'));
+    dom = await page('tools/flowcharts'); w = dom.window;
+    click(w, 'Новая схема');
+    const board = w.document.querySelector('.flow-board');
+    board.dispatchEvent(new w.MouseEvent('contextmenu', { bubbles: true, clientX: 300, clientY: 200 }));
+    click(w, 'Создать блок');
+    const menu = w.document.querySelector('.flow-context-menu');
+    [...menu.querySelectorAll('button')].find((button) => button.textContent === 'Ввод').click();
+    input(w, 'Переменные через запятую', 'a, b');
+    const stored = JSON.parse(w.localStorage.getItem('study-workspace'));
+    assert.equal(stored.flows[0].document.nodes[1].config.variable, 'a, b');
+    click(w, 'Отменить'); click(w, 'Повторить');
+    assert.equal(JSON.parse(w.localStorage.getItem('study-workspace')).flows[0].document.nodes[1].config.variable, 'a, b');
+    const fileInput = w.document.querySelector('input[type=file]');
+    Object.defineProperty(fileInput, 'files', { configurable: true, value: [{ size: 20, text: async () => '{"format":"wrong"}' }] });
+    fileInput.dispatchEvent(new w.Event('change')); await wait();
+    assert.equal(JSON.parse(w.localStorage.getItem('study-workspace')).flows.length, 1);
+    Object.defineProperty(fileInput, 'files', { value: [{ size: 100, text: async () => JSON.stringify(stored.flows[0].document) }] });
+    fileInput.dispatchEvent(new w.Event('change')); await wait();
+    assert.equal(JSON.parse(w.localStorage.getItem('study-workspace')).flows.length, 2);
+    assert.ok(JSON.parse(w.localStorage.getItem('study-workspace')).notes.some((note) => note.title === 'Личная запись'));
     dom.window.close();
 
+    dom = await page('tools/graphs'); w = dom.window;
+    assert.equal(w.document.querySelectorAll('[data-curve]').length, 2);
+    const scale = JSON.parse(w.localStorage.getItem('study-graphs')).view.scale;
+    w.document.querySelector('.graph-canvas').dispatchEvent(new w.WheelEvent('wheel', { deltaY: -100, clientX: 400, clientY: 200, cancelable: true }));
+    await wait(); assert.ok(JSON.parse(w.localStorage.getItem('study-graphs')).view.scale > scale);
+    input(w, 'Функция 1', '\\sqrt{x}'); await wait();
+    assert.equal(w.document.querySelectorAll('[data-curve]').length, 2); dom.window.close();
+
+    dom = await page('tools/formula-editor'); w = dom.window;
+    click(w, 'Сохранить формулу'); input(w, 'Формула', '\\sqrt{x}');
+    assert.equal(JSON.parse(w.localStorage.getItem('study-workspace')).formulas[0].code, '\\sqrt{x}');
+    click(w, 'Отменить'); assert.match(w.document.querySelector('math-field').value, /frac/); dom.window.close();
+
+    dom = await page('tools/converter'); w = dom.window;
+    assert.equal(w.document.querySelectorAll('.converter-grid label').length, 4);
+    input(w, 'Исходное число', '1000');
+    const before = w.document.querySelector('input[readonly]').value;
+    click(w, '⇅'); assert.notEqual(w.document.querySelector('input[readonly]').value, before); dom.window.close();
+    dom = await page('tools/teachers'); w = dom.window;
+    assert.ok(w.document.querySelectorAll('.teacher-card').length > 3);
+    assert.equal(w.document.querySelectorAll('#tool-root textarea, #tool-root input[type=password], #tool-root button').length, 0);
+    assert.ok(w.document.querySelector('.teacher-subjects a[href*=notes]'));
+    assert.ok(!w.document.querySelector('#tool-root').textContent.includes('Кафедра')); dom.window.close();
     dom = await page('tools/announcements'); w = dom.window;
-    const writes = [];
-    w.StudyAdmin = { code: 'TEST', request: async (method, file, payload) => {
-        assert.equal(file, 'content/announcements.json');
-        if (method === 'GET') { return { sha: 'old-sha', content: Buffer.from(JSON.stringify({ schema: 1, posts: [{ id: 'old', title: 'Старое', body: 'Сохранить', createdAt: '2026-10-01T00:00:00Z' }] })).toString('base64') }; }
-        writes.push(payload); return {};
-    } };
-    input(w, 'Заголовок', 'Тестовое сообщение'); input(w, 'Текст объявления', 'Проверяется только в памяти теста');
-    input(w, 'Код администратора', 'TEST'); input(w, 'GitHub-токен, только на этот сеанс', 'private-test-token');
-    click(w, 'Опубликовать объявление'); await wait();
-    assert.equal(writes.length, 1); assert.equal(writes[0].sha, 'old-sha');
-    const published = JSON.parse(Buffer.from(writes[0].content, 'base64').toString()); assert.equal(published.posts[0].id, 'old'); assert.equal(published.posts.length, 2);
-    assert.ok(![...Array(w.localStorage.length)].some((_, i) => w.localStorage.getItem(w.localStorage.key(i)).includes('private-test-token'))); dom.window.close();
+    assert.equal(w.document.querySelectorAll('#tool-root input, #tool-root button, #tool-root textarea').length, 0); dom.window.close();
 
     dom = await page('notes/informatics', ['assets/tool-core.js', 'assets/tools.js', 'assets/reader-tools.js']); w = dom.window;
     click(w, 'Режим чтения'); assert.ok(w.document.body.classList.contains('reading-mode'));
@@ -122,5 +136,5 @@ function input(window, label, value, event = 'input') {
     dom = await page('textbooks', ['assets/tool-core.js', 'assets/tools.js', 'assets/reader-tools.js']); w = dom.window;
     const box = w.document.querySelector('.book-subject-choice input'); box.checked = !box.checked; click(w, 'Сохранить привязку');
     assert.ok(Object.keys(JSON.parse(w.localStorage.getItem('study-workspace')).bookBindings).length); dom.window.close();
-    console.log('Tools: safe arithmetic, units, flow files, undo, persistence, graphs, formulas, teachers, publishing and reader highlights passed.');
+    console.log('Tools: safe arithmetic, units, flow files, undo, persistence, graphs, formulas, read-only catalogs and reader highlights passed.');
 })().catch((error) => { console.error(error); process.exit(1); });

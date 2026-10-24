@@ -29,12 +29,13 @@
         const source = String(input).toLowerCase().replace(/[−–]/g, '-').replace(/π/g, 'pi')
             .replace(/[×·]/g, '*').replace(/,/g, '.').replace(/\s/g, '');
         if (!source || source.length > 240) { throw new Error('Введите выражение длиной до 240 символов.'); }
-        const tokens = source.match(/(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?|[a-z]+|[()+*/%^!\-]/g) || [];
+        const tokens = source.match(/(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?|[a-z][a-z0-9_]*|[()+*/%^!\-]/g) || [];
         if (tokens.join('') !== source) { throw new Error('В выражении есть неподдерживаемый символ.'); }
         let i = 0;
         let depth = 0;
         const functions = { sin: Math.sin, cos: Math.cos, tan: Math.tan, asin: Math.asin, acos: Math.acos,
-            atan: Math.atan, sqrt: Math.sqrt, ln: Math.log, log: Math.log10, exp: Math.exp,
+            atan: Math.atan, sinh: Math.sinh, cosh: Math.cosh, tanh: Math.tanh,
+            asinh: Math.asinh, acosh: Math.acosh, atanh: Math.atanh, sqrt: Math.sqrt, ln: Math.log, log: Math.log10, exp: Math.exp,
             abs: Math.abs, floor: Math.floor, ceil: Math.ceil, round: Math.round };
         function atom() {
             if (++depth > 45) { throw new Error('Слишком много вложенных выражений.'); }
@@ -44,7 +45,10 @@
                 result = sum();
                 if (tokens[i++] !== ')') { throw new Error('Не закрыта скобка.'); }
             } else if (token === 'x' || token === 'ans') {
-                result = (values) => Number(values[token] ?? 0);
+                result = (values) => {
+                    if (token === 'x' && !Object.hasOwn(values, token)) { throw new Error('Не задана переменная x'); }
+                    return Number(values[token] ?? 0);
+                };
             } else if (token === 'pi' || token === 'e') {
                 result = () => token === 'pi' ? Math.PI : Math.E;
             } else if (Object.hasOwn(functions, token)) {
@@ -54,7 +58,12 @@
                 result = (values) => functions[token](argument(values));
             } else if (token && /^(\d|\.)/.test(token)) {
                 result = () => Number(token);
-            } else { throw new Error('Ожидается число, x или функция.'); }
+            } else if (token && /^[a-z][a-z0-9_]*$/.test(token) && !['constructor', 'prototype', '__proto__'].includes(token)) {
+                result = (values) => {
+                    if (!Object.hasOwn(values, token)) { throw new Error('Не задана переменная ' + token); }
+                    return Number(values[token]);
+                };
+            } else { throw new Error('Ожидается число, переменная или функция.'); }
             while (tokens[i] === '!') {
                 i += 1;
                 const before = result;
@@ -144,7 +153,21 @@
                 throw new Error('Недопустимый или повторяющийся блок.');
             }
             ids.add(n.id);
-            return { id: n.id, type: n.type, text: n.text, x: n.x, y: n.y };
+            const config = {};
+            if (n.config !== undefined) {
+                if (!n.config || typeof n.config !== 'object' || Array.isArray(n.config)) {
+                    throw new Error('Некорректные параметры блока.');
+                }
+                for (const key of ['variable', 'expression', 'operation', 'left', 'right', 'operator']) {
+                    if (n.config[key] !== undefined) {
+                        if (typeof n.config[key] !== 'string' || n.config[key].length > 240) {
+                            throw new Error('Слишком длинные параметры блока.');
+                        }
+                        config[key] = n.config[key];
+                    }
+                }
+            }
+            return { id: n.id, type: n.type, text: n.text, x: n.x, y: n.y, ...(n.config ? { config } : {}) };
         });
         const edges = raw.edges.map((e) => {
             if (!e || !ids.has(e.from) || !ids.has(e.to) || typeof e.label !== 'string' || e.label.length > 50) {

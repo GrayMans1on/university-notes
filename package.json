@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "@cortex-js/compute-engine": "0.164.0",
     "katex": "0.16.11",
-    "marked": "16.4.1"
+    "marked": "16.4.1",
+    "mathlive": "0.111.1"
   },
   "devDependencies": {
     "jsdom": "26.1.0"

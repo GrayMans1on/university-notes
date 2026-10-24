@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "blobSha": "a761f0b066448f3c06652e91cea9f99df56904b9",
-  "sha256": "d071b3ebb1f2d9161216ab1c4824f08766995e424aedba72ae7784efe46fdaba",
-  "size": 9800309,
-  "versionCode": 7,
-  "versionName": "1.2.0",
-  "sourceCommit": "603b363e62e6a463e30bfa35e4fd43f2c71a84f2"
+  "blobSha": "6bacc21d0072810d138ec94f51e8ec472f061251",
+  "sha256": "181272c430fbe26d34cc7b23ca670bbaff9938769bf4f5a983d537edadbb2e48",
+  "size": 9618712,
+  "versionCode": 8,
+  "versionName": "1.2.1",
+  "sourceCommit": "fd4bf5cc5cc94c78e600ae92ccf4122c05c4826c"
 }

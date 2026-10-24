@@ -63,6 +63,7 @@ jobs:
         run: |
           node tests/textbooks.test.cjs
           node tests/tools.test.cjs
+          node tests/executable-tools.test.cjs
           node android/tests/mobile.test.cjs
           node android/tests/admin.test.cjs
           node android/tests/controls.test.cjs
@@ -118,7 +119,7 @@ jobs:
         run: |
           tag="android-v${APP_VERSION}"
           if ! gh release view "$tag" >/dev/null 2>&1; then
-            gh release create "$tag" android/release-output/app.apk android/release-output/app-release.json --target "$GITHUB_SHA" --title "Android ${APP_VERSION}" --notes "Учебные инструменты, личные заметки, блок-схемы, поиск дисциплин и новая навигация."
+            gh release create "$tag" android/release-output/app.apk android/release-output/app-release.json --target "$GITHUB_SHA" --title "Android ${APP_VERSION}" --notes "Возвращён прежний интерфейс приложения. Сохранён поиск дисциплин; учебные инструменты остаются только на сайте."
           fi
       - name: Preserve the published APK feed during material-only updates
         if: steps.native.outputs.build != 'true'

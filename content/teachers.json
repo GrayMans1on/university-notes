@@ -1,1 +1,103 @@
-{"schema":1,"people":[]}
+{
+  "schema": 1,
+  "people": [
+    {
+      "id": "бутько-лн",
+      "scheduleName": "Бутько Л.Н.",
+      "name": "Бутько Леонид Николаевич",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/sveden/employees/pps/informacionnye-sistemy-i-intellektualynye-tehnologii_019778a3-fc19-7cfd-a6f3-8b22785110e0.html"
+    },
+    {
+      "id": "быкова-вв",
+      "scheduleName": "Быкова В.В.",
+      "name": "Быкова Валерия Витальевна",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/sveden/employees/pps/istoriya-i-teoriya-mirovyh-religiy_0195a2da-8186-7f03-a6bc-1fc5bded8f20.html"
+    },
+    {
+      "id": "земцова-ем",
+      "scheduleName": "Земцова Е.М.",
+      "name": "Земцова Елена Михайловна",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/sveden/employees/pps/informacionnye-sistemy-i-intellektualynye-tehnologii_019778a3-fc19-7cfd-a6f3-8b22785110e0.html"
+    },
+    {
+      "id": "кирсанов-аа",
+      "scheduleName": "Кирсанов А.А.",
+      "name": "Кирсанов Александр Александрович",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/sveden/employees/pps/informacionnye-sistemy-i-intellektualynye-tehnologii_019778a3-fc19-7cfd-a6f3-8b22785110e0.html"
+    },
+    {
+      "id": "корецкая-тп",
+      "scheduleName": "Корецкая Т.П.",
+      "name": "Корецкая Татьяна Павловна",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/sveden/employees/pps/informacionnye-sistemy-i-intellektualynye-tehnologii_019778a3-fc19-7cfd-a6f3-8b22785110e0.html"
+    },
+    {
+      "id": "мингажева-еа",
+      "scheduleName": "Мингажева Е.А.",
+      "name": "Мингажева Елена Александровна",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/sveden/employees/pps/informacionnye-sistemy-i-intellektualynye-tehnologii_019778a3-fc19-7cfd-a6f3-8b22785110e0.html"
+    },
+    {
+      "id": "митина-ов",
+      "scheduleName": "Митина О.В.",
+      "name": "Митина Ольга Викторовна",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/sveden/employees/pps/informacionnye-sistemy-i-intellektualynye-tehnologii_019778a3-fc19-7cfd-a6f3-8b22785110e0.html"
+    },
+    {
+      "id": "нагуманова-ав",
+      "scheduleName": "Нагуманова А.В.",
+      "name": "Нагуманова Анна Викторовна",
+      "description": "",
+      "sourceUrl": "https://maths.csu.ru/departments/kkma/"
+    },
+    {
+      "id": "панькин-ве",
+      "scheduleName": "Панькин В.Е.",
+      "name": "Панькин Виктор Ефимович",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/sveden/employees/pps/informacionnye-sistemy-i-intellektualynye-tehnologii_019778a3-fc19-7cfd-a6f3-8b22785110e0.html"
+    },
+    {
+      "id": "рыбалко-аа",
+      "scheduleName": "Рыбалко А.А.",
+      "name": "Рыбалко Андрей Александрович",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/sveden/employees/pps/informacionnye-sistemy-i-intellektualynye-tehnologii_019778a3-fc19-7cfd-a6f3-8b22785110e0.html"
+    },
+    {
+      "id": "терюхин-ае",
+      "scheduleName": "Терюхин А.Е.",
+      "name": "Терюхин Андрей Евгеньевич",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/sveden/employees/pps/informacionnye-sistemy-i-intellektualynye-tehnologii_019778a3-fc19-7cfd-a6f3-8b22785110e0.html"
+    },
+    {
+      "id": "тюрина-иа",
+      "scheduleName": "Тюрина И.А.",
+      "name": "Тюрина Ирина Александровна",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/about/personal/tyurina-irina-aleksandrovna/"
+    },
+    {
+      "id": "шайхуллина-па",
+      "scheduleName": "Шайхуллина П.А.",
+      "name": "Шайхуллина Полина Алексеевна",
+      "description": "",
+      "sourceUrl": "https://www.csu.ru/about/personal/shaykhullina-polina-alekseevna/"
+    },
+    {
+      "id": "юрина-на",
+      "scheduleName": "Юрина Н.А.",
+      "name": "Юрина Наталья Александровна",
+      "description": "",
+      "sourceUrl": "https://iitech.csu.ru/leadership/"
+    }
+  ]
+}

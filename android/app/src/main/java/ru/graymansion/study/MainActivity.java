@@ -39,8 +39,9 @@ public final class MainActivity extends Activity {
     private boolean darkTheme;
     private File content;
     private String downloadPath;
+    private boolean fileDialogOpen;
     private ConnectivityManager.NetworkCallback callback;
-    private static final Set<String> KEYS = new java.util.HashSet<>(java.util.Arrays.asList("mobile-bookmarks", "mobile-last", "study-reading-settings", "study-admin-unlocked", "study-admin-draft"));
+    private static final Set<String> KEYS = new java.util.HashSet<>(java.util.Arrays.asList("mobile-bookmarks", "mobile-last", "study-reading-settings", "study-admin-unlocked", "study-admin-draft", "study-workspace", "study-announcement-draft"));
 
     @Override
     protected void onCreate(Bundle state) {
@@ -292,6 +293,61 @@ public final class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int request, int result, Intent intent) {
         super.onActivityResult(request, result, intent);
+        if (request == 301) {
+            fileDialogOpen = false;
+            if (result != RESULT_OK || intent == null || intent.getData() == null) {
+                fileResult("study-file-export", false, "Сохранение отменено. Схема остаётся в приложении.");
+                return;
+            }
+            Uri target = intent.getData();
+            Updater.EXECUTOR.execute(() -> {
+                try (InputStream input = new java.io.FileInputStream(exportStage());
+                     OutputStream output = getContentResolver().openOutputStream(target)) {
+                    if (output == null) {
+                        throw new java.io.IOException("Не удалось открыть файл");
+                    }
+                    byte[] buffer = new byte[8192];
+                    int count;
+                    while ((count = input.read(buffer)) != -1) {
+                        output.write(buffer, 0, count);
+                    }
+                    runOnUiThread(() -> fileResult("study-file-export", true, "Файл сохранён"));
+                } catch (Exception ignored) {
+                    runOnUiThread(() -> fileResult("study-file-export", false, "Не удалось сохранить файл. Повторите экспорт."));
+                }
+            });
+            return;
+        }
+        if (request == 302) {
+            fileDialogOpen = false;
+            if (result != RESULT_OK || intent == null || intent.getData() == null) {
+                fileResult("study-flow-import", false, "Открытие файла отменено.");
+                return;
+            }
+            Uri source = intent.getData();
+            Updater.EXECUTOR.execute(() -> {
+                try (InputStream input = getContentResolver().openInputStream(source);
+                     java.io.ByteArrayOutputStream output = new java.io.ByteArrayOutputStream()) {
+                    if (input == null) {
+                        throw new java.io.IOException("Файл недоступен");
+                    }
+                    byte[] buffer = new byte[8192];
+                    int count;
+                    while ((count = input.read(buffer)) != -1) {
+                        if (output.size() + count > 500000) {
+                            throw new java.io.IOException("Файл превышает 500 КБ");
+                        }
+                        output.write(buffer, 0, count);
+                    }
+                    String text = output.toString("UTF-8");
+                    runOnUiThread(() -> web.evaluateJavascript("window.dispatchEvent(new CustomEvent('study-flow-import',"
+                        + "{detail:{text:" + JSONObject.quote(text) + "}}));", null));
+                } catch (Exception ignored) {
+                    runOnUiThread(() -> fileResult("study-flow-import", false, "Не удалось прочитать файл; предел размера — 500 КБ."));
+                }
+            });
+            return;
+        }
         if (request == 300 && result == RESULT_OK && intent != null && downloadPath != null) {
             try (InputStream input = ContentStore.open(this, content, downloadPath);
                  OutputStream output = getContentResolver().openOutputStream(intent.getData())) {
@@ -304,7 +360,68 @@ public final class MainActivity extends Activity {
         }
     }
 
+    private void fileResult(String event, boolean success, String message) {
+        String data = "{success:" + success + ",message:" + JSONObject.quote(message) + "}";
+        web.evaluateJavascript("window.dispatchEvent(new CustomEvent(" + JSONObject.quote(event)
+            + ",{detail:" + data + "}));", null);
+    }
+
+    private File exportStage() {
+        return new File(getCacheDir(), "tool-document.bin");
+    }
+
     public final class Bridge {
+        @JavascriptInterface
+        public void exportDocument(String name, String mime, String data) {
+            runOnUiThread(() -> {
+                if (fileDialogOpen) {
+                    return;
+                }
+                fileDialogOpen = true;
+                Updater.EXECUTOR.execute(() -> {
+                    try {
+                        byte[] bytes = ToolDocuments.decode(name, mime, data);
+                        try (OutputStream output = new java.io.FileOutputStream(exportStage())) {
+                            output.write(bytes);
+                        }
+                        runOnUiThread(() -> {
+                            try {
+                                Intent save = new Intent(Intent.ACTION_CREATE_DOCUMENT).setType(mime)
+                                    .addCategory(Intent.CATEGORY_OPENABLE).putExtra(Intent.EXTRA_TITLE, name);
+                                startActivityForResult(save, 301);
+                            } catch (Exception ignored) {
+                                fileDialogOpen = false;
+                                fileResult("study-file-export", false, "Нет приложения для сохранения документов.");
+                            }
+                        });
+                    } catch (Exception ignored) {
+                        runOnUiThread(() -> {
+                            fileDialogOpen = false;
+                            fileResult("study-file-export", false, "Не удалось подготовить файл экспорта.");
+                        });
+                    }
+                });
+            });
+        }
+
+        @JavascriptInterface
+        public void importFlowchart() {
+            runOnUiThread(() -> {
+                if (fileDialogOpen) {
+                    return;
+                }
+                try {
+                    fileDialogOpen = true;
+                    Intent open = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*")
+                        .addCategory(Intent.CATEGORY_OPENABLE);
+                    startActivityForResult(open, 302);
+                } catch (Exception ignored) {
+                    fileDialogOpen = false;
+                    fileResult("study-flow-import", false, "Нет приложения для открытия документов.");
+                }
+            });
+        }
+
         @JavascriptInterface
         public void theme(boolean dark) {
             runOnUiThread(() -> applyTheme(dark));
@@ -312,7 +429,7 @@ public final class MainActivity extends Activity {
 
         @JavascriptInterface
         public String version() {
-            return "1.1.1";
+            return "1.2.0";
         }
 
         @JavascriptInterface

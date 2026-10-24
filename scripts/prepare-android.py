@@ -169,6 +169,6 @@ for file in sorted(SITE.rglob('*')):
         data = file.read_bytes()
         files[file.relative_to(SITE).as_posix()] = {'size': len(data), 'sha256': hashlib.sha256(data).hexdigest()}
 version = hashlib.sha256(json.dumps(files, sort_keys=True).encode()).hexdigest()
-manifest = {'schema': 1, 'minAppVersion': 5, 'version': version, 'files': files}
+manifest = {'schema': 1, 'minAppVersion': 7, 'version': version, 'files': files}
 (OUTPUT / 'bundle-manifest.json').write_text(json.dumps(manifest))
 print(json.dumps({'files': len(files), 'bytes': sum(f['size'] for f in files.values()), 'thumbnails': len(created), 'version': version}))

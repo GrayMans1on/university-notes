@@ -10,7 +10,7 @@ import java.util.Set;
 
 final class GithubSchedule {
     private static final Set<String> PATHS = new java.util.HashSet<>(java.util.Arrays.asList("content/schedule.json",
-        "content/schedule-exceptions.json", "content/schedule-overrides.json"));
+        "content/schedule-exceptions.json", "content/schedule-overrides.json", "content/announcements.json", "content/teachers.json"));
 
     static boolean allowed(String method, String path) {
         return PATHS.contains(path) && (method.equals("GET")

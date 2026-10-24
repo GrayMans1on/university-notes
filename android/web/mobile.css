@@ -30,3 +30,7 @@ body:has(#disciplines) .site-credit{display:none}
 .app-textbook{border:1px solid var(--app-line);background:var(--app-panel);border-radius:14px;padding:14px;margin:12px 0}
 .app-textbook h2{font-size:17px;margin:0 0 6px}.app-textbook p{font-size:13px;line-height:1.5}
 .app-textbook button{min-height:44px;padding:8px 14px;background:var(--app-panel);color:var(--app-blue);border:1px solid var(--app-line);border-radius:9px;font:inherit}
+
+.topbar .tool-nav{display:none!important}
+
+body:has(#disciplines) .topbar{display:flex!important}

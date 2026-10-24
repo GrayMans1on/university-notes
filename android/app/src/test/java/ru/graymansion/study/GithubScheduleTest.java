@@ -9,6 +9,8 @@ public class GithubScheduleTest {
         assertTrue(GithubSchedule.allowed("GET", "content/schedule.json"));
         assertTrue(GithubSchedule.allowed("PUT", "content/schedule-exceptions.json"));
         assertTrue(GithubSchedule.allowed("PUT", "content/schedule-overrides.json"));
+        assertTrue(GithubSchedule.allowed("PUT", "content/announcements.json"));
+        assertTrue(GithubSchedule.allowed("PUT", "content/teachers.json"));
         assertFalse(GithubSchedule.allowed("PUT", "content/schedule.json"));
         assertFalse(GithubSchedule.allowed("DELETE", "content/schedule-exceptions.json"));
         assertFalse(GithubSchedule.allowed("PUT", "content/Матанализ.md"));

@@ -60,8 +60,8 @@
     nav.setAttribute('aria-label', 'Главное меню');
     const navigation = [
         ['Дисциплины', '/disciplines/', 'grid_on'], ['Расписание', '/schedule/', 'calendar_month'],
-        ['Карта', '/map/', 'map'], ['Учебники', '/textbooks/', 'menu_book'],
-        ['Закладки', '/bookmarks/', 'bookmark'], ['Настройки', '/settings/', 'tune'],
+        ['Учебники', '/textbooks/', 'menu_book'], ['Закладки', '/bookmarks/', 'bookmark'],
+        ['Доп. функции', '/tools/', 'account_tree'], ['Настройки', '/settings/', 'tune'],
     ];
     for (const [label, url, name] of navigation) {
         const link = node('a', '');
@@ -245,7 +245,8 @@
             window.scrollTo(0, 0);
         }
         for (const link of nav.children) {
-            const active = location.pathname.startsWith(new URL(link.href).pathname)
+            const active = link.pathname === '/tools/' && location.pathname.startsWith('/map/')
+                || location.pathname.startsWith(new URL(link.href).pathname)
                 || link.pathname === '/disciplines/' && location.pathname.startsWith('/notes/');
             if (active) { link.setAttribute('aria-current', 'page'); } else { link.removeAttribute('aria-current'); }
         }
@@ -333,7 +334,7 @@
             body.append(node('strong', '', 'Пар в расписании нет'));
             return;
         }
-        nextCard.href = next.mapUrl || '/schedule/';
+        nextCard.href = '/schedule/';
         const today = window.StudySchedule.isoDate(day) === now.date;
         const bells = window.StudySchedule.lessonTime(schedule, next);
         const ongoing = today && bells[0] <= now.time;
@@ -352,6 +353,24 @@
         }
     }
     if (location.pathname === '/disciplines/') {
+        const label = node('label', 'discipline-search', 'Поиск дисциплин');
+        const search = document.createElement('input');
+        search.type = 'search';
+        search.id = 'discipline-search';
+        search.placeholder = 'Название дисциплины';
+        const empty = node('p', 'app-note', 'Дисциплины не найдены');
+        empty.hidden = true;
+        search.addEventListener('input', () => {
+            let count = 0;
+            const query = search.value.toLocaleLowerCase('ru').replace(/ё/g, 'е').trim();
+            for (const card of document.querySelectorAll('#disciplines .subject-card')) {
+                card.hidden = !card.querySelector('h2').textContent.toLocaleLowerCase('ru').replace(/ё/g, 'е').includes(query);
+                if (!card.hidden) { count += 1; }
+            }
+            empty.hidden = count > 0;
+        });
+        label.append(search);
+        document.querySelector('#disciplines .home-section-heading').after(label, empty);
         const actions = node('section', 'app-actions');
         actions.setAttribute('aria-label', 'Быстрый доступ');
         nextCard = node('a', 'app-card');

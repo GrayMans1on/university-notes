@@ -1,3 +1,4 @@
+import { buildToolPages } from './tool-pages.mjs';
 import { loadSchedule } from './schedule-data.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -11,6 +12,8 @@ import { calibrateCampusMap, scheduleMapUrl } from '../assets/campus-map/model.m
 const root = process.cwd();
 const output = path.join(root, 'dist');
 const assets = path.join(output, 'assets');
+// Recreate generated output so stale temporary files never enter the Android bundle.
+fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(assets, { recursive: true });
 fs.cpSync(path.join(root, 'assets'), assets, { recursive: true });
 fs.copyFileSync(path.join(root, 'textbooks-sw.js'), path.join(output, 'textbooks-sw.js'));
@@ -22,6 +25,7 @@ const mapIcons = JSON.parse(fs.readFileSync(path.join(root, 'content/campus-map/
 fs.writeFileSync(path.join(assets, 'campus-map/data.json'), JSON.stringify(calibrateCampusMap(capturedMap, mapCalibration, mapOutdoors, mapIcons)));
 fs.cpSync(path.join(root, 'node_modules/katex/dist/fonts'), path.join(assets, 'fonts'), { recursive: true });
 fs.copyFileSync(path.join(root, 'node_modules/katex/dist/katex.min.css'), path.join(assets, 'katex.min.css'));
+fs.copyFileSync(path.join(root, 'node_modules/katex/dist/katex.min.js'), path.join(assets, 'katex.min.js'));
 const serviceConfig = JSON.parse(fs.readFileSync(path.join(root, 'assets/schedule-service.json'), 'utf8'));
 if (serviceConfig.schema !== 1 || typeof serviceConfig.url !== 'string') { throw new Error('Invalid schedule service config'); }
 if (serviceConfig.url) {
@@ -218,11 +222,11 @@ function shell(title, description, content, current = null, toc = '', route = ''
         return `<a class="subject-link${current === subject.slug ? ' is-current' : ''}" href="/notes/${subject.slug}/"${current === subject.slug ? ' aria-current="page"' : ''}>${disciplineIcons[subject.title]}<span>${escapeHtml(subject.title)}</span></a>`;
     }).join('');
     return `<!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${escapeHtml(description)}"><meta name="robots" content="noindex,nofollow"><title>${escapeHtml(title)} · Конспекты</title><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,${encodeURIComponent(favicon)}"><link rel="stylesheet" href="/assets/katex.min.css"><script src="/assets/preferences.js"></script><link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/study.css"><link rel="stylesheet" href="/assets/schedule-admin.css"><script defer src="/assets/schedule-overrides.js"></script><script defer src="/assets/schedule.js"></script><script defer src="/assets/schedule-admin.js"></script><script defer src="/assets/search-utils.js"></script><script defer src="/assets/site.js"></script><script defer src="/assets/study.js"></script><script defer src="/assets/practice.js"></script><script defer src="/assets/widget-stages.js"></script><script defer src="/assets/interactives.js"></script></head>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${escapeHtml(description)}"><meta name="robots" content="noindex,nofollow"><title>${escapeHtml(title)} · Конспекты</title><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,${encodeURIComponent(favicon)}"><link rel="stylesheet" href="/assets/katex.min.css"><script src="/assets/preferences.js"></script><link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/study.css"><link rel="stylesheet" href="/assets/schedule-admin.css"><script defer src="/assets/schedule-overrides.js"></script><script defer src="/assets/schedule.js"></script><script defer src="/assets/schedule-admin.js"></script><script defer src="/assets/search-utils.js"></script><script defer src="/assets/site.js"></script><script defer src="/assets/study.js"></script><script defer src="/assets/practice.js"></script><script defer src="/assets/widget-stages.js"></script><script defer src="/assets/interactives.js"></script><link rel="stylesheet" href="/assets/tools.css"><script defer src="/assets/tool-core.js"></script><script defer src="/assets/reader-tools.js"></script><script defer src="/assets/tools.js"></script></head>
 <body class="${current ? 'reader-page' : 'library-page'}"><a class="skip-link" href="#main">Перейти к конспекту</a>
 <button class="nav-backdrop" type="button" aria-label="Закрыть дисциплины" hidden></button>
 <aside class="sidebar" id="sidebar"><a class="brand" href="/">${bookIcon}<span>Учёба<span class="brand-caption">Конспекты</span></span></a><div class="semester">1 курс, 1 семестр</div><nav aria-label="Разделы сайта"><a class="library-link schedule-nav-link" href="/#schedule">Расписание</a><a class="library-link map-nav-link${route === 'map' ? ' is-current' : ''}" href="/map/"${route === 'map' ? ' aria-current="page"' : ''}>Карта ЧелГУ</a><a class="library-link${route === 'textbooks' ? ' is-current' : ''}" href="/textbooks/">Учебники</a><a class="library-link${route === '' ? ' is-current' : ''}" href="/#disciplines"${route === '' ? ' aria-current="page"' : ''}>Все дисциплины</a><div class="nav-label">Дисциплины</div>${navigation}</nav></aside>
-<div class="workspace"><header class="topbar"><button class="menu-button icon-button" type="button" aria-label="Открыть дисциплины" aria-controls="sidebar" aria-expanded="false">${menuIcon}</button><form class="search-form" role="search">${searchIcon}<label class="sr-only" for="search">Поиск по всем конспектам</label><input id="search" name="q" type="search" autocomplete="off" placeholder="Поиск по всем конспектам" aria-controls="search-results" aria-expanded="false"><kbd aria-hidden="true">Ctrl K</kbd><select id="search-scope" aria-label="Область поиска"><option value="">Везде</option>${current ? `<option value="${current}">Этот предмет</option>` : subjectOptions().replace('<option value="">Все предметы</option>', '')}</select></form><nav class="tool-nav" aria-label="Инструменты"><a href="/reference/">Формулы</a><a href="/check/">Проверка</a><details class="reading-settings"><summary aria-label="Настройки чтения">${interfaceIcons.tune}</summary><div class="settings-panel"><label>Тема<select id="theme-mode"><option value="auto">Как в системе</option><option value="light">Светлая</option><option value="dark">Тёмная</option></select></label><label>Размер текста<select id="font-scale"><option value="1">Обычный</option><option value="1.12">Крупный</option><option value="1.25">Очень крупный</option></select></label><label>Ширина текста<select id="reading-width"><option value="normal">Обычная</option><option value="narrow">Узкая</option><option value="wide">Широкая</option></select></label><span class="settings-note">Сохраняется в этом браузере</span></div></details></nav></header>
+<div class="workspace"><header class="topbar"><button class="menu-button icon-button" type="button" aria-label="Открыть дисциплины" aria-controls="sidebar" aria-expanded="false">${menuIcon}</button><form class="search-form" role="search">${searchIcon}<label class="sr-only" for="search">Поиск по всем конспектам</label><input id="search" name="q" type="search" autocomplete="off" placeholder="Поиск по всем конспектам" aria-controls="search-results" aria-expanded="false"><kbd aria-hidden="true">Ctrl K</kbd><select id="search-scope" aria-label="Область поиска"><option value="">Везде</option>${current ? `<option value="${current}">Этот предмет</option>` : subjectOptions().replace('<option value="">Все предметы</option>', '')}</select></form><nav class="tool-nav" aria-label="Инструменты"><a href="/reference/">Формулы</a><a href="/check/">Проверка</a><a href="/tools/notes/">Заметки</a><a href="/tools/flowcharts/">Блок-схемы</a><a href="/tools/">Инструменты</a><a href="/tools/teachers/">Преподаватели</a><a href="/tools/announcements/">Объявления</a><details class="reading-settings"><summary aria-label="Настройки чтения">${interfaceIcons.tune}</summary><div class="settings-panel"><label>Тема<select id="theme-mode"><option value="auto">Как в системе</option><option value="light">Светлая</option><option value="dark">Тёмная</option></select></label><label>Размер текста<select id="font-scale"><option value="1">Обычный</option><option value="1.12">Крупный</option><option value="1.25">Очень крупный</option></select></label><label>Ширина текста<select id="reading-width"><option value="normal">Обычная</option><option value="narrow">Узкая</option><option value="wide">Широкая</option></select></label><span class="settings-note">Сохраняется в этом браузере</span></div></details></nav></header>
 <section class="search-panel" id="search-results" aria-label="Результаты поиска" hidden><div class="search-panel-header"><span id="search-status" role="status" aria-live="polite"></span><button class="search-close" type="button">Закрыть</button></div><div id="search-list"></div></section>
 <main id="main" class="${current ? 'reader-layout' : 'library-layout' + (content.includes('home-dashboard') ? ' home-layout' : route === 'map' ? ' map-layout' : '')}" tabindex="-1">${content}${toc}</main><footer class="site-credit"><p>Сделано с помощью ChatGPT. Соавтор — Влад Шпаров.</p><p>Не официальный сайт ЧелГУ</p></footer></div></body></html>`;
 }
@@ -444,6 +448,19 @@ for (const book of textbooks.books) {
     bookIds.add(book.id);
 }
 fs.writeFileSync(path.join(assets, 'textbooks.json'), JSON.stringify(textbooks));
+const staff = new Map();
+for (const lesson of loadSchedule(root).lessons) {
+    if (!lesson.teacher) { continue; }
+    const person = staff.get(lesson.teacher) || { id: anchor(lesson.teacher), name: lesson.teacher, department: '', description: '', subjects: [] };
+    if (!person.subjects.includes(lesson.title)) { person.subjects.push(lesson.title); }
+    staff.set(lesson.teacher, person);
+}
+const teacherCatalog = JSON.parse(fs.readFileSync(path.join(root, 'content/teachers.json'), 'utf8'));
+for (const person of teacherCatalog.people) { staff.set(person.name, person); }
+fs.writeFileSync(path.join(assets, 'teachers.json'), JSON.stringify({ schema: 1, people: [...staff.values()] }));
+fs.copyFileSync(path.join(root, 'content/announcements.json'), path.join(assets, 'announcements.json'));
+fs.writeFileSync(path.join(assets, 'tool-catalog.json'), JSON.stringify({ subjects, textbooks: textbooks.books }));
+
 const newest = updates[0];
 const updateHtml = `<section class="updates" aria-labelledby="update-title"><div class="update-title-row"><h2 id="update-title">Последнее обновление</h2><time datetime="${newest.date}">${newest.date.split('-').reverse().join('.')}</time></div><ul>${newest.items.map((item) => `<li><a href="${escapeHtml(item.url)}">${escapeHtml(item.text)}</a></li>`).join('')}</ul></section>`;
 const schedule = loadSchedule(root);
@@ -479,8 +496,9 @@ writePage('', 'Расписание и дисциплины', 'Расписан�
 
 writePage('disciplines', 'Дисциплины', 'Конспекты по дисциплинам первого семестра.', `<section class="home-subjects" id="disciplines"><div class="home-section-heading"><h1>Дисциплины</h1></div><div class="subject-grid">${cards}</div></section>`);
 writePage('schedule', 'Расписание', 'Расписание первого семестра.', scheduleHtml);
-const textbookCards = textbooks.books.map((book) => `<article class="textbook" data-book-id="${escapeHtml(book.id)}"><p class="textbook-subject">${escapeHtml(book.subject)}</p><h2>${escapeHtml(book.title)}</h2><p>${escapeHtml(book.author)}</p><p class="textbook-meta">PDF · ${(book.size / 1048576).toFixed(1)} МБ</p><div class="textbook-actions"><a href="${escapeHtml(book.url)}" class="textbook-online">Открыть онлайн</a><button type="button" class="textbook-offline" disabled>Скачать офлайн</button></div><p class="textbook-status" role="status">Доступен онлайн · офлайн-копия ещё не скачана</p></article>`).join('');
+const textbookCards = textbooks.books.map((book) => `<article class="textbook" id="book-${escapeHtml(book.id)}" data-book-id="${escapeHtml(book.id)}"><p class="textbook-subject">${escapeHtml(book.subject)}</p><h2>${escapeHtml(book.title)}</h2><p>${escapeHtml(book.author)}</p><p class="textbook-meta">PDF · ${(book.size / 1048576).toFixed(1)} МБ</p><div class="textbook-actions"><a href="${escapeHtml(book.url)}" class="textbook-online">Открыть онлайн</a><button type="button" class="textbook-offline" disabled>Скачать офлайн</button></div><p class="textbook-status" role="status">Доступен онлайн · офлайн-копия ещё не скачана</p></article>`).join('');
 writePage('textbooks', 'Учебники', 'Учебники в PDF для онлайн- и офлайн-чтения.', `<link rel="stylesheet" href="/assets/textbooks.css"><section id="textbook-library"><h1>Учебники</h1><p>Открывайте PDF онлайн или сохраните нужную книгу для чтения без сети. Скачивание начинается только по вашей кнопке.</p><div class="textbook-list">${textbookCards || '<p>Учебники ещё не добавлены.</p>'}</div><noscript>Для сохранения офлайн включите JavaScript. Ссылки на PDF доступны без него.</noscript></section><script id="textbook-data" type="application/json">${JSON.stringify(textbooks).replace(/</g, '\\u003c')}</script><script defer src="/assets/textbooks.js"></script>`);
+buildToolPages(writePage, interfaceIcons);
 for (const [route, title] of [['bookmarks', 'Закладки'], ['settings', 'Настройки']]) {
     writePage(route, title, title + ' приложения.', `<h1>${title}</h1><p>Этот раздел доступен в Android-приложении.</p>`);
 }
@@ -567,7 +585,7 @@ fs.writeFileSync(path.join(assets, 'widget-stages.js'), 'window.StudyStages=' + 
 fs.writeFileSync(path.join(assets, 'study-catalog.json'), JSON.stringify(catalog.map(({ subject, slug, title, key }) => ({ subject, slug, title, key }))));
 fs.writeFileSync(path.join(root, 'validation-report.json'), JSON.stringify({
     subjects: subjects.map(({ title, slug, topics }) => ({ title, slug, topics })),
-    utilityPages: ['', 'reference', 'check', 'map', 'map/view', 'disciplines', 'schedule', 'textbooks', 'bookmarks', 'settings'],
+    utilityPages: ['', 'reference', 'check', 'map', 'map/view', 'disciplines', 'schedule', 'textbooks', 'bookmarks', 'settings', 'tools', 'tools/notes', 'tools/flowcharts', 'tools/formula-editor', 'tools/calculator', 'tools/graphs', 'tools/converter', 'tools/teachers', 'tools/announcements'],
     searchSections: searchIndex.length, mathCount, mathErrors, studyTopics: catalog.length,
     referenceEntries: formulaGroups.reduce((sum, group) => sum + group.formulas.length, 0),
     formulaGroups: formulaGroups.length,
@@ -576,7 +594,7 @@ fs.writeFileSync(path.join(root, 'validation-report.json'), JSON.stringify({
     practiceTypes: [...new Set(Object.values(practice).flat().map((task) => task.type))],
     widgets: Object.values(interactiveTopics).flat().length,
 }, null, 2));
-console.log(JSON.stringify({ pages: subjects.length + catalog.length + Object.keys(quizAliases).length + 10, searchSections: searchIndex.length, mathCount, mathErrors, studyTopics: catalog.length }));
+console.log(JSON.stringify({ pages: subjects.length + catalog.length + Object.keys(quizAliases).length + 19, searchSections: searchIndex.length, mathCount, mathErrors, studyTopics: catalog.length }));
 if (mathErrors.length > 0) {
     process.exitCode = 1;
 }

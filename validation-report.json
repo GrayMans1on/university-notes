@@ -56,7 +56,16 @@
     "schedule",
     "textbooks",
     "bookmarks",
-    "settings"
+    "settings",
+    "tools",
+    "tools/notes",
+    "tools/flowcharts",
+    "tools/formula-editor",
+    "tools/calculator",
+    "tools/graphs",
+    "tools/converter",
+    "tools/teachers",
+    "tools/announcements"
   ],
   "searchSections": 715,
   "mathCount": 6812,

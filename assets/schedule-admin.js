@@ -81,7 +81,7 @@
         }
     });
     async function request(method, path, payload, accessToken = token) {
-        if (!['content/schedule.json', ...Object.values(PATHS)].includes(path)
+        if (!['content/schedule.json', 'content/teachers.json', 'content/announcements.json', ...Object.values(PATHS)].includes(path)
             || !['GET', 'PUT'].includes(method) || method === 'PUT' && path === 'content/schedule.json') {
             throw new Error('Недопустимый путь записи');
         }

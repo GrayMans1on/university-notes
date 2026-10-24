@@ -74,7 +74,7 @@ final class Widgets {
                     }
                 }
                 views.setOnClickPendingIntent(R.id.widget_root, open(context,
-                    next == null ? "/schedule/" : next.optString("mapUrl", "/schedule/"), id));
+                    "/schedule/", id));
                 manager.updateAppWidget(id, views);
             }
         } catch (Exception ignored) {

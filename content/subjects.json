@@ -2,64 +2,64 @@
   {
     "title": "История",
     "slug": "history",
-    "description": "Образование Руси, первые князья, крещение и письменная культура",
+    "description": "Социальные группы Руси, Русская Правда, крещение и раздробленность",
     "source_bytes": 3117,
-    "content_bytes": 36161
+    "content_bytes": 54977
   },
   {
     "title": "ОРГ",
     "slug": "statehood",
-    "description": "Цивилизация, государство, территория и суверенитет",
+    "description": "Государственность, суверенитет, семейные традиции и ценности",
     "source_bytes": 3681,
-    "content_bytes": 20219
+    "content_bytes": 53845
   },
   {
     "title": "Линал",
     "slug": "linear-algebra",
-    "description": "Матрицы, определители, линейная зависимость, ранг и системы",
+    "description": "Матрицы, системы, подпространства, размерность и смена базиса",
     "source_bytes": 51914,
-    "content_bytes": 64799
+    "content_bytes": 75134
   },
   {
     "title": "Совр технологии",
     "slug": "modern-technologies",
     "description": "Информация, безопасность, управление и информационные системы",
     "source_bytes": 5560,
-    "content_bytes": 16199
+    "content_bytes": 26817
   },
   {
     "title": "Дискретка",
     "slug": "discrete-math",
     "description": "Комбинаторика, множества и отношения",
     "source_bytes": 48149,
-    "content_bytes": 47470
+    "content_bytes": 69382
   },
   {
     "title": "Английский",
     "slug": "english",
     "description": "Лексика, произношение и грамматика",
     "source_bytes": 14309,
-    "content_bytes": 8807
+    "content_bytes": 16705
   },
   {
     "title": "Матанализ",
     "slug": "calculus",
     "description": "Последовательности, пределы, непрерывность и ряды",
     "source_bytes": 76929,
-    "content_bytes": 90148
+    "content_bytes": 117012
   },
   {
     "title": "Информатика",
     "slug": "informatics",
-    "description": "Системы счисления и алгоритмы",
+    "description": "Блок-схемы, алгоритмы, двоичные коды и представление данных",
     "source_bytes": 3602,
-    "content_bytes": 1948
+    "content_bytes": 26954
   },
   {
     "title": "Физика",
     "slug": "physics",
-    "description": "Кинематика, взаимодействия, масса и центр масс",
+    "description": "Кинематика, законы Ньютона, импульс, силы и вес",
     "source_bytes": 12880,
-    "content_bytes": 19170
+    "content_bytes": 27698
   }
 ]

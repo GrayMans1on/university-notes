@@ -3,17 +3,17 @@
     {
       "title": "История",
       "slug": "history",
-      "topics": 13
+      "topics": 17
     },
     {
       "title": "ОРГ",
       "slug": "statehood",
-      "topics": 11
+      "topics": 13
     },
     {
       "title": "Линал",
       "slug": "linear-algebra",
-      "topics": 15
+      "topics": 18
     },
     {
       "title": "Совр технологии",
@@ -23,7 +23,7 @@
     {
       "title": "Дискретка",
       "slug": "discrete-math",
-      "topics": 9
+      "topics": 10
     },
     {
       "title": "Английский",
@@ -33,17 +33,17 @@
     {
       "title": "Матанализ",
       "slug": "calculus",
-      "topics": 22
+      "topics": 26
     },
     {
       "title": "Информатика",
       "slug": "informatics",
-      "topics": 4
+      "topics": 9
     },
     {
       "title": "Физика",
       "slug": "physics",
-      "topics": 7
+      "topics": 10
     }
   ],
   "utilityPages": [
@@ -58,14 +58,14 @@
     "bookmarks",
     "settings"
   ],
-  "searchSections": 618,
-  "mathCount": 6262,
+  "searchSections": 715,
+  "mathCount": 6811,
   "mathErrors": [],
-  "studyTopics": 101,
-  "referenceEntries": 132,
-  "formulaGroups": 26,
-  "questions": 307,
-  "practiceTasks": 863,
+  "studyTopics": 123,
+  "referenceEntries": 152,
+  "formulaGroups": 30,
+  "questions": 351,
+  "practiceTasks": 895,
   "practiceTypes": [
     "multi",
     "matching",

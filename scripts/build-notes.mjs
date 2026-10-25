@@ -39,6 +39,10 @@ for (const name of ['mathlive', '@cortex-js/compute-engine']) {
         fs.copyFileSync(path.join(root, 'node_modules/@cortex-js/compute-engine/LICENSE'), path.join(target, 'LICENSE.txt'));
     }
 }
+const limitsVersion = createHash('sha256').update(fs.readFileSync(path.join(assets, 'limits-engine.js')))
+    .update(fs.readFileSync(path.join(assets, 'limits-worker.js'))).digest('hex').slice(0, 12);
+const limitsUiPath = path.join(assets, 'limits-ui.js');
+fs.writeFileSync(limitsUiPath, fs.readFileSync(limitsUiPath, 'utf8').replace('__LIMITS_BUILD__', limitsVersion));
 const serviceConfig = JSON.parse(fs.readFileSync(path.join(root, 'assets/schedule-service.json'), 'utf8'));
 if (serviceConfig.schema !== 1 || typeof serviceConfig.url !== 'string') { throw new Error('Invalid schedule service config'); }
 if (serviceConfig.url) {
@@ -236,10 +240,10 @@ function shell(title, description, content, current = null, toc = '', route = ''
     }).join('');
     const toolNavigation = toolPages.map(([id, title, description, icon]) =>
         `<a class="library-link tool-sidebar-link${route === 'tools/' + id ? ' is-current' : ''}" href="/tools/${id}/">${interfaceIcons[icon]}<span>${title}</span></a>`).join('');
-    const mathScripts = ['tools/calculator', 'tools/graphs', 'tools/formula-editor'].includes(route)
-        ? '<script defer src="/assets/compute-engine/compute-engine.js"></script><script defer src="/assets/mathlive/mathlive.min.js"></script>' : '';
+    const mathScripts = ['tools/calculator', 'tools/graphs', 'tools/formula-editor', 'tools/limits'].includes(route)
+        ? '<script defer src="/assets/compute-engine/compute-engine.js"></script><script defer src="/assets/mathlive/mathlive.min.js"></script><script defer src="/assets/katex.min.js"></script>' : '';
     return `<!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${escapeHtml(description)}"><meta name="robots" content="noindex,nofollow"><title>${escapeHtml(title)} · Конспекты</title><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,${encodeURIComponent(favicon)}"><link rel="stylesheet" href="/assets/katex.min.css"><script src="/assets/preferences.js"></script><link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/study.css"><link rel="stylesheet" href="/assets/schedule-admin.css"><script defer src="/assets/schedule-overrides.js"></script><script defer src="/assets/schedule.js"></script><script defer src="/assets/schedule-admin.js"></script><script defer src="/assets/search-utils.js"></script><script defer src="/assets/site.js"></script><script defer src="/assets/study.js"></script><script defer src="/assets/practice.js"></script><script defer src="/assets/widget-stages.js"></script><script defer src="/assets/interactives.js"></script><link rel="stylesheet" href="/assets/tools.css"><link rel="stylesheet" href="/assets/tools-v2.css"><script defer src="/assets/tool-core.js"></script><script defer src="/assets/reader-tools.js"></script><script defer src="/assets/math-runtime.js"></script><script defer src="/assets/math-tools.js"></script><script defer src="/assets/flow-runtime.js"></script><script defer src="/assets/flow-editor.js"></script>${mathScripts}<script defer src="/assets/tools.js"></script></head>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${escapeHtml(description)}"><meta name="robots" content="noindex,nofollow"><title>${escapeHtml(title)} · Конспекты</title><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,${encodeURIComponent(favicon)}"><link rel="stylesheet" href="/assets/katex.min.css"><script src="/assets/preferences.js"></script><link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/study.css"><link rel="stylesheet" href="/assets/schedule-admin.css"><script defer src="/assets/schedule-overrides.js"></script><script defer src="/assets/schedule.js"></script><script defer src="/assets/schedule-admin.js"></script><script defer src="/assets/search-utils.js"></script><script defer src="/assets/site.js"></script><script defer src="/assets/study.js"></script><script defer src="/assets/practice.js"></script><script defer src="/assets/widget-stages.js"></script><script defer src="/assets/interactives.js"></script><link rel="stylesheet" href="/assets/tools.css"><link rel="stylesheet" href="/assets/tools-v2.css"><script defer src="/assets/tool-core.js"></script><script defer src="/assets/reader-tools.js"></script><script defer src="/assets/math-runtime.js"></script><script defer src="/assets/math-tools.js"></script><script defer src="/assets/flow-runtime.js"></script><script defer src="/assets/flow-editor.js"></script>${mathScripts}<script defer src="/assets/tool-session.js"></script><script defer src="/assets/limits-ui.js"></script><script defer src="/assets/tools.js"></script></head>
 <body class="${current ? 'reader-page' : 'library-page'}"><a class="skip-link" href="#main">Перейти к конспекту</a>
 <button class="nav-backdrop" type="button" aria-label="Закрыть меню" hidden></button>
 <aside class="sidebar" id="sidebar"><a class="brand" href="/">${bookIcon}<span>Учёба<span class="brand-caption">Конспекты</span></span></a><div class="semester">1 курс, 1 семестр</div><nav aria-label="Разделы сайта"><a class="library-link schedule-nav-link" href="/#schedule">Расписание</a><a class="library-link map-nav-link${route === 'map' ? ' is-current' : ''}" href="/map/"${route === 'map' ? ' aria-current="page"' : ''}>Карта ЧелГУ</a><a class="library-link${route === 'textbooks' ? ' is-current' : ''}" href="/textbooks/">Учебники</a><a class="library-link${route === '' ? ' is-current' : ''}" href="/#disciplines"${route === '' ? ' aria-current="page"' : ''}>Все дисциплины</a><div class="nav-label">Учебные инструменты</div>${toolNavigation}<a class="library-link tool-sidebar-link" href="/reference/">${interfaceIcons.function}<span>Справочник формул</span></a><a class="library-link tool-sidebar-link" href="/check/">${interfaceIcons.fact_check}<span>Самопроверка</span></a></nav></aside>
@@ -250,7 +254,7 @@ function shell(title, description, content, current = null, toc = '', route = ''
 
 const toolAssetVersions = new Map();
 function versionToolAssets(html) {
-    return html.replace(/(src|href)="(\/assets\/(?:tools(?:-v2)?\.css|tool-core\.js|reader-tools\.js|tools\.js|math-runtime\.js|math-tools\.js|flow-runtime\.js|flow-editor\.js|compute-engine\/compute-engine\.js|mathlive\/mathlive\.min\.js))"/g, (match, attribute, url) => {
+    return html.replace(/(src|href)="(\/assets\/(?:tools(?:-v2)?\.css|tool-session\.js|limits-ui\.js|tool-core\.js|reader-tools\.js|tools\.js|math-runtime\.js|math-tools\.js|flow-runtime\.js|flow-editor\.js|compute-engine\/compute-engine\.js|mathlive\/mathlive\.min\.js))"/g, (match, attribute, url) => {
         if (!toolAssetVersions.has(url)) {
             const bytes = fs.readFileSync(path.join(output, url));
             toolAssetVersions.set(url, createHash('sha256').update(bytes).digest('hex').slice(0, 12));
@@ -615,7 +619,7 @@ fs.writeFileSync(path.join(assets, 'widget-stages.js'), 'window.StudyStages=' + 
 fs.writeFileSync(path.join(assets, 'study-catalog.json'), JSON.stringify(catalog.map(({ subject, slug, title, key }) => ({ subject, slug, title, key }))));
 fs.writeFileSync(path.join(root, 'validation-report.json'), JSON.stringify({
     subjects: subjects.map(({ title, slug, topics }) => ({ title, slug, topics })),
-    utilityPages: ['', 'reference', 'check', 'map', 'map/view', 'disciplines', 'schedule', 'textbooks', 'bookmarks', 'settings', 'tools', 'tools/notes', 'tools/flowcharts', 'tools/formula-editor', 'tools/calculator', 'tools/graphs', 'tools/converter', 'tools/teachers', 'tools/announcements'],
+    utilityPages: ['', 'reference', 'check', 'map', 'map/view', 'disciplines', 'schedule', 'textbooks', 'bookmarks', 'settings', 'tools', 'tools/notes', 'tools/flowcharts', 'tools/formula-editor', 'tools/calculator', 'tools/graphs', 'tools/converter', 'tools/teachers', 'tools/announcements', 'tools/limits'],
     searchSections: searchIndex.length, mathCount, mathErrors, studyTopics: catalog.length,
     referenceEntries: formulaGroups.reduce((sum, group) => sum + group.formulas.length, 0),
     formulaGroups: formulaGroups.length,
@@ -624,7 +628,7 @@ fs.writeFileSync(path.join(root, 'validation-report.json'), JSON.stringify({
     practiceTypes: [...new Set(Object.values(practice).flat().map((task) => task.type))],
     widgets: Object.values(interactiveTopics).flat().length,
 }, null, 2));
-console.log(JSON.stringify({ pages: subjects.length + catalog.length + Object.keys(quizAliases).length + 19, searchSections: searchIndex.length, mathCount, mathErrors, studyTopics: catalog.length }));
+console.log(JSON.stringify({ pages: subjects.length + catalog.length + Object.keys(quizAliases).length + 20, searchSections: searchIndex.length, mathCount, mathErrors, studyTopics: catalog.length }));
 if (mathErrors.length > 0) {
     process.exitCode = 1;
 }

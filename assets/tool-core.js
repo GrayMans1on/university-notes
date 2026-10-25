@@ -27,9 +27,9 @@
     };
     function compile(input) {
         const source = String(input).toLowerCase().replace(/[−–]/g, '-').replace(/π/g, 'pi')
-            .replace(/[×·]/g, '*').replace(/,/g, '.').replace(/\s/g, '');
+            .replace(/[×·]/g, '*').replace(/math\.(?=(sqrt|sin|cos|tan|asin|acos|atan|sinh|cosh|tanh|exp|log|floor|ceil)\()/g, '').replace(/,/g, '.').replace(/\s/g, '');
         if (!source || source.length > 240) { throw new Error('Введите выражение длиной до 240 символов.'); }
-        const tokens = source.match(/(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?|[a-z][a-z0-9_]*|[()+*/%^!\-]/g) || [];
+        const tokens = source.match(/(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?|[a-z][a-z0-9_]*|\*\*|\/\/|[()+*/%^!\-]/g) || [];
         if (tokens.join('') !== source) { throw new Error('В выражении есть неподдерживаемый символ.'); }
         let i = 0;
         let depth = 0;
@@ -80,7 +80,7 @@
         }
         function power() {
             const left = atom();
-            if (tokens[i] === '^') { i += 1; const right = unary(); return (v) => left(v) ** right(v); }
+            if (tokens[i] === '^' || tokens[i] === '**') { i += 1; const right = unary(); return (v) => left(v) ** right(v); }
             return left;
         }
         function unary() {
@@ -96,10 +96,12 @@
         }
         function product() {
             let left = unary();
-            while (['*', '/', '%'].includes(tokens[i])) {
+            while (['*', '/', '//', '%'].includes(tokens[i])) {
                 const operator = tokens[i++]; const right = unary(); const before = left;
                 left = (v) => operator === '*' ? before(v) * right(v)
-                    : operator === '/' ? before(v) / right(v) : before(v) % right(v);
+                    : operator === '/' ? before(v) / right(v)
+                    : operator === '//' ? Math.floor(before(v) / right(v))
+                        : before(v) - Math.floor(before(v) / right(v)) * right(v);
             }
             return left;
         }
@@ -149,7 +151,7 @@
             if (!n || typeof n.id !== 'string' || !/^[a-zA-Z0-9-]{1,60}$/.test(n.id) || ids.has(n.id)
                 || !['start', 'end', 'process', 'decision', 'input', 'output'].includes(n.type)
                 || typeof n.text !== 'string' || n.text.length > 300
-                || !Number.isFinite(n.x) || !Number.isFinite(n.y) || n.x < 5 || n.x > 1020 || n.y < 5 || n.y > 900) {
+                || !Number.isFinite(n.x) || !Number.isFinite(n.y) || Math.abs(n.x) > 1e9 || Math.abs(n.y) > 1e9) {
                 throw new Error('Недопустимый или повторяющийся блок.');
             }
             ids.add(n.id);
@@ -158,9 +160,9 @@
                 if (!n.config || typeof n.config !== 'object' || Array.isArray(n.config)) {
                     throw new Error('Некорректные параметры блока.');
                 }
-                for (const key of ['variable', 'expression', 'operation', 'left', 'right', 'operator']) {
+                for (const key of ['variable', 'expression', 'operation', 'left', 'right', 'operator', 'program']) {
                     if (n.config[key] !== undefined) {
-                        if (typeof n.config[key] !== 'string' || n.config[key].length > 240) {
+                        if (typeof n.config[key] !== 'string' || n.config[key].length > (key === 'program' ? 6000 : 240)) {
                             throw new Error('Слишком длинные параметры блока.');
                         }
                         config[key] = n.config[key];
@@ -175,37 +177,46 @@
             }
             return { from: e.from, to: e.to, label: e.label };
         });
-        return { format: 'csu-flowchart', version: 1, title: String(raw.title || 'Блок-схема').slice(0, 120), nodes, edges };
+        let viewport;
+        if (raw.viewport !== undefined) {
+            const v = raw.viewport;
+            if (!v || ![v.x, v.y, v.scale].every(Number.isFinite) || Math.abs(v.x) > 1e12
+                || Math.abs(v.y) > 1e12 || v.scale < .03 || v.scale > 6) { throw new Error('Некорректный масштаб схемы.'); }
+            viewport = { x: v.x, y: v.y, scale: v.scale };
+        }
+        return { format: 'csu-flowchart', version: 1, title: String(raw.title || 'Блок-схема').slice(0, 120), nodes, edges, ...(viewport ? { viewport } : {}) };
     }
     const escape = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
-    function flowSvg(flow, dark = false) {
+    const branchKey = (label) => ['да', 'true', '1'].includes(String(label).toLowerCase().trim()) ? 'true'
+        : ['нет', 'false', '0'].includes(String(label).toLowerCase().trim()) ? 'false' : '';
+    function flowBounds(flow) {
+        if (!flow.nodes.length) { return { x: -100, y: -100, width: 800, height: 600 }; }
+        const x = Math.min(...flow.nodes.map((n) => n.x)) - 100;
+        const y = Math.min(...flow.nodes.map((n) => n.y)) - 90;
+        return { x, y, width: Math.max(...flow.nodes.map((n) => n.x)) + 300 - x,
+            height: Math.max(...flow.nodes.map((n) => n.y)) + 180 - y };
+    }
+    function flowSvg(flow, dark = false, viewport = null) {
         const ink = dark ? '#dce6f7' : '#36465e'; const blue = dark ? '#8faaff' : '#254cce';
         const fill = dark ? '#263c67' : '#dce6ff';
-        const parts = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1220 1020" role="img" aria-label="${escape(flow.title)}"><title>${escape(flow.title)}</title><defs><marker id="flow-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="${ink}"/></marker></defs>`];
+        const bounds = flowBounds(flow);
+        const box = viewport || bounds;
+        const parts = [`<svg xmlns="http://www.w3.org/2000/svg" width="${bounds.width}" height="${bounds.height}" viewBox="${box.x} ${box.y} ${box.width} ${box.height}" role="img" aria-label="${escape(flow.title)}"><title>${escape(flow.title)}</title><defs><marker id="flow-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="${ink}"/></marker></defs>`];
         for (const edge of flow.edges) {
             const a = flow.nodes.find((n) => n.id === edge.from); const b = flow.nodes.find((n) => n.id === edge.to);
-            const yes = a.type === 'decision' && ['да', 'true', '1'].includes(edge.label.toLowerCase().trim());
-            const sx = a.x + (yes ? 170 : 85); const sy = a.y + (yes ? 38 : 76);
-            let path; let labelX = sx + 12; let labelY = sy + 22;
-            if (a.id === b.id) {
-                const outer = a.x + 210;
-                path = yes ? `M${sx} ${sy}H${outer}V${a.y - 25}H${a.x + 85}V${a.y}`
-                    : `M${sx} ${sy}v25H${outer}V${a.y - 25}H${a.x + 85}V${a.y}`;
-            } else if (b.y > a.y + 105) {
-                const mid = (a.y + 76 + b.y) / 2;
-                path = yes ? `M${sx} ${sy}h30V${mid}H${b.x + 85}V${b.y}`
-                    : `M${sx} ${sy}V${mid}H${b.x + 85}V${b.y}`;
-                labelX = yes ? sx + 20 : sx + 10; labelY = yes ? sy - 8 : sy + 23;
-            } else if (b.x >= a.x + 200 && yes) {
-                const mid = (sx + b.x) / 2;
-                path = `M${sx} ${sy}H${mid}V${b.y + 38}H${b.x}`;
-                labelX = sx + 18; labelY = sy - 8;
+            const branch = branchKey(edge.label); const conditional = a.type === 'decision';
+            const sx = a.x + (conditional ? branch === 'true' ? 0 : 170 : 85);
+            const sy = a.y + (conditional ? 38 : 76); const tx = b.x + 85; const ty = b.y;
+            let route;
+            if (!conditional && b.y > a.y + 120) {
+                const mid = (sy + ty) / 2; route = `V${mid}H${tx}V${ty}`;
             } else {
-                const outer = Math.max(a.x, b.x) + 205;
-                path = yes ? `M${sx} ${sy}H${outer}V${b.y + 38}H${b.x + 170}`
-                    : `M${sx} ${sy}v25H${outer}V${b.y + 38}H${b.x + 170}`;
+                const outside = conditional && branch === 'true' ? Math.min(a.x, b.x) - 45
+                    : Math.max(a.x, b.x) + 215;
+                route = conditional ? `H${outside}` : `v30H${outside}`;
+                route += `V${ty - 30}H${tx}V${ty}`;
             }
-            parts.push(`<path d="${path}" fill="none" stroke="${ink}" stroke-width="2" marker-end="url(#flow-arrow)"/><text x="${labelX}" y="${labelY}" fill="${ink}" font-size="16">${escape(edge.label)}</text>`);
+            parts.push(`<path data-edge="${flow.edges.indexOf(edge)}" d="M${sx} ${sy}${route}" fill="none" stroke="${ink}" stroke-width="2" marker-end="url(#flow-arrow)"/><text x="${sx + (branch === 'true' ? -32 : 12)}" y="${sy - 9}" fill="${ink}" font-size="14">${escape(edge.label)}</text>`);
         }
         for (const n of flow.nodes) {
             let shape;
@@ -223,5 +234,5 @@
         }
         return parts.join('') + '</svg>';
     }
-    window.StudyTools = { History, storage, compile, units, convert, validateFlow, flowSvg, escape, clone };
+    window.StudyTools = { History, storage, compile, units, convert, validateFlow, flowSvg, flowBounds, branchKey, escape, clone };
 })();

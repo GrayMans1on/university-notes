@@ -3,11 +3,14 @@
     const T = window.StudyTools;
     if (!T) { return; }
     const empty = { notes: [], flows: [], formulas: [], highlights: [], teacherNotes: {}, bookBindings: {} };
-    const workspace = () => ({ ...T.clone(empty), ...T.storage.read('study-workspace', empty) });
+    const transient = { flows: [], formulas: [] };
+    const legacy = () => ({ ...T.clone(empty), ...T.storage.read('study-workspace', empty) });
+    const workspace = () => ({ ...legacy(), ...T.clone(transient) });
     function save(field, value) {
-        const data = workspace(); data[field] = value; T.storage.write('study-workspace', data);
+        if (Object.hasOwn(transient, field)) { transient[field] = T.clone(value); return; }
+        const data = legacy(); data[field] = value; T.storage.write('study-workspace', data);
     }
-    window.StudyWorkspace = { read: workspace, save };
+    window.StudyWorkspace = { read: workspace, save, legacy: (field) => T.clone(legacy()[field] || []) };
     const id = () => 'item-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 9);
     const element = (tag, text, className = '') => {
         const item = document.createElement(tag); item.className = className;
@@ -102,7 +105,7 @@
         const to = select('Единица результата', []);
         const grid = element('div', undefined, 'converter-grid');
         const swap = button('⇅', () => {
-            const source = from.input.value; from.input.value = to.input.value; to.input.value = source; calculate();
+            const source = from.input.value; from.input.value = to.input.value; to.input.value = source; calculate(); session.changed();
         }, 'converter-swap');
         swap.title = 'Поменять местами'; swap.setAttribute('aria-label', 'Поменять местами');
         function calculate() {
@@ -118,8 +121,24 @@
             }
             to.input.selectedIndex = Math.min(1, to.input.options.length - 1); calculate();
         }
-        category.input.addEventListener('change', updateUnits);
-        for (const input of [value.input, from.input, to.input]) { input.addEventListener('input', calculate); }
+        const session = window.StudySessions.files(root, {
+            filename: 'units.csuunits', extension: '.csuunits',
+            get: () => ({ format: 'csu-units', version: 1, category: category.input.value,
+                value: value.input.value, from: from.input.value, to: to.input.value }),
+            validate: (data) => {
+                if (data?.format !== 'csu-units' || data.version !== 1 || !Object.hasOwn(T.units, data.category)
+                    || typeof data.value !== 'string' || data.value.length > 120
+                    || !Object.hasOwn(T.units[data.category], data.from) || !Object.hasOwn(T.units[data.category], data.to)) {
+                    throw new Error('Это не документ конвертера ЧелГУ.');
+                }
+                return { format: 'csu-units', version: 1, category: data.category, value: data.value, from: data.from, to: data.to };
+            }, set: (data) => {
+                category.input.value = data.category; updateUnits(); value.input.value = data.value;
+                from.input.value = data.from; to.input.value = data.to; calculate();
+            },
+        });
+        category.input.addEventListener('change', () => { updateUnits(); session.changed(); });
+        for (const input of [value.input, from.input, to.input]) { input.addEventListener('input', () => { calculate(); session.changed(); }); }
         value.input.inputMode = 'decimal'; grid.append(value.label, from.label, result.label, to.label, swap);
         root.append(category.label, grid, element('p', 'КБ/МБ — десятичные; КиБ/МиБ — двоичные.', 'tool-help')); updateUnits();
     }
@@ -175,7 +194,7 @@
     async function start() {
         const page = document.querySelector('[data-study-tool]'); if (!page) { return; }
         const root = document.getElementById('tool-root');
-        const renderers = { calculator, converter, graphs, 'formula-editor': formulas, teachers, announcements, flowcharts };
+        const renderers = { calculator, converter, graphs, 'formula-editor': formulas, teachers, announcements, flowcharts, limits: (root) => window.StudyLimitUI.limits(root) };
         try {
             if (page.dataset.studyTool === 'notes') { notes(root, await catalog()); }
             else { await renderers[page.dataset.studyTool](root); }

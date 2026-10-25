@@ -64,6 +64,7 @@ jobs:
           node tests/textbooks.test.cjs
           node tests/tools.test.cjs
           node tests/executable-tools.test.cjs
+          node tests/limits.test.cjs
           node android/tests/mobile.test.cjs
           node android/tests/admin.test.cjs
           node android/tests/controls.test.cjs

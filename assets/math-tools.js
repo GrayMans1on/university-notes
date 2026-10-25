@@ -33,71 +33,93 @@
         return details;
     }
     function calculator(root) {
-        setup(); const { element, button, row, say } = ui();
-        const expression = mathField('Выражение', '\\sqrt{2}^{2}');
-        const output = element('output', 'Введите выражение', 'tool-output');
-        const history = element('div', undefined, 'math-history'); let ans = 0;
-        function calculate() {
-            const result = window.StudyMath.compile(expression.input.value)({ ans });
-            if (!Number.isFinite(result)) { throw new Error('Результат не определён в вещественных числах.'); }
-            ans = result; output.textContent = number(result); say('');
-            const item = element('div', undefined, 'math-history-row');
-            const formula = mathField('Вычисление', expression.input.value); formula.input.readOnly = true;
-            formula.input.setAttribute('tabindex', '-1');
-            item.append(formula.input, element('strong', '= ' + number(result))); history.prepend(item);
+        setup(); const { element, field, button, row, historyBar, say } = ui(); const T = window.StudyTools;
+        const title = field('Название документа', 'Вычисления'); const list = element('div', undefined, 'math-notebook');
+        let entries = []; let initialized = false; let activeInput;
+        const snapshot = () => ({ format: 'csu-math', version: 1, title: title.input.value,
+            expressions: entries.map((entry) => entry.math.input.value) });
+        function validate(data) {
+            if (data?.format !== 'csu-math' || data.version !== 1 || typeof data.title !== 'string'
+                || data.title.length > 160 || !Array.isArray(data.expressions) || data.expressions.length > 40
+                || !data.expressions.every((text) => typeof text === 'string' && text.length <= 1200)) {
+                throw new Error('Это не документ калькулятора ЧелГУ.');
+            }
+            return { format: 'csu-math', version: 1, title: data.title, expressions: [...data.expressions] };
         }
-        expression.input.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') { event.preventDefault(); try { calculate(); } catch (e) { say(e.message); } }
+        const history = new T.History({ format: 'csu-math', version: 1, title: 'Вычисления', expressions: [''] });
+        const session = window.StudySessions.files(root, {
+            filename: 'calculations.csumath', extension: '.csumath', get: snapshot, validate,
+            set: (data) => { load(data); history.push(snapshot()); bar.update(); },
+            legacy: () => window.StudyWorkspace.legacy('formulas').map((item) => ({ title: item.title,
+                value: { format: 'csu-math', version: 1, title: item.title || 'Формула', expressions: [item.code || ''] } })),
         });
+        const bar = historyBar(history, (value) => { load(value); session.changed(); });
+        function changed() {
+            if (!initialized) { return; } history.push(snapshot()); bar.update(); session.changed();
+        }
+        function calculate() {
+            const scope = { ans: 0 }; let count = 0;
+            for (const entry of entries) {
+                entry.output.replaceChildren(); const text = entry.math.input.value;
+                if (!text.trim()) { continue; }
+                try {
+                    let ast = window.StudyMath.parse(text); let variable;
+                    if (Array.isArray(ast) && ast[0] === 'Equal' && ast.length === 3 && typeof ast[1] === 'string') {
+                        variable = ast[1]; ast = ast[2];
+                        if (!/^[a-zA-Z][a-zA-Z0-9_]{0,30}$/.test(variable)
+                            || ['constructor', 'prototype', '__proto__', 'Pi', 'ExponentialE', 'ans'].includes(variable)) {
+                            throw new Error('Недопустимое имя переменной.');
+                        }
+                    }
+                    const value = window.StudyMath.compile(ast)(scope);
+                    if (!Number.isFinite(value)) { throw new Error('Результат не определён в вещественных числах.'); }
+                    if (variable) { scope[variable] = value; }
+                    scope.ans = value; count += 1;
+                    entry.output.append(element('span', (variable ? variable + ' = ' : '= ') + number(value)));
+                } catch (error) { entry.output.append(element('span', error.message, 'math-line-error')); }
+            }
+            say(count ? 'Вычислено строк: ' + count + '. Углы — в радианах.' : 'Введите выражение или задайте переменную: a = 2.');
+        }
+        function add(value = '', focus = false) {
+            if (entries.length >= 40) { throw new Error('В документе доступно до 40 строк.'); }
+            const entry = { math: mathField('Выражение ' + (entries.length + 1), value), output: element('output', '', 'math-line-result') };
+            const container = element('div', undefined, 'math-notebook-line');
+            const remove = button('×', () => { entries.splice(entries.indexOf(entry), 1); container.remove(); changed(); calculate(); });
+            remove.setAttribute('aria-label', 'Убрать строку');
+            container.append(entry.math.label, remove, entry.output); entries.push(entry); list.append(container);
+            entry.math.input.addEventListener('focusin', () => { activeInput = entry.math.input; });
+            entry.math.input.addEventListener('input', () => { changed(); calculate(); });
+            entry.math.input.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') { event.preventDefault(); calculate(); add('', true); changed(); }
+            });
+            if (focus) { entry.math.input.focus(); activeInput = entry.math.input; }
+            return entry;
+        }
+        function load(data) {
+            initialized = false; entries = []; list.replaceChildren(); title.input.value = data.title;
+            for (const text of data.expressions.length ? data.expressions : ['']) { add(text); }
+            activeInput = entries[0].math.input; initialized = true; calculate();
+        }
+        title.input.addEventListener('input', changed);
         const keys = element('div', undefined, 'tool-calculator-keys');
         for (const [label, latex] of [['7', '7'], ['8', '8'], ['9', '9'], ['÷', '\\frac{#@}{#?}'], ['√', '\\sqrt{#?}'],
             ['4', '4'], ['5', '5'], ['6', '6'], ['×', '\\cdot'], ['xⁿ', '^{#?}'], ['1', '1'], ['2', '2'],
             ['3', '3'], ['−', '-'], ['!', '!'], ['0', '0'], ['.', '.'], ['(', '('], [')', ')'], ['+', '+'],
-            ['sin', '\\sin(#?)'], ['cos', '\\cos(#?)'], ['tan', '\\tan(#?)'], ['ln', '\\ln(#?)'],
-            ['log', '\\log_{#?}(#?)'], ['π', '\\pi'], ['e', 'e'], ['ans', '\\operatorname{ans}'],
-            ['|x|', '\\left|#?\\right|'], ['∑', '\\sum_{n=1}^{#?}#?']]) {
-            keys.append(button(label, () => { expression.input.insert(latex); expression.input.focus(); }));
+            ['sin', '\\sin(#?)'], ['cos', '\\cos(#?)'], ['ln', '\\ln(#?)'], ['π', '\\pi'], ['∑', '\\sum_{n=1}^{#?}#?']]) {
+            keys.append(button(label, () => { activeInput?.insert(latex); activeInput?.focus(); changed(); calculate(); }));
         }
-        root.append(expression.label, row(button('Вычислить', calculate, 'primary'), button('Очистить ввод', () => {
-            expression.input.value = ''; expression.input.focus();
-        })), output, keys, help(), history);
+        root.append(title.label, row(button('Вычислить', calculate, 'primary'), button('Добавить выражение', () => { add('', true); changed(); }),
+            button('Новый документ', () => session.replace(() => {
+                load({ title: 'Вычисления', expressions: [''] }); history.push(snapshot()); bar.update(); session.saved();
+            })), button('Скачать TEX', () => {
+                ui().exportFile('calculations.tex', 'text/plain', entries.map((entry) => entry.math.input.value).join('\n\n'));
+            })), bar.node, list, keys, help());
+        load({ title: 'Вычисления', expressions: [''] }); session.saved();
     }
-    function formulas(root) {
-        setup(); const { element, field, select, button, row, exportFile, historyBar, say, id } = ui();
-        const W = window.StudyWorkspace; const T = window.StudyTools;
-        let items = W.read().formulas; let active = items[0]?.id;
-        const history = new T.History(items); const picker = select('Сохранённые формулы', []);
-        const title = field('Название', 'Новая формула'); const code = mathField('Формула', '\\frac{a}{b}');
-        const bar = historyBar(history, (value) => { items = value; W.save('formulas', items); load(); });
-        function load() {
-            picker.input.replaceChildren(...items.map((item) => new Option(item.title || 'Без названия', item.id)));
-            const current = items.find((item) => item.id === active) || items[0]; active = current?.id;
-            if (current) { picker.input.value = current.id; title.input.value = current.title; code.input.value = current.code; }
-        }
-        function save() {
-            let item = items.find((value) => value.id === active);
-            if (!item) { item = { id: id(), title: title.input.value, code: code.input.value }; items.push(item); active = item.id; }
-            item.title = title.input.value; item.code = code.input.value;
-            W.save('formulas', items); history.push(items); bar.update();
-            const option = [...picker.input.options].find((value) => value.value === active);
-            if (option) { option.textContent = item.title; }
-            else { picker.input.append(new Option(item.title, item.id)); picker.input.value = active; }
-            say('Сохранено на этом устройстве.');
-        }
-        picker.input.addEventListener('change', () => { active = picker.input.value; load(); });
-        for (const input of [title.input, code.input]) {
-            input.addEventListener('input', () => { try { save(); } catch (e) { say(e.message); } });
-        }
-        root.append(picker.label, row(button('Новая формула', () => {
-            const item = { id: id(), title: 'Новая формула', code: '' }; items.push(item); active = item.id;
-            W.save('formulas', items); history.push(items); bar.update(); load(); code.input.focus();
-        }, 'primary')), bar.node, title.label, code.label, help(), row(button('Сохранить формулу', save),
-            button('Скачать TEX', () => exportFile('formula.tex', 'text/plain', code.input.value))));
-        load();
-    }
+    const formulas = calculator;
     function graphs(root) {
         setup(); const { element, button, row, say, id } = ui(); const T = window.StudyTools;
-        const saved = T.storage.read('study-graphs', null);
+        let initializing = true; const saved = null;
         const entries = []; const colors = ['#4664dd', '#d66535', '#168371', '#a14bb0', '#b8831d', '#258ca6', '#a94665', '#5c7d29'];
         const list = element('div', undefined, 'graph-expressions');
         const stage = element('div', undefined, 'graph-stage');
@@ -107,8 +129,28 @@
         let view = { x: 0, y: 0, scale: 42 }; let frame = 0;
         if (saved?.view && [saved.view.x, saved.view.y, saved.view.scale].every(Number.isFinite)
             && saved.view.scale > 1e-8 && saved.view.scale < 1e10) { view = saved.view; }
+        function validate(data) {
+            if (data?.format !== 'csu-graphs' || data.version !== 1 || !Array.isArray(data.entries)
+                || data.entries.length > 8 || !data.entries.every((text) => typeof text === 'string' && text.length <= 1200)
+                || !data.view || ![data.view.x, data.view.y, data.view.scale].every(Number.isFinite)
+                || Math.max(Math.abs(data.view.x), Math.abs(data.view.y)) > 1e12 || data.view.scale < 1e-8 || data.view.scale > 1e10) {
+                throw new Error('Это не документ графиков ЧелГУ.');
+            }
+            return { format: 'csu-graphs', version: 1, entries: [...data.entries], view: { ...data.view } };
+        }
+        const session = window.StudySessions.files(root, {
+            filename: 'graphs.csugraph', extension: '.csugraph', validate,
+            get: () => ({ format: 'csu-graphs', version: 1, entries: entries.map((entry) => entry.math.input.value), view }),
+            set: (data) => {
+                initializing = true; entries.splice(0); list.replaceChildren(); view = { ...data.view };
+                data.entries.forEach((text) => add(text)); initializing = false; draw();
+            }, legacy: () => {
+                const old = T.storage.read('study-graphs', null);
+                return old ? [{ title: 'Прежние графики', value: { format: 'csu-graphs', version: 1, ...old } }] : [];
+            },
+        });
         function persist() {
-            T.storage.write('study-graphs', { entries: entries.map((entry) => entry.math.input.value), view });
+            if (!initializing) { session.changed(); }
         }
         function queue() { if (!frame) { frame = requestAnimationFrame(() => { frame = 0; draw(); }); } }
         function add(value = '') {
@@ -212,7 +254,7 @@
         new ResizeObserver(queue).observe(stage);
         new MutationObserver(queue).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
         say('Перетаскивайте плоскость. Колесо и жест двумя пальцами меняют масштаб; двойной щелчок возвращает начало координат.');
-        draw();
+        initializing = false; session.saved(); draw();
     }
-    window.StudyMathTools = { calculator, formulas, graphs };
+    window.StudyMathTools = { calculator, formulas, graphs, mathField, setup, help };
 })();

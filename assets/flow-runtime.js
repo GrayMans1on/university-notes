@@ -4,6 +4,33 @@
         && !['constructor', 'prototype', '__proto__', 'pi', 'e', 'ans'].includes(name);
     const comparisons = { '>': (a, b) => a > b, '<': (a, b) => a < b, '>=': (a, b) => a >= b,
         '<=': (a, b) => a <= b, '==': (a, b) => a === b, '!=': (a, b) => a !== b };
+    function statements(text) {
+        if (typeof text !== 'string' || text.length > 6000) { throw new Error('Блок действий превышает 6000 символов.'); }
+        const lines = text.split(/\r?\n|;/).map((line) => line.replace(/#.*/, '').trim()).filter(Boolean);
+        if (!lines.length || lines.length > 80) { throw new Error('Введите от 1 до 80 команд присваивания.'); }
+        return lines.map((line, index) => {
+            const match = /^([a-z][a-z0-9_]*)\s*(\*\*=|\/\/=|[+*/%\-]?=)\s*(.+)$/.exec(line);
+            if (!match || !validName(match[1])) { throw new Error('Строка ' + (index + 1) + ': требуется присваивание, например a = a * 2.'); }
+            return { name: match[1], operator: match[2], expression: match[3], fn: window.StudyTools.compile(match[3]) };
+        });
+    }
+    function execute(text, scope) {
+        const next = Object.assign(Object.create(null), scope);
+        for (const statement of statements(text)) {
+            let value = statement.fn(next); const name = statement.name;
+            if (statement.operator !== '=') {
+                if (!Object.hasOwn(next, name)) { throw new Error('Не задана переменная ' + name); }
+                const left = next[name];
+                const operations = { '+=': () => left + value, '-=': () => left - value, '*=': () => left * value,
+                    '/=': () => left / value, '//=': () => Math.floor(left / value), '**=': () => left ** value,
+                    '%=': () => left - Math.floor(left / value) * value };
+                value = operations[statement.operator]();
+            }
+            if (!Number.isFinite(value)) { throw new Error('Не определён результат присваивания ' + name); }
+            next[name] = value;
+        }
+        Object.assign(scope, next);
+    }
     class Runner {
         constructor(document) {
             this.document = window.StudyTools.validateFlow(document);
@@ -57,7 +84,10 @@
                 }
                 this.waiting = { variables }; return;
             }
-            if (node.type === 'process') {
+            if (node.type === 'process' && config.program !== undefined) {
+                execute(config.program, this.variables);
+            }
+            if (node.type === 'process' && config.program === undefined) {
                 if (!validName(config.variable || '')) { throw new Error('Задайте переменную результата в блоке вычисления.'); }
                 const operation = config.operation || 'expression'; let value;
                 if (operation === 'expression') { value = this.evaluate(config.expression || ''); }
@@ -86,5 +116,5 @@
             this.follow(node, branch);
         }
     }
-    window.StudyFlow = { Runner, validName };
+    window.StudyFlow = { Runner, validName, statements, execute };
 })();

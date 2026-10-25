@@ -65,7 +65,8 @@
     "tools/graphs",
     "tools/converter",
     "tools/teachers",
-    "tools/announcements"
+    "tools/announcements",
+    "tools/limits"
   ],
   "searchSections": 715,
   "mathCount": 6812,

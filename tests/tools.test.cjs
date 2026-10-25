@@ -5,7 +5,7 @@ const { JSDOM } = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const wait = () => new Promise((resolve) => setTimeout(resolve, 15));
 const memory = new Map();
-async function page(route, scripts = ['assets/tool-core.js', 'assets/math-runtime.js', 'assets/math-tools.js', 'assets/flow-runtime.js', 'assets/flow-editor.js', 'assets/tools.js'], native = null) {
+async function page(route, scripts = ['assets/tool-core.js', 'assets/tool-session.js', 'assets/math-runtime.js', 'assets/math-tools.js', 'assets/flow-runtime.js', 'assets/flow-editor.js', 'assets/tools.js'], native = null) {
     const dom = new JSDOM(fs.readFileSync(path.join(root, 'dist', route, 'index.html'), 'utf8'), {
         url: 'https://study.local/' + route + '/', runScripts: 'outside-only', pretendToBeVisual: true,
     });
@@ -14,6 +14,12 @@ async function page(route, scripts = ['assets/tool-core.js', 'assets/math-runtim
     dom.window.TextDecoder = TextDecoder;
     dom.window.matchMedia = () => ({ matches: false, addEventListener() {} });
     dom.window.scrollTo = () => {};
+    dom.window.HTMLDialogElement.prototype.showModal = function () { this.open = true; };
+    dom.window.HTMLDialogElement.prototype.close = function () { this.open = false; };
+    dom.window.URL.createObjectURL = () => 'blob:document';
+    dom.window.URL.revokeObjectURL = () => {};
+    dom.window.HTMLAnchorElement.prototype.click = function () {};
+    dom.window.HTMLElement.prototype.getBoundingClientRect = () => ({ left: 0, top: 0, width: 800, height: 600 });
     dom.window.ComputeEngine = require('@cortex-js/compute-engine');
     dom.window.ResizeObserver = class { observe() {} disconnect() {} };
     class MathField extends dom.window.HTMLElement {
@@ -64,8 +70,8 @@ function input(window, label, value, event = 'input') {
     assert.ok(!T.flowSvg(T.validateFlow(raw)).includes('<script>'));
     assert.throws(() => T.validateFlow({ ...raw, nodes: [raw.nodes[0], raw.nodes[0]] }));
     assert.throws(() => T.validateFlow({ ...raw, edges: [{ from: 'n1', to: 'missing', label: '' }] }));
-    input(core.window, 'Выражение', '1/0'); click(core.window, 'Вычислить');
-    assert.match(core.window.document.getElementById('tool-status').textContent, /не определён/);
+    input(core.window, 'Выражение 1', '1/0'); click(core.window, 'Вычислить');
+    assert.match(core.window.document.getElementById('tool-status').textContent, /Введите выражение/);
     core.window.close();
 
     let dom = await page('tools/notes'); let w = dom.window;
@@ -77,6 +83,10 @@ function input(window, label, value, event = 'input') {
     assert.equal(w.document.querySelector('textarea').value, 'Не потерять после обновления');
     click(w, 'Повторить'); assert.equal(w.document.querySelector('textarea').value, 'Изменённый текст'); dom.window.close();
 
+    // Legacy tool data must survive new file-based editing and note writes.
+    const legacy = JSON.parse(memory.get('study-workspace'));
+    legacy.flows = [{ id: 'old', document: raw }]; legacy.formulas = [{ id: 'old-f', title: 'Прежняя', code: '2+2' }];
+    memory.set('study-workspace', JSON.stringify(legacy));
     dom = await page('tools/flowcharts'); w = dom.window;
     click(w, 'Новая схема');
     const board = w.document.querySelector('.flow-board');
@@ -85,32 +95,52 @@ function input(window, label, value, event = 'input') {
     const menu = w.document.querySelector('.flow-context-menu');
     [...menu.querySelectorAll('button')].find((button) => button.textContent === 'Ввод').click();
     input(w, 'Переменные через запятую', 'a, b');
-    const stored = JSON.parse(w.localStorage.getItem('study-workspace'));
-    assert.equal(stored.flows[0].document.nodes[1].config.variable, 'a, b');
+    assert.equal(w.StudyWorkspace.read().flows[0].document.nodes[1].config.variable, 'a, b');
     click(w, 'Отменить'); click(w, 'Повторить');
-    assert.equal(JSON.parse(w.localStorage.getItem('study-workspace')).flows[0].document.nodes[1].config.variable, 'a, b');
+    assert.equal(w.StudyWorkspace.read().flows[0].document.nodes[1].config.variable, 'a, b');
+    assert.equal(w.localStorage.getItem('study-workspace'), memory.get('study-workspace'));
     const fileInput = w.document.querySelector('input[type=file]');
     Object.defineProperty(fileInput, 'files', { configurable: true, value: [{ size: 20, text: async () => '{"format":"wrong"}' }] });
     fileInput.dispatchEvent(new w.Event('change')); await wait();
-    assert.equal(JSON.parse(w.localStorage.getItem('study-workspace')).flows.length, 1);
-    Object.defineProperty(fileInput, 'files', { value: [{ size: 100, text: async () => JSON.stringify(stored.flows[0].document) }] });
+    assert.equal(w.StudyWorkspace.read().flows.length, 1);
+    assert.equal(w.document.querySelector('dialog'), null, 'invalid import must not discard unsaved work');
+    const imported = { ...raw, title: 'Импорт', viewport: { x: -5000, y: 8000, scale: 0.3 } };
+    Object.defineProperty(fileInput, 'files', { configurable: true, value: [{ size: 100, text: async () => JSON.stringify(imported) }] });
     fileInput.dispatchEvent(new w.Event('change')); await wait();
-    assert.equal(JSON.parse(w.localStorage.getItem('study-workspace')).flows.length, 2);
-    assert.ok(JSON.parse(w.localStorage.getItem('study-workspace')).notes.some((note) => note.title === 'Личная запись'));
+    assert.ok(w.document.querySelector('dialog').open);
+    click(w, 'Остаться'); await wait(); assert.equal(w.StudyWorkspace.read().flows.length, 1);
+    fileInput.dispatchEvent(new w.Event('change')); await wait();
+    click(w, 'Уйти без сохранения'); await wait();
+    assert.equal(w.StudyWorkspace.read().flows.length, 2);
+    assert.equal(w.StudyActiveSession.dirty, false);
+    assert.match(board.querySelector('svg').getAttribute('viewBox'), /-/);
+    input(w, 'Название схемы', 'Изменение');
+    const unloading = new w.Event('beforeunload', { cancelable: true }); w.dispatchEvent(unloading);
+    assert.equal(unloading.defaultPrevented, true);
+    click(w, 'Сохранить файл'); await wait(); assert.equal(w.StudyActiveSession.dirty, false);
+    assert.equal(w.localStorage.getItem('study-workspace'), memory.get('study-workspace'));
     dom.window.close();
 
+    memory.set('study-graphs', JSON.stringify({ entries: [{ value: 'x' }], view: { x: 1, y: 1, scale: 42 } }));
     dom = await page('tools/graphs'); w = dom.window;
     assert.equal(w.document.querySelectorAll('[data-curve]').length, 2);
-    const scale = JSON.parse(w.localStorage.getItem('study-graphs')).view.scale;
+    assert.equal(w.StudyActiveSession.dirty, false);
     w.document.querySelector('.graph-canvas').dispatchEvent(new w.WheelEvent('wheel', { deltaY: -100, clientX: 400, clientY: 200, cancelable: true }));
-    await wait(); assert.ok(JSON.parse(w.localStorage.getItem('study-graphs')).view.scale > scale);
+    await wait(); assert.equal(w.StudyActiveSession.dirty, true);
     input(w, 'Функция 1', '\\sqrt{x}'); await wait();
-    assert.equal(w.document.querySelectorAll('[data-curve]').length, 2); dom.window.close();
+    assert.equal(w.document.querySelectorAll('[data-curve]').length, 2);
+    assert.equal(w.localStorage.getItem('study-graphs'), memory.get('study-graphs')); dom.window.close();
 
     dom = await page('tools/formula-editor'); w = dom.window;
-    click(w, 'Сохранить формулу'); input(w, 'Формула', '\\sqrt{x}');
-    assert.equal(JSON.parse(w.localStorage.getItem('study-workspace')).formulas[0].code, '\\sqrt{x}');
-    click(w, 'Отменить'); assert.match(w.document.querySelector('math-field').value, /frac/); dom.window.close();
+    input(w, 'Выражение 1', 'a=3'); click(w, 'Добавить выражение');
+    input(w, 'Выражение 2', 'a^2+1');
+    assert.match(w.document.querySelectorAll('.math-line-result')[1].textContent, /10/);
+    click(w, 'Новый документ'); await wait(); click(w, 'Остаться'); await wait();
+    assert.equal(w.document.querySelectorAll('math-field').length, 2);
+    click(w, 'Новый документ'); await wait(); click(w, 'Сохранить файл и продолжить'); await wait();
+    assert.equal(w.document.querySelectorAll('math-field').length, 1);
+    assert.equal(w.StudyActiveSession.dirty, false);
+    assert.equal(w.localStorage.getItem('study-workspace'), memory.get('study-workspace')); dom.window.close();
 
     dom = await page('tools/converter'); w = dom.window;
     assert.equal(w.document.querySelectorAll('.converter-grid label').length, 4);
@@ -138,5 +168,5 @@ function input(window, label, value, event = 'input') {
     dom = await page('textbooks', ['assets/tool-core.js', 'assets/tools.js', 'assets/reader-tools.js']); w = dom.window;
     const box = w.document.querySelector('.book-subject-choice input'); box.checked = !box.checked; click(w, 'Сохранить привязку');
     assert.ok(Object.keys(JSON.parse(w.localStorage.getItem('study-workspace')).bookBindings).length); dom.window.close();
-    console.log('Tools: safe arithmetic, units, flow files, undo, persistence, graphs, formulas, read-only catalogs and reader highlights passed.');
+    console.log('Tools: safe arithmetic, units, flow files, undo, legacy preservation, unsaved-work guards, graphs, unified math notebook, read-only catalogs and reader highlights passed.');
 })().catch((error) => { console.error(error); process.exit(1); });

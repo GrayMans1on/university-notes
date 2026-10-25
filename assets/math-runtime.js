@@ -11,9 +11,9 @@
     };
     let engine;
     function compile(latex) {
-        if (!latex || latex.length > 1200) { throw new Error('Введите формулу длиной до 1200 символов.'); }
+        if (typeof latex === 'string' && (!latex || latex.length > 1200)) { throw new Error('Введите формулу длиной до 1200 символов.'); }
         const ce = engine || (engine = new window.ComputeEngine.ComputeEngine());
-        const expression = ce.parse(latex);
+        const expression = typeof latex === 'string' ? ce.parse(latex) : { isValid: true, json: latex };
         if (!expression.isValid) { throw new Error('Формула не завершена или содержит ошибку.'); }
         let size = 0;
         function build(node, depth = 0) {
@@ -80,5 +80,11 @@
         const fn = build(expression.json);
         return (scope = {}) => fn(scope, { left: 10000 });
     }
-    window.StudyMath = { compile };
+    window.StudyMath = { compile, parse: (text) => {
+        const ce = engine || (engine = new window.ComputeEngine.ComputeEngine());
+        if (!text || text.length > 1200) { throw new Error('Введите формулу длиной до 1200 символов.'); }
+        const value = ce.parse(text); if (!value.isValid) { throw new Error('Завершите формулу.'); } return value.json;
+    }, latex: (value) => {
+        const ce = engine || (engine = new window.ComputeEngine.ComputeEngine()); return ce.box(value).latex;
+    } };
 })();

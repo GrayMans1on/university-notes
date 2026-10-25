@@ -60,28 +60,28 @@
             if (calculateButton) { calculateButton.disabled = false; }
         }
         const calculateButton = button('Вычислить предел', () => {
-            stop(); session.changed(); const currentJob = job;
+            stop(); result.replaceChildren(); session.changed(); const currentJob = job;
             calculateButton.disabled = true; say('Выполняется символьный разбор…');
             worker = new Worker('/assets/limits-worker.js?v=__LIMITS_BUILD__');
             worker.onmessage = (event) => {
-                if (event.data.job !== currentJob) { return; }
+                if (currentJob !== job || event.data.job !== currentJob) { return; }
                 clearTimeout(timer); calculateButton.disabled = false;
                 if (event.data.error) { say(event.data.error); } else { show(event.data.result); say(''); }
                 worker?.terminate(); worker = null;
             };
-            worker.onerror = () => { stop(); say('Не удалось загрузить модуль разбора. Проверьте соединение.'); };
+            worker.onerror = () => { if (currentJob !== job) { return; } stop(); say('Не удалось загрузить модуль разбора. Проверьте соединение.'); };
             timer = setTimeout(() => { stop(); say('Разбор остановлен по лимиту времени. Упростите выражение.'); }, 8000);
             worker.postMessage({ job: currentJob, expression: expression.input.value,
                 destination: destination.input.value, direction: direction.input.value });
         }, 'primary');
         for (const input of [expression.input, destination.input, direction.input]) {
-            input.addEventListener('input', () => { stop(); session.changed(); });
+            input.addEventListener('input', () => { stop(); result.replaceChildren(); session.changed(); });
         }
         const examples = element('div', undefined, 'tool-toolbar');
         for (const [name, code, point] of [['Сокращение', '\\frac{x^2-1}{x-1}', '1'], ['sin x / x', '\\frac{\\sin(x)}{x}', '0'],
             ['Степени при ∞', '\\frac{3x^2+x}{2x^2-1}', '\\infty'], ['Разные стороны', '\\frac{1}{x}', '0']]) {
             examples.append(button(name, () => {
-                expression.input.value = code; destination.input.value = point; direction.input.value = 'both'; session.changed();
+                stop(); result.replaceChildren(); expression.input.value = code; destination.input.value = point; direction.input.value = 'both'; session.changed();
             }));
         }
         root.append(expression.label, row(destination.label, direction.label), row(calculateButton, button('Остановить', stop)),

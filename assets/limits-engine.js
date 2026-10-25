@@ -97,7 +97,7 @@
             }
             return total;
         }
-        const polynomialAst = (p) => ['Add', ...p.map((c, i) => ['Multiply', c, i ? ['Power', 'x', i] : 1])];
+        const polynomialAst = (p) => exact(['Add', ...p.map((c, i) => ['Multiply', c, i ? ['Power', 'x', i] : 1])]);
         const polyAt = (p, a) => p.reduceRight((total, c) => add(mul(total, a), c), 0);
         function factor(p, a) {
             let order = 0; let quotient = clean([...p]);
@@ -198,14 +198,23 @@
             }
             if (p.zero || p.order > q.order) { return finite(0); }
             const ratio = exact(['Divide', p.value, q.value]);
-            if (p.order === q.order) { return finite(ratio); }
+            if (p.order === q.order) {
+                steps.push({ text: 'После сокращения подставляем точку в оставшееся выражение.',
+                    math: `\\frac{${latex(polynomialAst(p.quotient))}}{${latex(polynomialAst(q.quotient))}}\\;\\longrightarrow\\;\\frac{${latex(p.value)}}{${latex(q.value)}}=${latex(ratio)}` });
+                return finite(ratio);
+            }
             const power = q.order - p.order;
             steps.push({ text: 'Остаётся полюс. Знак степени разности зависит от стороны приближения.',
                 math: `${latex(ratio)}\\,(${latex(delta)})^{-${power}}` });
             return infinite(Math.sign(evaluate(ratio, 0).n) * (side < 0 && power % 2 ? -1 : 1));
         }
-        const bounded = (node) => Array.isArray(node) && (['Sin', 'Cos', 'Arctan', 'Tanh'].includes(node[0])
-            || (node[0] === 'Negate' && bounded(node[1])));
+        const bounded = (node) => {
+            if (!Array.isArray(node)) { return false; }
+            if (node[0] === 'Negate') { return bounded(node[1]); }
+            if (!['Sin', 'Cos', 'Arctan', 'Tanh'].includes(node[0])) { return false; }
+            const arg = rational(node[1]);
+            return arg ? !arg.q.every(zero) : Number.isFinite(pointValue) && regular(node[1], pointAst);
+        };
         function sideLimit(node, point, side, steps, depth = 0) {
             tick(); if (depth > 10) { return unknown(); }
             const rp = rational(node); if (rp) { return rationalLimit(rp, point, side, steps); }

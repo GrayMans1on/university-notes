@@ -44,6 +44,7 @@ assert.equal(solve('\\ln x', '0', 'right').sign, -1);
 assert.equal(solve('\\log_{0.5}(x)', '0', 'right').sign, 1);
 assert.equal(solve('\\sqrt{x}', '0', 'right').value, 0);
 assert.equal(solve('\\sqrt{x}', '0', 'left').kind, 'domain');
+assert.ok(!['finite', 'infinite'].includes(solve('x\\sin(1/(x-x))', '0').kind), 'empty domain cannot be squeezed to a false zero');
 assert.throws(() => solve('y+1', '0'));
 assert.throws(() => solve('x'.repeat(1201), '0'));
 assert.throws(() => solve('x', 'x'));

@@ -5,7 +5,7 @@ const { JSDOM } = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const wait = () => new Promise((resolve) => setTimeout(resolve, 15));
 const memory = new Map();
-async function page(route, scripts = ['assets/tool-core.js', 'assets/tool-session.js', 'assets/math-runtime.js', 'assets/math-tools.js', 'assets/flow-runtime.js', 'assets/flow-editor.js', 'assets/tools.js'], native = null) {
+async function page(route, scripts = ['assets/tool-core.js', 'assets/tool-session.js', 'assets/math-runtime.js', 'assets/math-tools.js', 'assets/flow-runtime.js', 'assets/flow-editor.js', 'assets/limits-ui.js', 'assets/tools.js'], native = null) {
     const dom = new JSDOM(fs.readFileSync(path.join(root, 'dist', route, 'index.html'), 'utf8'), {
         url: 'https://study.local/' + route + '/', runScripts: 'outside-only', pretendToBeVisual: true,
     });
@@ -21,6 +21,13 @@ async function page(route, scripts = ['assets/tool-core.js', 'assets/tool-sessio
     dom.window.HTMLAnchorElement.prototype.click = function () {};
     dom.window.HTMLElement.prototype.getBoundingClientRect = () => ({ left: 0, top: 0, width: 800, height: 600 });
     dom.window.ComputeEngine = require('@cortex-js/compute-engine');
+    dom.window.katex = { render(text, block) { block.textContent = text; } };
+    dom.window.testWorkers = [];
+    dom.window.Worker = class {
+        constructor() { dom.window.testWorkers.push(this); }
+        postMessage(value) { this.sent = value; }
+        terminate() { this.terminated = true; }
+    };
     dom.window.ResizeObserver = class { observe() {} disconnect() {} };
     class MathField extends dom.window.HTMLElement {
         get value() { return this._value || ''; }
@@ -147,6 +154,17 @@ function input(window, label, value, event = 'input') {
     assert.equal(w.document.querySelectorAll('math-field').length, 1);
     assert.equal(w.StudyActiveSession.dirty, false);
     assert.equal(w.localStorage.getItem('study-workspace'), memory.get('study-workspace')); dom.window.close();
+
+    dom = await page('tools/limits'); w = dom.window;
+    click(w, 'Вычислить предел'); const firstWorker = w.testWorkers[0];
+    click(w, 'sin x / x'); assert.equal(firstWorker.terminated, true);
+    firstWorker.onmessage({ data: { job: firstWorker.sent.job, result: { kind: 'finite', latex: '99', steps: [] } } });
+    assert.equal(w.document.querySelector('.limit-result').textContent, '', 'old worker cannot write a stale result');
+    click(w, 'Вычислить предел'); const secondWorker = w.testWorkers[1];
+    secondWorker.onmessage({ data: { job: secondWorker.sent.job, result: { kind: 'finite', latex: '1', steps: [] } } });
+    assert.match(w.document.querySelector('.limit-result').textContent, /Результат1/);
+    input(w, 'Функция f(x)', 'x'); assert.equal(w.document.querySelector('.limit-result').textContent, '');
+    dom.window.close();
 
     dom = await page('tools/converter'); w = dom.window;
     assert.equal(w.document.querySelectorAll('.converter-grid label').length, 4);

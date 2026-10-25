@@ -158,12 +158,12 @@ function input(window, label, value, event = 'input') {
     dom = await page('tools/limits'); w = dom.window;
     click(w, 'Вычислить предел'); const firstWorker = w.testWorkers[0];
     click(w, 'sin x / x'); assert.equal(firstWorker.terminated, true);
-    firstWorker.onmessage({ data: { job: firstWorker.sent.job, result: { kind: 'finite', latex: '99', steps: [] } } });
+    firstWorker.onmessage({ data: { job: firstWorker.sent.job, result: { kind: 'finite', latex: '99', steps: [{ math: 'x' }] } } });
     assert.equal(w.document.querySelector('.limit-result').textContent, '', 'old worker cannot write a stale result');
     click(w, 'Вычислить предел'); const secondWorker = w.testWorkers[1];
-    secondWorker.onmessage({ data: { job: secondWorker.sent.job, result: { kind: 'finite', latex: '1', steps: [] } } });
-    assert.match(w.document.querySelector('.limit-result').textContent, /Результат1/);
-    input(w, 'Функция f(x)', 'x'); assert.equal(w.document.querySelector('.limit-result').textContent, '');
+    secondWorker.onmessage({ data: { job: secondWorker.sent.job, result: { kind: 'finite', latex: '1', steps: [{ math: 'x' }] } } });
+    assert.match(w.document.querySelector('.limit-result').textContent, /Решение/);
+    input(w, 'Выражение под знаком предела', 'x'); assert.equal(w.document.querySelector('.limit-result').textContent, '');
     dom.window.close();
 
     dom = await page('tools/converter'); w = dom.window;

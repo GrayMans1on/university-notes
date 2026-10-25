@@ -76,7 +76,7 @@
                     else if (exponent <= 0) { requireCondition(u, '\\ne0'); }
                     // A zero exponent is constant, but the original base domain is still visited.
                     const du = visit(u, depth + 1);
-                    answer = exponent === 0 ? 0 : mul(v, power(u, sub(v, 1)), du); rule = 'Степенная функция и цепное правило';
+                    answer = exponent === 0 ? 0 : exponent === 1 ? du : mul(v, power(u, sub(v, 1)), du); rule = 'Степенная функция и цепное правило';
                 } else if (!depends(u)) {
                     requireCondition(u, '>0'); answer = mul(node, ['Ln', u], visit(v, depth + 1));
                     rule = 'Показательная функция и цепное правило';

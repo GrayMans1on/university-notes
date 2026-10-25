@@ -100,3 +100,6 @@ try {
     } else { assert.ok(!process.env.GITHUB_ACTIONS, 'CI requires a C# compiler'); console.log('C# compiler unavailable locally; CI must run this test with .NET 8.'); }
 } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 console.log('Academic tools: exact determinants/inverses/systems, course derivatives, digit arithmetic in bases 2–36, Python export and C# source passed.');
+
+assert.equal(D.solve('x^1').latex, '1');
+assert.equal(context.window.StudyMath.compile(D.solve('(x^2+1)^1').ast)({ x: 0 }), 0);

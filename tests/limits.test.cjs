@@ -95,3 +95,7 @@ assert.equal(solve('\\sqrt[3]{x}', '0', 'left').value, 0);
 assert.equal(solve('x^{2/3}', '-8').value, 4);
 
 assert.ok(!['finite', 'infinite'].includes(solve('\\sin(x-x)/(x-x)', '0').kind));
+
+const cubeRoot = solve('\\sqrt[3]{x}', '0', 'right');
+assert.doesNotMatch(JSON.stringify(cubeRoot), /0\.333333/);
+checkMath(cubeRoot);

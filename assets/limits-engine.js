@@ -191,8 +191,12 @@
             if (!Number.isFinite(pointValue)) {
                 const p = clean(rp.p); const q = clean(rp.q); const degree = p.length - q.length;
                 const ratio = exact(['Divide', p.at(-1), q.at(-1)]); const coefficient = evaluate(ratio, 0).n;
-                steps.push({ text: 'Делим числитель и знаменатель на старшую степень x; младшие степени после деления стремятся к нулю.',
-                    math: `\\frac{${latex(polynomialAst(p))}}{${latex(polynomialAst(q))}}\\sim ${latex(ratio)}x^{${degree}}` });
+                const denominatorDegree = q.length - 1;
+                const normalized = (coefficients) => exact(['Add', ...coefficients.map((c, i) =>
+                    i === denominatorDegree ? c : ['Multiply', c,
+                        i - denominatorDegree === 1 ? 'x' : ['Power', 'x', i - denominatorDegree]])]);
+                steps.push({ text: 'Делим числитель и знаменатель на старшую степень знаменателя. Отрицательные степени x стремятся к нулю; сохраняем знак x при отрицательной бесконечности.',
+                    math: `\\frac{${latex(polynomialAst(p))}}{${latex(polynomialAst(q))}}=\\frac{${latex(normalized(p))}}{${latex(normalized(q))}}` });
                 if (p.every(zero) || degree < 0) { return finite(0); }
                 if (degree === 0) { return finite(ratio); }
                 return infinite(Math.sign(coefficient) * (pointValue < 0 && degree % 2 ? -1 : 1));
@@ -241,7 +245,16 @@
         const noDomain = () => { const error = new Error(domain().reason); error.domain = true; throw error; };
         const isZero = (p) => p.size === 0;
         const poly = (c = 0, power = 0) => zero(c) ? new Map() : new Map([[power, c]]);
-        const exponentKey = (p) => Math.round(p * 1e9) / 1e9;
+        const powerForms = new Map([[0, 0], [1, 1], [-1, -1]]);
+        const powerForm = (key) => powerForms.get(key) ?? key;
+        function powerKey(expression) {
+            const value = exact(expression); const key = numeric(value);
+            if (!Number.isFinite(key)) { fail('Не удалось точно представить степень.'); }
+            if (powerForms.has(key) && !zero(sub(powerForms.get(key), value))) {
+                fail('Степени слишком близки для точного различения; решение не построено.');
+            }
+            powerForms.set(key, value); return key;
+        }
         function plus(a, b) {
             const out = new Map(a);
             for (const [power, c] of b) {
@@ -254,7 +267,7 @@
         function times(a, b) {
             tick(); let out = new Map();
             for (const [p, c] of a) {
-                for (const [q, d] of b) { out = plus(out, poly(mul(c, d), exponentKey(p + q))); }
+                for (const [q, d] of b) { out = plus(out, poly(mul(c, d), powerKey(['Add', powerForm(p), powerForm(q)]))); }
             }
             return out;
         }
@@ -282,8 +295,10 @@
         }
         const coefficientValue = (c) => exact(replaceAtoms(c, true));
         function polyAst(p, shift = 0) {
-            return exact(['Add', ...[...p].sort((a, b) => a[0] - b[0]).map(([k, c]) =>
-                exponentKey(k - shift) === 0 ? c : ['Multiply', c, exponentKey(k - shift) === 1 ? 't' : ['Power', 't', exponentKey(k - shift)]])]);
+            return exact(['Add', ...[...p].sort((a, b) => a[0] - b[0]).map(([k, c]) => {
+                const exponent = sub(powerForm(k), powerForm(shift));
+                return zero(exponent) ? c : ['Multiply', c, zero(sub(exponent, 1)) ? 't' : ['Power', 't', exponent]];
+            })]);
         }
         const germAst = (g) => exact(['Divide', polyAst(g.p), polyAst(g.q)]);
         const germTex = (g) => latex(replaceAtoms(germAst(g)));
@@ -300,7 +315,7 @@
         function leadingGerm(g, allowVanishing = false) {
             if (isZero(g.q)) { noDomain(); }
             const p = first(g.p, allowVanishing); const q = first(g.q);
-            return { power: exponentKey(p.power - q.power), value: divide(p.value, q.value),
+            return { power: powerKey(['Subtract', powerForm(p.power), powerForm(q.power)]), value: divide(p.value, q.value),
                 zero: p.zero, numerator: p, denominator: q };
         }
         function germLimit(g) {
@@ -395,7 +410,7 @@
                 const coefficient = gdiv(g, monomial(1, l.power));
                 const c = atom(['Power', replaceAtoms(germAst(coefficient)), exponent], realPower(l.value, exponent), steps,
                     'Выносим степень малого положительного t из-под корня; знак коэффициента проверен.', 'sequence');
-                return gmul(monomial(1, exponentKey(l.power * n)), c);
+                return gmul(monomial(1, powerKey(['Multiply', powerForm(l.power), exponent])), c);
             }
             const a = l.value; const u = gdiv(gsub(g, constant(a)), constant(a));
             if (isZero(u.p)) { return constant(realPower(a, exponent)); }
@@ -503,6 +518,15 @@
             }
             return [op, ...parts];
         }
+        function growthScale(a) {
+            const x = pointValue < 0 ? ['Negate', 'x'] : 'x'; const w = a.weights;
+            const factor = (base, rawExponent) => {
+                const exponent = typeof rawExponent === 'number' ? powerForm(rawExponent) : rawExponent;
+                return zero(exponent) ? 1 : zero(sub(exponent, 1)) ? base : ['Power', base, exponent];
+            };
+            return exact(['Multiply', factor(x, ['Multiply', w[0], x]), factor(['Factorial', x], w[1]),
+                ['Exp', ['Multiply', a.rate, x]], factor(x, w[3]), factor(['Ln', x], w[4])]);
+        }
         function growth(node, point, side, steps, depth = 0) {
             tick(); if (depth > 25) { fail(); }
             const item = (value, weights = [0, 0, 0, 0, 0], rate = weights[2]) => ({ value: exact(value), weights, rate });
@@ -517,7 +541,8 @@
             const product = (a, b, inverse = false) => {
                 if (inverse && zero(b.value)) { noDomain(); }
                 return item(inverse ? divide(a.value, b.value) : mul(a.value, b.value),
-                    a.weights.map((w, i) => w + (inverse ? -b.weights[i] : b.weights[i])), inverse ? sub(a.rate, b.rate) : add(a.rate, b.rate));
+                    a.weights.map((w, i) => i === 2 ? w + (inverse ? -b.weights[i] : b.weights[i])
+                        : powerKey([inverse ? 'Subtract' : 'Add', powerForm(w), powerForm(b.weights[i])])), inverse ? sub(a.rate, b.rate) : add(a.rate, b.rate));
             };
             const visit = (n) => growth(n, point, side, steps, depth + 1);
             if (!depends(node)) {
@@ -535,18 +560,29 @@
             const [op, ...args] = node;
             if (op === 'Negate') { const a = visit(args[0]); return item(negate(a.value), a.weights, a.rate); }
             if (op === 'Add' || op === 'Subtract') {
-                const terms = args.map(visit).map((a, i) => op === 'Subtract' && i > 0 ? item(negate(a.value), a.weights, a.rate) : a)
+                const visited = args.map(visit);
+                const terms = visited.map((a, i) => op === 'Subtract' && i > 0 ? item(negate(a.value), a.weights, a.rate) : a)
                     .filter((a) => !zero(a.value));
                 if (!terms.length) { return item(0); }
                 terms.sort((a, b) => -compare(a.weights, b.weights)); const top = terms[0];
                 const same = terms.filter((a) => compare(a.weights, top.weights) === 0);
                 const value = exact(['Add', ...same.map((a) => a.value)]);
                 if (zero(value)) { fail('Старшие множители сокращаются; нужно дополнительное тождественное преобразование.'); }
+                const scale = growthScale(top);
+                const normalized = args.map((arg, i) => ['Divide', op === 'Subtract' && i > 0 ? ['Negate', arg] : arg, scale]);
+                note(steps, 'В сумме выделяем самый быстрый множитель и делим на него каждое слагаемое.',
+                    `\\frac{${latex(node)}}{${latex(scale)}}=${latex(['Add', ...normalized])}`, 'sequence');
+                args.forEach((arg, i) => {
+                    const term = visited[i]; const sameScale = compare(term.weights, top.weights) === 0;
+                    note(steps, sameScale ? 'Этот член имеет тот же масштаб; его оставшийся коэффициент имеет конечный предел.'
+                        : 'Этот член растёт медленнее выбранного множителя; отношение стремится к нулю по шкале роста.',
+                        `\\frac{${latex(arg)}}{${latex(scale)}}\\longrightarrow${sameScale ? latex(term.value) : '0'}`, 'sequence');
+                });
                 return item(value, top.weights, top.rate);
             }
             if (op === 'Multiply') { return args.reduce((a, b) => product(a, visit(b)), item(1)); }
             if (op === 'Divide') { return product(visit(args[0]), visit(args[1]), true); }
-            if (op === 'Square') { const a = visit(args[0]); return item(mul(a.value, a.value), a.weights.map((v) => 2 * v), mul(2, a.rate)); }
+            if (op === 'Square') { const a = visit(args[0]); return item(mul(a.value, a.value), a.weights.map((v, i) => i === 2 ? 2 * v : powerKey(['Multiply', 2, powerForm(v)])), mul(2, a.rate)); }
             if (op === 'Abs') { const a = visit(args[0]); return item(exact(['Abs', a.value]), a.weights, a.rate); }
             if (op === 'Factorial') {
                 if (variable !== 'n' || pointValue < 0) { fail('Факториалы рассматриваются для последовательности n → +∞.'); }
@@ -564,7 +600,7 @@
                 const exponent = op === 'Power' ? args[1] : op === 'Sqrt' ? divide(1, 2) : ['Divide', 1, args[1]];
                 if (!depends(exponent)) {
                     const a = visit(args[0]); const n = numeric(exponent);
-                    return item(realPower(a.value, exponent), a.weights.map((v) => v * n), mul(exponent, a.rate));
+                    return item(realPower(a.value, exponent), a.weights.map((v, i) => i === 2 ? v * n : powerKey(['Multiply', powerForm(v), exponent])), mul(exponent, a.rate));
                 }
                 if (!depends(args[0]) && numeric(args[0]) > 0) {
                     const r = rational(exponent);
@@ -636,7 +672,7 @@
             const remaining = latex(exact(['Divide', num, den]));
             note(steps, 'После тождественных преобразований выделяем общую степень t. Стандартные отношения в оставшихся множителях имеют указанные выше пределы.',
                 `${latex(node)}\\big|_{x=${Number.isFinite(pointValue) ? latex(point) + (side < 0 ? '-' : '+') + 't' : (pointValue < 0 ? '-' : '') + '1/t'}}`
-                + `=${l.power === 0 ? '' : 't^{' + l.power + '}\\cdot'}${remaining}`);
+                + `=${l.power === 0 ? '' : 't^{' + latex(powerForm(l.power)) + '}\\cdot'}${remaining}`);
             note(steps, 'Вычисляем предел оставшегося частного: предел знаменателя отличен от нуля.',
                 `\\frac{${latex(n.value)}}{${latex(d.value)}}=${latex(l.value)}`, 'squeeze');
             note(steps, l.zero || l.power > 0 ? 'Положительная степень t стремится к нулю; оставшийся множитель имеет конечный предел.'
@@ -703,9 +739,7 @@
                     const index = w.findIndex((v) => v !== 0); const result = zero(a.value) || index < 0 ? finite(a.value)
                         : w[index] > 0 ? infinite(Math.sign(numeric(a.value))) : finite(0);
                     steps.push(...proof);
-                    const x = pointValue < 0 ? ['Negate', 'x'] : 'x';
-                    const scale = ['Multiply', ['Power', x, ['Multiply', w[0], x]], ['Power', ['Factorial', x], w[1]],
-                        ['Exp', ['Multiply', a.rate, x]], ['Power', x, w[3]], ['Power', ['Ln', x], w[4]]];
+                    const scale = growthScale(a);
                     note(steps, 'Выделяем самый быстрый множитель. По шкале роста из конспекта логарифмы растут медленнее положительных степеней, затем идут экспоненты, факториалы и nⁿ.',
                         `\\frac{${latex(node)}}{${latex(exact(scale))}}\\longrightarrow ${latex(a.value)}`, 'sequence');
                     note(steps, 'Оставшийся коэффициент имеет конечный ненулевой предел; учитываем рост или убывание выделенного множителя.', resultTex(result), 'sequence');

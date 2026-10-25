@@ -99,3 +99,8 @@ assert.ok(!['finite', 'infinite'].includes(solve('\\sin(x-x)/(x-x)', '0').kind))
 const cubeRoot = solve('\\sqrt[3]{x}', '0', 'right');
 assert.doesNotMatch(JSON.stringify(cubeRoot), /0\.333333/);
 checkMath(cubeRoot);
+
+assert.equal(solve('\\arccos(x)', '1', 'right').kind, 'domain');
+assert.equal(solve('\\arccos(x)', '1', 'left').kind, 'finite');
+assert.equal(solve('\\arcsin(x)', '-1', 'left').kind, 'domain');
+assert.equal(solve('(-x-\\ln(x))^2/e^x', '\\infty').value, 0);

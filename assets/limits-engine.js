@@ -383,13 +383,22 @@
                     `\\ln(${latex(a)}+${germTex(u)})=\\ln(${latex(a)})+\\ln\\left(1+${germTex(v)}\\right)`, 'standard');
                 return gadd(constant(exact(['Ln', a])), gmul(v, smallRatio('ln', v, steps)));
             }
-            if (['Arcsin', 'Arccos'].includes(op) && Math.abs(an) > 1) { noDomain(); }
+            if (['Arcsin', 'Arccos'].includes(op)) {
+                if (Math.abs(an) > 1) { noDomain(); }
+                if (Math.abs(an) === 1 && !isZero(u.p)) {
+                    const outward = Math.sign(numeric(leadingGerm(u).value)) * an > 0;
+                    if (outward) { noDomain(); }
+                    note(steps, 'Проверяем область обратной тригонометрической функции: внутренний аргумент подходит к границе из [−1,1].',
+                        '-1\\le u\\le1', 'continuity');
+                }
+            }
             if (['Arcsin', 'Arctan'].includes(op) && zero(a)) { return gmul(u, smallRatio(op.toLowerCase(), u, steps)); }
             return atom([op, replaceAtoms(germAst(g))], exact([op, a]), steps,
                 'Внешняя функция непрерывна в предельном значении аргумента.');
         }
         function realPower(value, exponent) {
             const power = numeric(exponent); const n = numeric(value); const fraction = exact(exponent);
+            if (Number.isInteger(power)) { return exact(['Power', value, power]); }
             if (n < 0) {
                 if (Array.isArray(fraction) && fraction[0] === 'Rational' && Math.abs(fraction[2] % 2) === 1) {
                     return mul(Math.abs(fraction[1] % 2) === 1 ? -1 : 1,

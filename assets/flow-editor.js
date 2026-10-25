@@ -333,7 +333,14 @@
             if (!runner || runner.done) { runner = new window.StudyFlow.Runner(current()?.document); }
             continuous = false; advance(false);
         };
-        const exports = element('details'); exports.append(element('summary', 'Изображение'));
+        const exports = element('details'); exports.append(element('summary', 'Экспорт изображения и кода'));
+        exports.append(row(button('Python .py', () => {
+            if (!current()) { throw new Error('Создайте схему.'); }
+            exportFile('flowchart.py', 'text/x-python', window.StudyFlowExport.code(current().document, 'python'));
+        }), button('C# .cs', () => {
+            if (!current()) { throw new Error('Создайте схему.'); }
+            exportFile('Program.cs', 'text/plain', window.StudyFlowExport.code(current().document, 'csharp'));
+        })));
         exports.append(row(button('Экспорт SVG', () => {
             if (!current()) { throw new Error('Создайте схему.'); }
             exportFile('flowchart.svg', 'image/svg+xml', T.flowSvg(current().document));

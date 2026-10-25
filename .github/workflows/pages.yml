@@ -59,12 +59,16 @@ jobs:
           python3 scripts/publish-android-feed.py
       - name: Assemble textbooks for the website only
         run: python3 scripts/prepare-textbooks.py
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
       - name: Test mobile interface
         run: |
           node tests/textbooks.test.cjs
           node tests/tools.test.cjs
           node tests/executable-tools.test.cjs
           node tests/limits.test.cjs
+          node tests/academic-tools.test.cjs
           node android/tests/mobile.test.cjs
           node android/tests/admin.test.cjs
           node android/tests/controls.test.cjs

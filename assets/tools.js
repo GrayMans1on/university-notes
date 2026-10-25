@@ -194,7 +194,7 @@
     async function start() {
         const page = document.querySelector('[data-study-tool]'); if (!page) { return; }
         const root = document.getElementById('tool-root');
-        const renderers = { calculator, converter, graphs, 'formula-editor': formulas, teachers, announcements, flowcharts, limits: (root) => window.StudyLimitUI.limits(root) };
+        const renderers = { ...window.StudyAcademicUI, calculator, converter, graphs, 'formula-editor': formulas, teachers, announcements, flowcharts, limits: (root) => window.StudyLimitUI.limits(root) };
         try {
             if (page.dataset.studyTool === 'notes') { notes(root, await catalog()); }
             else { await renderers[page.dataset.studyTool](root); }

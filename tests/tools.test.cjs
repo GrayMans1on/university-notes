@@ -5,7 +5,7 @@ const { JSDOM } = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const wait = () => new Promise((resolve) => setTimeout(resolve, 15));
 const memory = new Map();
-async function page(route, scripts = ['assets/tool-core.js', 'assets/tool-session.js', 'assets/math-runtime.js', 'assets/math-tools.js', 'assets/flow-runtime.js', 'assets/flow-editor.js', 'assets/limits-ui.js', 'assets/tools.js'], native = null) {
+async function page(route, scripts = ['assets/tool-core.js', 'assets/tool-session.js', 'assets/math-runtime.js', 'assets/math-tools.js', 'assets/flow-runtime.js', 'assets/flow-export.js', 'assets/flow-editor.js', 'assets/limits-ui.js', 'assets/tools.js'], native = null) {
     const dom = new JSDOM(fs.readFileSync(path.join(root, 'dist', route, 'index.html'), 'utf8'), {
         url: 'https://study.local/' + route + '/', runScripts: 'outside-only', pretendToBeVisual: true,
     });

@@ -24,3 +24,9 @@
 .limit-steps>li::marker{font-weight:600;color:var(--muted)}
 .limit-steps>li{padding:14px 8px}.limit-steps p{margin:4px 0 12px}.limit-math .katex-display{margin:.6em 0}
 @media(max-width:600px){.limit-input-box{gap:4px;padding:20px 10px}.limit-operator{min-width:68px;padding-bottom:32px}.limit-word{font-size:32px}.limit-target{top:36px;font-size:16px}.limit-target math-field{font-size:16px}.limit-target select{font-size:17px;width:20px}.limit-input-box>.math-label math-field{font-size:24px;padding:4px 0}.limit-final-formula{font-size:18px}.limit-steps{padding-left:22px}.limit-steps>li{padding:12px 0}.limit-result{min-width:0}}
+
+/* Academic tools use exact arithmetic and explicit file documents. */
+.matrix-input{min-height:180px!important;font:20px/1.7 ui-monospace,Consolas,monospace!important;white-space:pre;tab-size:4}
+.academic-result{margin-top:26px;min-width:0}.academic-result>h2{font-size:23px}.academic-result>.limit-math{font-size:22px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.radix-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.radix-columns{font:24px/1.5 ui-monospace,Consolas,monospace;white-space:pre;overflow:auto;padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:12px}.radix-steps{line-height:1.8;overflow-wrap:anywhere}.radix-inputs [hidden]{display:none!important}
+@media(max-width:600px){.radix-inputs{grid-template-columns:1fr}.radix-columns{font-size:19px}.matrix-input{font-size:17px!important}}

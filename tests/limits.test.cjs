@@ -86,3 +86,12 @@ assert.throws(() => solve('\\sinh(x)/x', '0'));
 assert.throws(() => solve('x', '2', 'both', { variable: 'n' }));
 assert.doesNotMatch(fs.readFileSync('assets/limits-engine.js', 'utf8'), /\['D',|derivative|Taylor|LHopital/);
 console.log(`Course limits: ${courseCases.length} curriculum cases, changed coefficients, source links and no unstudied methods passed.`);
+
+for (const expression of ['(\\sin x-x)/x', '(e^x-1-x)/x', '(\\ln(1+x)-x)/x']) {
+    const result = solve(expression, '0'); assert.equal(result.kind, 'finite', expression);
+    assert.equal(ce.box(result.value).N().re, 0, expression); checkMath(result);
+}
+assert.equal(solve('\\sqrt[3]{x}', '0', 'left').value, 0);
+assert.equal(solve('x^{2/3}', '-8').value, 4);
+
+assert.ok(!['finite', 'infinite'].includes(solve('\\sin(x-x)/(x-x)', '0').kind));

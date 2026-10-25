@@ -283,28 +283,29 @@
         const coefficientValue = (c) => exact(replaceAtoms(c, true));
         function polyAst(p, shift = 0) {
             return exact(['Add', ...[...p].sort((a, b) => a[0] - b[0]).map(([k, c]) =>
-                ['Multiply', c, ['Power', 't', exponentKey(k - shift)]])]);
+                exponentKey(k - shift) === 0 ? c : ['Multiply', c, exponentKey(k - shift) === 1 ? 't' : ['Power', 't', exponentKey(k - shift)]])]);
         }
-        const germAst = (g) => ['Divide', polyAst(g.p), polyAst(g.q)];
+        const germAst = (g) => exact(['Divide', polyAst(g.p), polyAst(g.q)]);
         const germTex = (g) => latex(replaceAtoms(germAst(g)));
-        function first(p) {
+        function first(p, allowVanishing = false) {
             if (isZero(p)) { return { power: 0, coefficient: 0, value: 0, zero: true }; }
             const power = Math.min(...p.keys()); const coefficient = p.get(power);
             const value = coefficientValue(coefficient);
-            if (zero(value)) {
+            if (zero(value) && !allowVanishing) {
                 fail('После преобразований остаётся разность стандартных отношений с одинаковыми пределами. Их разность нельзя заменять нулём: полного решения изученными методами пока нет.');
             }
             if (!Number.isFinite(numeric(value))) { fail('Не удалось проверить предел оставшегося множителя.'); }
             return { power, coefficient, value };
         }
-        function leadingGerm(g) {
+        function leadingGerm(g, allowVanishing = false) {
             if (isZero(g.q)) { noDomain(); }
-            const p = first(g.p); const q = first(g.q);
+            const p = first(g.p, allowVanishing); const q = first(g.q);
             return { power: exponentKey(p.power - q.power), value: divide(p.value, q.value),
                 zero: p.zero, numerator: p, denominator: q };
         }
         function germLimit(g) {
-            const l = leadingGerm(g);
+            const l = leadingGerm(g, true);
+            if (!l.zero && zero(l.value) && l.power < 0) { fail('Возникает произведение нулевого предела остатка и бесконечной степени t. Скорость остатка не установлена изученными преобразованиями.'); }
             if (l.zero || l.power > 0) { return finite(0); }
             if (l.power < 0) { return infinite(Math.sign(numeric(l.value))); }
             return finite(l.value);
@@ -396,7 +397,6 @@
                     'Выносим степень малого положительного t из-под корня; знак коэффициента проверен.', 'sequence');
                 return gmul(monomial(1, exponentKey(l.power * n)), c);
             }
-            if (sign <= 0) { fail('Для отрицательного основания дробной степени нужно отдельное преобразование.'); }
             const a = l.value; const u = gdiv(gsub(g, constant(a)), constant(a));
             if (isZero(u.p)) { return constant(realPower(a, exponent)); }
             return gmul(constant(realPower(a, exponent)), gadd(constant(1),
@@ -580,7 +580,7 @@
                     if (numeric(a.value) <= 0 || a.weights[0] !== 0 || a.weights[1] !== 0) { fail(); }
                     const answer = exact(['Exp', mul(a.rate, divide(r.p[0], r.q[1]))]);
                     note(steps, 'Выделяем самый быстрый показательный множитель под корнем переменного порядка. Корни n-й степени из постоянных и степеней n стремятся к 1.',
-                        `\\sqrt[n]{${latex(args[0])}}\\longrightarrow ${latex(answer)}`, 'sequence');
+                        `\\left(\\sqrt[n]{${latex(args[0])}}\\right)^{${latex(divide(r.p[0], r.q[1]))}}\\longrightarrow ${latex(answer)}`, 'sequence');
                     return item(answer);
                 }
                 if (node[0] === 'Power' && args[0] === 'x' && args[1] === 'x' && pointValue > 0) {
@@ -627,15 +627,16 @@
             return Number.isFinite(numeric(value)) ? finite(value) : unknown();
         }
         function explainGerm(g, result, point, side, steps, node) {
-            const l = leadingGerm(g); const n = first(g.p); const d = first(g.q);
+            const l = leadingGerm(g, true); const n = first(g.p, true); const d = first(g.q);
             note(steps, Number.isFinite(pointValue) ? 'Переносим предельную точку в ноль; t положительно, поэтому направление учтено.'
                 : 'Вводим положительное t → 0 и заменяем бесконечный аргумент обратной величиной.',
             Number.isFinite(pointValue) ? `x=${latex(point)}${side < 0 ? '-' : '+'}t,\\quad t\\to0^+`
                 : `x=${pointValue < 0 ? '-' : ''}\\frac1t,\\quad t\\to0^+`, 'standard');
             const num = replaceAtoms(polyAst(g.p, n.power)); const den = replaceAtoms(polyAst(g.q, d.power));
+            const remaining = latex(exact(['Divide', num, den]));
             note(steps, 'После тождественных преобразований выделяем общую степень t. Стандартные отношения в оставшихся множителях имеют указанные выше пределы.',
                 `${latex(node)}\\big|_{x=${Number.isFinite(pointValue) ? latex(point) + (side < 0 ? '-' : '+') + 't' : (pointValue < 0 ? '-' : '') + '1/t'}}`
-                + `=t^{${l.power}}\\frac{${latex(num)}}{${latex(den)}}`);
+                + `=${l.power === 0 ? '' : 't^{' + l.power + '}\\cdot'}${remaining}`);
             note(steps, 'Вычисляем предел оставшегося частного: предел знаменателя отличен от нуля.',
                 `\\frac{${latex(n.value)}}{${latex(d.value)}}=${latex(l.value)}`, 'squeeze');
             note(steps, l.zero || l.power > 0 ? 'Положительная степень t стремится к нулю; оставшийся множитель имеет конечный предел.'
@@ -646,6 +647,20 @@
             tick(); if (depth > 12) { return unknown('Превышена глубина последовательных преобразований.'); }
             const r = rational(node);
             if (r) { return rationalLimit(r, point, side, steps); }
+            if (node?.[0] === 'Divide' && ['Sin', 'Tan', 'Arcsin', 'Arctan'].includes(node[1]?.[0])
+                && JSON.stringify(node[1][1]) === JSON.stringify(node[2])
+                && rational(node[2]) && !rational(node[2]).p.every(zero) && !rational(node[2]).q.every(zero)) {
+                const innerSteps = []; const inner = limit(node[2], point, side, innerSteps, depth + 1);
+                if (inner.kind === 'finite' && zero(inner.value)) {
+                    note(steps, 'Вводим внутренний аргумент u; он стремится к нулю.',
+                        `u=${latex(node[2])}\\longrightarrow0`, 'standard');
+                    steps.push(...innerSteps);
+                    note(steps, node[1][0] === 'Sin' ? 'Применяем первый замечательный предел.'
+                        : 'Применяем стандартное следствие из первого замечательного предела.',
+                        `\\lim_{u\\to0}\\frac{${latex([node[1][0], 'u'])}}u=1`, 'standard');
+                    return finite(1);
+                }
+            }
             let failure;
             const standardSteps = []; const prepared = rewriteStandard(node, standardSteps);
             for (let pass = 0; pass < 2; pass += 1) {
@@ -800,7 +815,10 @@
                 ? equalValues(result.value, right.value) : result.kind === 'infinite' && result.sign === right.sign);
             if (!equal) {
                 result = ['finite', 'infinite'].includes(result.kind) && ['finite', 'infinite'].includes(right.kind)
-                    ? { kind: 'dne', reason: 'Левый и правый пределы различаются. Двусторонний предел не существует.' }
+                    ? result.kind === 'finite' && right.kind === 'finite'
+                        && Math.abs(numeric(result.value) - numeric(right.value)) < 1e-10 * Math.max(1, Math.abs(numeric(result.value)))
+                        ? unknown('Не удалось доказать равенство или различие двух точных выражений для сторон.')
+                        : { kind: 'dne', reason: 'Левый и правый пределы различаются. Двусторонний предел не существует.' }
                     : sides.some((s) => s.kind === 'dne') ? { kind: 'dne', reason: 'Хотя бы с одной стороны предела нет.' }
                         : sides.every((s) => s.kind === 'domain') ? domain()
                             : unknown('Проверьте односторонние результаты: полного двустороннего решения изученными методами нет.');

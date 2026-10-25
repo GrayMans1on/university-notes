@@ -121,6 +121,8 @@
         }, 'primary');
         const sideTag = element('span', '', 'limit-direction-tag'); sideTag.setAttribute('aria-hidden', 'true');
         function updateDirection() {
+            const pointText = destination.input.value.replace(/\\[a-zA-Z]+/g, 'p').replace(/[{}\s]/g, '');
+            destination.input.style.width = Math.max(32, Math.min(132, pointText.length * 9 + 12)) + 'px';
             sideTag.textContent = direction.input.value === 'left' ? '−' : direction.input.value === 'right' ? '+' : '';
             direction.input.disabled = variable.input.value === 'n';
         }

@@ -654,7 +654,6 @@
                 if (inner.kind === 'finite' && zero(inner.value)) {
                     note(steps, 'Вводим внутренний аргумент u; он стремится к нулю.',
                         `u=${latex(node[2])}\\longrightarrow0`, 'standard');
-                    steps.push(...innerSteps);
                     note(steps, node[1][0] === 'Sin' ? 'Применяем первый замечательный предел.'
                         : 'Применяем стандартное следствие из первого замечательного предела.',
                         `\\lim_{u\\to0}\\frac{${latex([node[1][0], 'u'])}}u=1`, 'standard');

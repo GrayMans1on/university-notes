@@ -23,7 +23,7 @@
                 return { ...current().document, viewport: { ...view } };
             }, validate: T.validateFlow,
             set: (document) => {
-                const item = { id: id(), document }; items.push(item); active = item.id; selected = undefined;
+                const item = { id: id(), document }; items = [item]; active = item.id; selected = undefined;
                 view = document.viewport || fitView(document); W.save('flows', items); history.push(items); bar.update(); render();
             }, legacy: () => W.legacy('flows').map((item) => ({ title: item.document.title, value: item.document })),
         });
@@ -40,7 +40,7 @@
         function create() {
             const document = { format: 'csu-flowchart', version: 1, title: 'Новая схема',
                 nodes: [{ id: id(), type: 'start', text: 'Начало', x: 270, y: 30 }], edges: [] };
-            const item = { id: id(), document }; items.push(item); active = item.id; selected = undefined; view = { x: 355, y: 240, scale: 1 };
+            const item = { id: id(), document }; items = [item]; active = item.id; selected = undefined; view = { x: 355, y: 240, scale: 1 };
             commit(); render();
         }
         function add(type, point) {
@@ -146,7 +146,8 @@
                 inspector.append(element('h2', 'Редактор'), element('p', 'ПКМ → Создать блок. Стрелка в пустое место предлагает новый блок. Перетаскивайте пустое полотно; колесо меняет масштаб. Shift + перетаскивание перемещает полотно поверх блока.'));
                 const quick = element('div', undefined, 'flow-touch-create'); quick.append(element('strong', 'Добавить блок'));
                 for (const [key, name] of Object.entries(names)) {
-                    quick.append(button(name, () => add(key, { x: 270, y: 150 + (doc?.nodes.length || 0) % 5 * 130 })));
+                    const item = button(name, () => add(key, { x: view.x, y: view.y }));
+                    item.disabled = key === 'start' && doc?.nodes.some((n) => n.type === 'start'); quick.append(item);
                 }
                 inspector.append(quick); return;
             }
@@ -157,19 +158,7 @@
                 f.input.addEventListener('input', () => {
                     node.config[key] = f.input.value;
                     if (node.type === 'input') { node.text = 'Ввод: ' + node.config.variable; }
-                    if (node.type === 'process') {
-                const c = node.config; const op = c.operation || 'expression';
-                const old = op === 'expression' ? c.expression || '' : ['+', '-', '*', '/', '^', '%'].includes(op)
-                    ? (c.left || '') + ' ' + (op === '^' ? '**' : op) + ' ' + (c.right || '') : op + '(' + c.left + ')';
-                const program = field('Команды, по одной на строку', c.program ?? ((c.variable || 'b') + ' = ' + old), 'textarea');
-                program.input.maxLength = 6000; program.input.spellcheck = false; program.input.classList.add('flow-program');
-                program.input.addEventListener('input', () => {
-                    c.program = program.input.value; node.text = c.program.slice(0, 300) || 'Действия'; commit(); renderCanvas();
-                });
-                inspector.append(program.label, element('pre', 'a = a * 2\nb = b * 10 + x\ns = n % 100', 'flow-program-example'),
-                    element('p', '+, −, *, /, //, %, **, сокращённые присваивания и числовые функции. Команды выполняются сверху вниз; циклы задаются стрелками.', 'tool-help'));
-            }
-            if (node.type === 'decision') { node.text = node.config.left + ' ' + node.config.operator + ' ' + node.config.right; }
+                    if (node.type === 'decision') { node.text = node.config.left + ' ' + node.config.operator + ' ' + node.config.right; }
                     if (node.type === 'output') { node.text = 'Вывод: ' + node.config.expression; }
                     commit(); renderCanvas();
                 });
@@ -180,22 +169,16 @@
                 inspector.append(element('p', 'Например: a, b, radius. При запуске схема запросит их значения.', 'tool-help'));
             }
             if (node.type === 'process') {
-                edit('Переменная результата', 'variable', 'b');
-                edit('Операция', 'operation', 'expression', [['expression', 'Выражение'], ['+', 'Сложение'], ['-', 'Вычитание'],
-                    ['*', 'Умножение'], ['/', 'Деление'], ['^', 'Степень'], ['%', 'Остаток'], ['sqrt', 'Корень'],
-                    ['sin', 'Синус'], ['cos', 'Косинус'], ['tan', 'Тангенс'], ['ln', 'Натуральный логарифм'],
-                    ['log', 'Десятичный логарифм'], ['exp', 'Экспонента'], ['abs', 'Модуль']]);
-                edit('Выражение', 'expression', 'a * 2'); edit('Первый аргумент', 'left', 'a'); edit('Второй аргумент', 'right', '2');
-                const update = () => {
-                    const mode = node.config.operation || 'expression';
-                    inspector.querySelectorAll('label').forEach((label) => {
-                        const text = label.firstChild?.textContent;
-                        if (text === 'Выражение') { label.hidden = mode !== 'expression'; }
-                        if (text === 'Первый аргумент') { label.hidden = mode === 'expression'; }
-                        if (text === 'Второй аргумент') { label.hidden = !['+', '-', '*', '/', '^', '%'].includes(mode); }
-                    });
-                };
-                inspector.querySelector('select').addEventListener('input', update); update();
+                const c = node.config; const op = c.operation || 'expression';
+                const old = op === 'expression' ? c.expression || '' : ['+', '-', '*', '/', '^', '%'].includes(op)
+                    ? (c.left || '') + ' ' + (op === '^' ? '**' : op) + ' ' + (c.right || '') : op + '(' + c.left + ')';
+                const program = field('Команды, по одной на строку', c.program ?? ((c.variable || 'b') + ' = ' + old), 'textarea');
+                program.input.maxLength = 6000; program.input.spellcheck = false; program.input.classList.add('flow-program');
+                program.input.addEventListener('input', () => {
+                    c.program = program.input.value; node.text = c.program.slice(0, 300) || 'Действия'; commit(); renderCanvas();
+                });
+                inspector.append(program.label, element('pre', 'a = a * 2\nb = b * 10 + x\ns = n % 100', 'flow-program-example'),
+                    element('p', '+, −, *, /, //, %, **, сокращённые присваивания и числовые функции. Команды выполняются сверху вниз; циклы задаются стрелками.', 'tool-help'));
             }
             if (node.type === 'decision') {
                 edit('Слева', 'left', 'a'); edit('Сравнение', 'operator', '>', ['>', '<', '>=', '<=', '==', '!='].map((s) => [s, s]));
@@ -371,7 +354,7 @@
         consolePanel.append(runStatus, inputPanel, variableSection, outputSection);
         root.append(row(button('Новая схема', () => session.replace(create)), button('Запустить', run, 'primary'), button('Шаг', step),
             button('Стоп', () => { stop(); renderCanvas(); }), button('+', () => zoom(1.3)), button('−', () => zoom(1 / 1.3)),
-            button('Показать всё', () => { if (current()) { view = fitView(current().document); cameraChanged(); } })), bar.node, row(picker.label, title.label, exports), layout, consolePanel);
+            button('Показать всё', () => { if (current()) { view = fitView(current().document); cameraChanged(); } })), bar.node, row(title.label, exports), layout, consolePanel);
         new MutationObserver(renderCanvas).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
         new ResizeObserver(renderCanvas).observe(board); render();
     }

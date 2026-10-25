@@ -111,7 +111,8 @@ function input(window, label, value, event = 'input') {
     click(w, 'Остаться'); await wait(); assert.equal(w.StudyWorkspace.read().flows.length, 1);
     fileInput.dispatchEvent(new w.Event('change')); await wait();
     click(w, 'Уйти без сохранения'); await wait();
-    assert.equal(w.StudyWorkspace.read().flows.length, 2);
+    assert.equal(w.StudyWorkspace.read().flows.length, 1);
+    assert.equal(w.StudyWorkspace.read().flows[0].document.title, 'Импорт');
     assert.equal(w.StudyActiveSession.dirty, false);
     assert.match(board.querySelector('svg').getAttribute('viewBox'), /-/);
     input(w, 'Название схемы', 'Изменение');
@@ -119,6 +120,11 @@ function input(window, label, value, event = 'input') {
     assert.equal(unloading.defaultPrevented, true);
     click(w, 'Сохранить файл'); await wait(); assert.equal(w.StudyActiveSession.dirty, false);
     assert.equal(w.localStorage.getItem('study-workspace'), memory.get('study-workspace'));
+    board.dispatchEvent(new w.MouseEvent('contextmenu', { bubbles: true, clientX: 300, clientY: 200 }));
+    click(w, 'Создать блок'); click(w, 'Вычисление');
+    input(w, 'Команды, по одной на строку', 'a = 2\nb = a * 10');
+    assert.equal(w.document.querySelectorAll('.flow-inspector select').length, 0);
+    assert.equal(w.StudyWorkspace.read().flows[0].document.nodes.at(-1).config.program, 'a = 2\nb = a * 10');
     dom.window.close();
 
     memory.set('study-graphs', JSON.stringify({ entries: [{ value: 'x' }], view: { x: 1, y: 1, scale: 42 } }));

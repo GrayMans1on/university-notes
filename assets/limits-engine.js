@@ -959,7 +959,6 @@
             const replaceVariable = (text) => variable === 'n' ? text.replace(/\bx\b/g, 'n') : text;
             return { side: side < 0 ? 'left' : 'right', ...result,
                 steps: decorate(steps).map((s) => ({ ...s, ...(s.math ? { math: replaceVariable(s.math) } : {}) })) };
-
         }
         if (variable === 'n' && pointValue !== Infinity) { throw new Error('Для последовательности n выберите n → +∞.'); }
         const sides = Number.isFinite(pointValue) ? direction === 'both' ? [analyze(-1), analyze(1)]

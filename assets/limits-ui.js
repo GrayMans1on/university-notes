@@ -51,8 +51,10 @@
             set: (data) => {
                 stop(); expression.input.value = data.expression; destination.input.value = data.destination;
                 variable.input.value = data.variable;
-                if (data.direction !== 'both') { say('Файл открыт. Сейчас вычисляется общий предел с двух сторон.'); }
                 parameters.input.value = data.parameters; updateDirection(); result.replaceChildren();
+                if (data.direction !== 'both') {
+                    result.append(element('p', 'Файл открыт. Сейчас вычисляется общий предел с двух сторон.', 'tool-help'));
+                }
             },
         });
         function math(text, className = '') {

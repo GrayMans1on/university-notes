@@ -177,6 +177,17 @@ function input(window, label, value, event = 'input') {
     input(w, 'Выражение под знаком предела', 'x'); assert.equal(w.document.querySelector('.limit-result').textContent, '');
     dom.window.close();
 
+    dom = await page('tools/limits'); w = dom.window;
+    const importedLimit = { format: 'csu-limit', version: 1, expression: '1/x', destination: '0', direction: 'left' };
+    const limitFile = w.document.querySelector('input[type=file]');
+    Object.defineProperty(limitFile, 'files', { value: [{ size: 100,
+        text: async () => JSON.stringify(importedLimit) }] });
+    limitFile.dispatchEvent(new w.Event('change', { bubbles: true })); await wait();
+    assert.match(w.document.querySelector('.limit-result').textContent, /Сейчас вычисляется общий предел/);
+    click(w, 'Вычислить предел');
+    assert.equal(w.testWorkers[0].sent.direction, 'both');
+    assert.equal(w.testWorkers[0].sent.expression, '1/x'); dom.window.close();
+
     dom = await page('tools/converter'); w = dom.window;
     assert.equal(w.document.querySelectorAll('.converter-grid label').length, 4);
     input(w, 'Исходное число', '1000');

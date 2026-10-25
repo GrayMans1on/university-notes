@@ -82,14 +82,30 @@
             const heading = element('div', undefined, 'limit-answer');
             heading.append(element('h2', solved ? 'Решение' : data.kind === 'dne' ? 'Предел не существует'
                 : data.kind === 'domain' ? 'Проверьте область определения' : 'Не удалось решить изученными методами'));
-            if (data.latex) { heading.append(math(data.steps[0].math + '=' + data.latex, 'limit-final-formula')); }
             if (data.reason) { heading.append(element('p', data.reason)); }
             result.append(heading);
-            const sides = data.sides || []; const source = data.sources;
-            // Keep domain/sign checks in the engine, but present one course-style solution.
-            const proof = sides.find((side) => side.side === 'right') || sides[0];
-            if (solved && proof) { steps(proof.steps, result, source); }
-            else if (data.kind === 'unknown' && proof?.steps.length) { steps(proof.steps, result, source); }
+            if (data.chain?.length) {
+                const chain = element('div', undefined, 'limit-chain'); chain.setAttribute('aria-label', 'Цепочка решения текущего предела');
+                data.chain.forEach((entry, index) => {
+                    const term = math((index ? '=' : '') + entry.math, 'limit-chain-term'); chain.append(term);
+                    if (entry.annotation) {
+                        const hint = math('\left[' + entry.annotation + '\right]', 'limit-chain-hint');
+                        hint.title = 'Подсказка о форме после подстановки; не значение выражения.'; chain.append(hint);
+                    }
+                });
+                heading.append(chain);
+                const explanations = element('details', undefined, 'limit-chain-notes');
+                explanations.append(element('summary', 'Пояснения к переходам'));
+                const notes = data.chain.filter((entry) => entry.note && entry.kind !== 'answer');
+                if (notes.length) { steps(notes.map((entry) => ({ text: entry.note, source: entry.source })), explanations, data.sources); }
+                else { explanations.append(element('p', 'Применяем арифметические свойства пределов и поведение элементарной функции.')); }
+                result.append(explanations);
+                if (solved && data.chainComplete === false) {
+                    result.append(element('p', 'Ответ проверен, но развёрнутая цепочка преобразований для этой записи пока не построена.', 'tool-help'));
+                }
+                if (solved && window.StudyManim) { window.StudyManim.attach(data, result); }
+            } else if (data.latex) { heading.append(math(data.steps[0].math + '=' + data.latex)); }
+
         }
         function stop() {
             job += 1; clearTimeout(timer); worker?.terminate(); worker = null;

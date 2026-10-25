@@ -19,3 +19,5 @@ __pycache__/
 /service/schedule/.wrangler/
 /service/schedule/.dev.vars*
 *.pem
+
+/.manim-cache/

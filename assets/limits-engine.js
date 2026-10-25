@@ -188,42 +188,60 @@
             return zero(exact(['Expand', ['Subtract', ['Multiply', x.p, y.q], ['Multiply', y.p, x.q]]]));
         }
         function rationalLimit(rp, point, side, steps) {
+            const trace = []; const finish = (result) => ({ ...result, chainExpressions: trace, traceBilateral: true });
             if (rp.q.every(zero)) { return domain(); }
             if (!Number.isFinite(pointValue)) {
                 const p = clean(rp.p); const q = clean(rp.q); const degree = p.length - q.length;
                 const ratio = exact(['Divide', p.at(-1), q.at(-1)]); const coefficient = evaluate(ratio, 0).n;
+                if (p.length === 1 && q.length > 1) {
+                    steps.push({ text: 'Числитель постоянный, модуль знаменателя неограниченно растёт. Сразу получаем ноль.',
+                        math: `\\left[\\frac{${latex(p[0])}}{\\infty}\\right]=0` });
+                    return finish(finite(0));
+                }
                 const denominatorDegree = q.length - 1;
                 const normalized = (coefficients) => exact(['Add', ...coefficients.map((c, i) =>
                     i === denominatorDegree ? c : ['Multiply', c,
                         i - denominatorDegree === 1 ? 'x' : ['Power', 'x', i - denominatorDegree]])]);
+                const form = ['Divide', normalized(p), normalized(q)];
+                trace.push({ kind: 'limit', math: latex(form), note: 'Делим на старшую степень знаменателя.', source: 'algebra' });
                 steps.push({ text: 'Делим числитель и знаменатель на старшую степень знаменателя. Отрицательные степени x стремятся к нулю; сохраняем знак x при отрицательной бесконечности.',
-                    math: `\\frac{${latex(polynomialAst(p))}}{${latex(polynomialAst(q))}}=\\frac{${latex(normalized(p))}}{${latex(normalized(q))}}` });
-                if (p.every(zero) || degree < 0) { return finite(0); }
-                if (degree === 0) { return finite(ratio); }
-                return infinite(Math.sign(coefficient) * (pointValue < 0 && degree % 2 ? -1 : 1));
+                    math: `\\frac{${latex(polynomialAst(p))}}{${latex(polynomialAst(q))}}=${latex(form)}` });
+                if (p.every(zero) || degree < 0) { return finish(finite(0)); }
+                if (degree === 0) { return finish(finite(ratio)); }
+                return finish(infinite(Math.sign(coefficient) * (pointValue < 0 && degree % 2 ? -1 : 1)));
             }
             const p = factor(rp.p, point); const q = factor(rp.q, point);
             if (!q.order) {
                 steps.push({ text: 'Знаменатель в точке не равен нулю. Подставляем значение x.',
                     math: `\\frac{${latex(polyAt(rp.p, point))}}{${latex(polyAt(rp.q, point))}}` });
-                return finite(['Divide', polyAt(rp.p, point), polyAt(rp.q, point)]);
+                trace.push({ kind: 'value', math: latex(['Divide', polyAt(rp.p, point), polyAt(rp.q, point)]), source: 'continuity' });
+                return finish(finite(['Divide', polyAt(rp.p, point), polyAt(rp.q, point)]));
             }
             const delta = zero(point) ? 'x' : ['Subtract', 'x', point];
             if (p.order || q.order) {
-                steps.push({ text: 'Выделяем множители, обращающиеся в ноль. Сокращение допустимо в проколотой окрестности точки.',
-                    math: `\\frac{(${latex(delta)})^{${p.order}}(${latex(polynomialAst(p.quotient))})}{(${latex(delta)})^{${q.order}}(${latex(polynomialAst(q.quotient))})}` });
+                const factorTerm = (order, quotient) => {
+                    const polynomial = polynomialAst(quotient);
+                    if (!order) { return polynomial; }
+                    const term = order === 1 ? delta : ['Power', delta, order];
+                    return zero(sub(polynomial, 1)) ? term : ['Multiply', term, polynomial];
+                };
+                const factored = ['Divide', factorTerm(p.order, p.quotient), factorTerm(q.order, q.quotient)];
+                trace.push({ kind: 'limit', math: latex(factored), note: 'Выделяем обращающиеся в ноль множители.', source: 'algebra' });
+                steps.push({ text: 'Выделяем множители, обращающиеся в ноль. Сокращение допустимо в проколотой окрестности точки.', math: latex(factored) });
+                const reduced = exact(['Multiply', ['Power', delta, p.order - q.order],
+                    ['Divide', polynomialAst(p.quotient), polynomialAst(q.quotient)]]);
+                trace.push({ kind: 'limit', math: latex(reduced), note: 'Сокращаем в проколотой окрестности.', source: 'algebra' });
             }
-            if (p.zero || p.order > q.order) { return finite(0); }
+            if (p.zero || p.order > q.order) { return finish(finite(0)); }
             const ratio = exact(['Divide', p.value, q.value]);
             if (p.order === q.order) {
                 steps.push({ text: 'После сокращения подставляем точку в оставшееся выражение.',
                     math: `\\frac{${latex(polynomialAst(p.quotient))}}{${latex(polynomialAst(q.quotient))}}\\;\\longrightarrow\\;\\frac{${latex(p.value)}}{${latex(q.value)}}=${latex(ratio)}` });
-                return finite(ratio);
+                return finish(finite(ratio));
             }
             const power = q.order - p.order;
-            steps.push({ text: 'Остаётся полюс. Знак степени разности зависит от стороны приближения.',
-                math: `${latex(ratio)}\\,(${latex(delta)})^{-${power}}` });
-            return infinite(Math.sign(evaluate(ratio, 0).n) * (side < 0 && power % 2 ? -1 : 1));
+            steps.push({ text: 'Остаётся полюс. Знак степени разности зависит от стороны приближения.', math: `${latex(ratio)}\\,(${latex(delta)})^{-${power}}` });
+            return finish(infinite(Math.sign(evaluate(ratio, 0).n) * (side < 0 && power % 2 ? -1 : 1)));
         }
         const sources = {
             algebra: ['Вычисление пределов функций', 'topic-52ef8193b2'],
@@ -672,6 +690,44 @@
             if (value === 'NegativeInfinity') { return infinite(-1); }
             return Number.isFinite(numeric(value)) ? finite(value) : unknown();
         }
+        function originalGermTrace(g, point, side) {
+            const l = leadingGerm(g, true); const n = first(g.p, true); const d = first(g.q);
+            const delta = Number.isFinite(pointValue) ? side > 0 ? sub('x', point) : sub(point, 'x')
+                : ['Divide', pointValue < 0 ? -1 : 1, 'x'];
+            function restore(node) {
+                if (node === 't') { return delta; }
+                return Array.isArray(node) ? node.map((part, i) => i ? restore(part) : part) : node;
+            }
+            function symbolicTex(node) {
+                let text = latex(exact(restore(node)));
+                for (const [symbol, atom] of atoms) {
+                    const token = latex(symbol);
+                    const expression = latex(restore(replaceAtoms(atom.expression)));
+                    text = text.split(token).join('\\left(' + expression + '\\right)');
+                }
+                return text;
+            }
+            const normalized = exact(['Multiply', ['Power', 't', powerForm(l.power)],
+                ['Divide', polyAst(g.p, n.power), polyAst(g.q, d.power)]]);
+            const after = restore(exact(replaceAtoms(normalized, true)));
+            return [{ kind: 'limit', math: symbolicTex(normalized),
+                note: 'Тождественно выделяем стандартные отношения и общий множитель.', source: 'standard' },
+            { kind: depends(after) ? 'limit' : 'value', math: latex(after),
+                note: 'Стандартные отношения заменяем их пределами по арифметическим свойствам; знаменатель после выделения степени имеет ненулевой предел.', source: 'standard' }];
+        }
+        function analyticTrace(node) {
+            if (!Array.isArray(node)) { return true; }
+            if (['Abs', 'Floor', 'Ceil', 'Sign', 'Factorial'].includes(node[0])) { return false; }
+            if (['Sqrt', 'Root', 'Power'].includes(node[0])) {
+                const exponent = node[0] === 'Sqrt' ? .5 : node[0] === 'Root' ? 1 / numeric(node[2]) : numeric(node[2]);
+                if (!Number.isInteger(exponent)) {
+                    const value = evaluate(node[1], pointAst).n;
+                    if (!(value > 0)) { return false; }
+                }
+            }
+            if (['Arcsin', 'Arccos'].includes(node[0]) && !(Math.abs(evaluate(node[1], pointAst).n) < 1)) { return false; }
+            return node.slice(1).every(analyticTrace);
+        }
         function explainGerm(g, result, point, side, steps, node) {
             const l = leadingGerm(g, true); const n = first(g.p, true); const d = first(g.q);
             note(steps, Number.isFinite(pointValue) ? 'Переносим предельную точку в ноль; t положительно, поэтому направление учтено.'
@@ -777,7 +833,15 @@
                 note(steps, 'Перемножаем найденные пределы.',
                     `${latex(scale)}\\cdot ${latex(coefficient.value)}=${latex(answer)}`, 'standard');
             }
-            return finite(answer);
+            const p = factor(ratio.p, point); const q = factor(ratio.q, point);
+            const delta = zero(point) ? 'x' : sub('x', point);
+            const remaining = exact(['Multiply', ['Power', delta, p.order - q.order],
+                ['Divide', polynomialAst(p.quotient), polynomialAst(q.quotient)]]);
+            return { ...finite(answer), traceBilateral: true,
+                chainExpressions: [{ kind: 'limit', math: (zero(sub(remaining, 1)) ? '' : latex(remaining) + '\\cdot ') + latex(standard),
+                    note: 'Выделяем стандартное отношение в исходной переменной.', source: 'standard' },
+                { kind: 'value', math: latex(exact(['Multiply', scale, coefficient.value])),
+                    note: 'Применяем замечательный предел и арифметические свойства.', source: 'standard' }] };
         }
         function limit(node, point, side, steps, depth = 0) {
             tick(); if (depth > 12) { return unknown('Превышена глубина последовательных преобразований.'); }
@@ -786,7 +850,8 @@
                 if (value !== null) {
                     note(steps, 'Прямая подстановка допустима: выражение непрерывно в этой точке.',
                         `${latex(node)}\\big|_{x=${latex(point)}}=${latex(value)}`, 'continuity');
-                    return finite(value);
+                    return { ...finite(value), traceBilateral: true,
+                        chainExpressions: [{ kind: 'value', math: latex(substitute(node, point)), note: 'Прямая подстановка по непрерывности.', source: 'continuity' }] };
                 }
                 if (node?.[0] === 'Divide') {
                     const a = continuousValue(node[1], point); const b = continuousValue(node[2], point);
@@ -813,7 +878,9 @@
                         steps.push(...proof);
                         note(steps, 'Применяем арифметические свойства к найденным пределам частей выражения.',
                             `${latex([node[0], ...constants])}=${resultTex(answer)}`, 'continuity');
-                        return answer;
+                        return { ...answer, traceBilateral: values.every((v) => v.traceBilateral === true),
+                            chainExpressions: [{ kind: 'value', math: latex([node[0], ...constants]), source: 'continuity',
+                                note: 'Арифметические свойства конечных пределов частей выражения.' }] };
                     }
                 }
             }
@@ -826,7 +893,8 @@
                     const proof = []; const g = germ(work, point, side, proof);
                     const result = germLimit(g);
                     const conclusion = []; explainGerm(g, result, point, side, conclusion, node);
-                    steps.push(...standardSteps, conclusion.shift(), ...proof, ...conclusion); return result;
+                    steps.push(...standardSteps, conclusion.shift(), ...proof, ...conclusion);
+                    return { ...result, chainExpressions: originalGermTrace(g, point, side), traceBilateral: analyticTrace(node) };
                 } catch (error) { if (error.domain) { return domain(); } failure = error.message; }
             }
             if (!Array.isArray(node)) { return unknown(failure); }
@@ -842,7 +910,10 @@
                     if (inner.kind === 'finite') {
                         note(steps, 'Произведение u·v имеет конечный предел. По второму замечательному пределу получаем ответ.',
                             `\\lim uv=${latex(inner.value)},\\qquad L=e^{${latex(inner.value)}}`, 'second');
-                        return finite(['Exp', inner.value]);
+                        return { ...finite(['Exp', inner.value]), traceBilateral: true,
+                            chainExpressions: [{ kind: 'limit', math: `\\left(\\left(${latex(args[0])}\\right)^{\\frac{1}{${latex(exact(u))}}}\\right)^{${latex(exact(product))}}`,
+                                note: 'Выделяем второй замечательный предел без введения новой переменной.', source: 'second' },
+                            { kind: 'value', math: latex(['Exp', inner.value]), source: 'second' }] };
                     }
                     return unknown('Не удалось завершить вычисление произведения u·v изученными методами.');
                 }
@@ -864,10 +935,20 @@
                     note(steps, 'Выделяем самый быстрый множитель. По шкале роста из конспекта логарифмы растут медленнее положительных степеней, затем идут экспоненты, факториалы и nⁿ.',
                         `\\frac{${latex(node)}}{${latex(exact(scale))}}\\longrightarrow ${latex(a.value)}`, 'sequence');
                     note(steps, 'Оставшийся коэффициент имеет конечный ненулевой предел; учитываем рост или убывание выделенного множителя.', resultTex(result), 'sequence');
-                    return result;
+                    const trace = [];
+                    if (op === 'Divide') {
+                        const denominator = growth(args[1], point, side, []); const normalizer = growthScale(denominator);
+                        const normalize = (arg) => Array.isArray(arg) && ['Add', 'Subtract'].includes(arg[0])
+                            ? [arg[0], ...arg.slice(1).map((term) => ['Divide', term, normalizer])] : ['Divide', arg, normalizer];
+                        trace.push({ kind: 'limit', math: latex(['Divide', normalize(args[0]), normalize(args[1])]),
+                            note: 'Делим каждое слагаемое на общий старший множитель знаменателя; используем шкалу роста.', source: 'sequence' });
+                    }
+                    trace.push({ kind: 'limit', math: latex(['Multiply', a.value, scale]),
+                        note: 'По шкале роста и арифметическим свойствам предел равен пределу ведущего множителя с найденным коэффициентом.', source: 'sequence' });
+                    return { ...result, chainExpressions: trace, traceBilateral: false };
                 } catch (error) { if (error.domain) { return domain(); } failure = error.message; }
             }
-            if (op === 'Divide' && bounded(args[0])) {
+            if (op === 'Divide'  && bounded(args[0])) {
                 const d = visit(args[1]);
                 if (d.kind === 'infinite') {
                     note(steps, 'Числитель ограничен, а модуль знаменателя стремится к бесконечности. Применяем теорему о зажатой функции.',
@@ -919,7 +1000,8 @@
                         note(steps, 'Рассматриваем чётные и нечётные номера отдельно.',
                             `\\lim a_{2k}=${resultTex(a)},\\qquad\\lim a_{2k+1}=${resultTex(b)}`, 'oscillation');
                         steps.push(...evenProof, ...oddProof);
-                        if (equalValues(a.value, b.value)) { return a; }
+                        if (equalValues(a.value, b.value)) { return { ...a, chainExpressions: [{ kind: 'value', math: resultTex(a),
+                            note: 'Чётная и нечётная подпоследовательности имеют один и тот же предел.', source: 'oscillation' }] }; }
                         return { kind: 'dne', reason: 'Чётная и нечётная подпоследовательности имеют разные пределы.' };
                     }
                 }
@@ -942,7 +1024,9 @@
                     } else { result = toResult(exact([op, ...constants])); }
                     if (result.kind !== 'unknown') {
                         steps.push(...proof); note(steps, 'Применяем арифметические свойства пределов и поведение внешней элементарной функции; неопределённости не осталось.',
-                            `${latex([op, ...constants])}\\longrightarrow${resultTex(result)}`, 'continuity'); return result;
+                            `${latex([op, ...constants])}\\longrightarrow${resultTex(result)}`, 'continuity');
+                        return { ...result, chainExpressions: [{ kind: 'value', math: resultTex(result),
+                            note: 'Применяем арифметические свойства и поведение внешней элементарной функции на найденных предельных значениях.', source: 'continuity' }] };
                     }
                 }
             }
@@ -951,7 +1035,9 @@
         function decorate(steps) {
             return steps.map((s) => ({ ...s, source: s.source || 'algebra' }));
         }
-        const initial = { text: 'Исходный предел', math: `\\lim_{${variable}\\to ${latex(pointAst)}${direction === 'left' ? '^-' : direction === 'right' ? '^+' : ''}}${expression}` };
+        const sourceExpression = latex(raw).replace(/\bx\b/g, variable);
+        const inputExpression = ['Add', 'Subtract'].includes(raw?.[0]) ? `\\left(${sourceExpression}\\right)` : sourceExpression;
+        const initial = { text: 'Исходный предел', math: `\\lim_{${variable}\\to ${latex(pointAst)}${direction === 'left' ? '^-' : direction === 'right' ? '^+' : ''}}${inputExpression}` };
         function analyze(side) {
             atoms = new Map(); atomIds = new Map(); const steps = []; let result;
             try { result = limit(raw, pointAst, side, steps); } catch (error) { result = error.domain ? domain() : unknown(error.message); }
@@ -978,8 +1064,48 @@
                             : unknown('Проверьте односторонние результаты: полного двустороннего решения изученными методами нет.');
             }
         }
+        function annotation() {
+            if (Number.isFinite(pointValue)) {
+                if (raw?.[0] === 'Divide') {
+                    const a = continuousValue(raw[1], pointAst); const b = continuousValue(raw[2], pointAst);
+                    if (a !== null && b !== null && zero(a) && zero(b)) { return '\\frac00'; }
+                }
+                if (raw?.[0] === 'Subtract') {
+                    const a = continuousValue(raw[1], pointAst); const b = continuousValue(raw[2], pointAst);
+                    if (a !== null && b !== null && zero(a) && zero(b)) { return '0-0'; }
+                }
+                if (raw?.[0] === 'Power') {
+                    const a = evaluate(raw[1], pointAst); const b = evaluate(raw[2], pointAst);
+                    if (a.n === 1 && (displayed.chainExpressions || []).some((entry) => entry.source === 'second')) { return '1^{\\infty}'; }
+                }
+            } else {
+                const rp = rational(raw);
+                if (rp && rp.q.length > 1) { return `\\frac{${rp.p.length > 1 ? '\\infty' : latex(rp.p[0])}}{\\infty}`; }
+                if (raw?.[0] === 'Subtract') {
+                    const a = evaluate(raw[1], pointAst).n; const b = evaluate(raw[2], pointAst).n;
+                    if (Math.abs(a) === Infinity && Math.abs(b) === Infinity && Math.sign(a) === Math.sign(b)) { return '\\infty-\\infty'; }
+                    if (a === 0 && b === 0) { return '0-0'; }
+                }
+            }
+            return '';
+        }
+        const displayed = sides.find((s) => s.side === 'right') || sides[0];
+        const trace = displayed.chainExpressions || [];
+        const compatible = sides.length === 1 || displayed.traceBilateral === true
+            || JSON.stringify(trace) === JSON.stringify(sides[0].chainExpressions || []);
+        const solved = ['finite', 'infinite'].includes(result.kind);
+        let hint = ''; try { hint = annotation(); } catch { /* A display hint must not change a proven result. */ }
+        const chain = [{ math: initial.math, kind: 'initial', annotation: hint }];
+        if (solved && compatible) {
+            for (const entry of trace) {
+                const expression = variable === 'n' ? entry.math.replace(/\bx\b/g, 'n') : entry.math;
+                const math = entry.kind === 'limit' ? `\\lim_{${variable}\\to${latex(pointAst)}}\\left(${expression}\\right)` : expression;
+                if (chain.at(-1).math !== math) { chain.push({ ...entry, math }); }
+            }
+        }
+        if (solved && chain.at(-1).math !== resultTex(result)) { chain.push({ kind: 'answer', math: resultTex(result), note: 'Ответ' }); }
         return { kind: result.kind, value: result.value, sign: result.sign, reason: result.reason,
-            latex: resultTex(result), sides, steps: [initial], expression, destination, direction, variable, sources };
+            latex: resultTex(result), sides, steps: [initial], chain, chainComplete: compatible && (trace.length > 0 || solved && displayed.steps.length <= 2), expression, destination, direction, variable, sources };
     }
     owner.StudyLimits = { solve };
 })();

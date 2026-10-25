@@ -29,6 +29,10 @@ function checkMath(result) {
     for (const step of [...result.steps, ...(result.sides || []).flatMap(s => s.steps)]) {
         if (step.math) { katex.renderToString(step.math, { throwOnError: true, strict: 'ignore', trust: false }); }
     }
+    for (const entry of result.chain || []) {
+        katex.renderToString(entry.math, { throwOnError: true, strict: 'ignore', trust: false });
+        if (entry.annotation) { katex.renderToString('\\left[' + entry.annotation + '\\right]', { throwOnError: true }); }
+    }
     if (result.latex) { katex.renderToString(result.latex, { throwOnError: true, trust: false }); }
 }
 for (const [expression, point, kind, expected] of cases) {
@@ -146,3 +150,35 @@ assert.ok(!['finite', 'infinite'].includes(solve('(x-x)/(x-x)', '0').kind));
 console.log('Limit strategy: guarded direct substitution, original-variable standard ratios, compositions and infinity aliases passed.');
 
 assert.ok(!['finite', 'infinite'].includes(solve('(-1)^x', '1').kind));
+
+
+const reciprocalChain = solve('1/x', 'inf');
+assert.equal(reciprocalChain.chain.length, 2);
+assert.match(reciprocalChain.chain[0].annotation, /infty/);
+assert.doesNotMatch(JSON.stringify(reciprocalChain.sides), /Делим числитель/);
+for (const expression of ['\\sin(7x)/(3x)', '(x^2-1)/(x-1)', '(e^{x^2}-\\cos x)/x^2', '(1+2x)^{3/x}']) {
+    const result = solve(expression, expression === '(x^2-1)/(x-1)' ? '1' : '0');
+    assert.equal(result.chainComplete, true);
+    assert.match(result.chain[0].annotation, /frac00|1\^/);
+    assert.doesNotMatch(JSON.stringify(result.chain), /\\bt\\b|\\bu\\b|\\bv\\b|K_\d/);
+    checkMath(result);
+}
+console.log('Limit chains: connected original-variable equalities, bracket hints, concise reciprocal and rendered formulas passed.');
+
+
+// Whole-expression identity stages are checked against an independent numeric evaluator.
+vm.runInContext(fs.readFileSync('assets/math-runtime.js', 'utf8'), context);
+for (const [formula, point, samples] of [
+    ['\\sin(7x)/(3x)', '0', [-.2, -.01, .01, .2]],
+    ['(x^2-1)/(x-1)', '1', [.8, .99, 1.01, 1.2]],
+    ['(e^{x^2}-\\cos x)/x^2', '0', [-.2, -.01, .01, .2]],
+    ['(1+2x)^{3/x}', '0', [-.1, -.01, .01, .1]],
+    ['\\sqrt{x^2+1}-x', '\\infty', [10, 100]],
+]) {
+    const result = solve(formula, point); const stage = result.sides.at(-1).chainExpressions[0];
+    const input = context.window.StudyMath.compile(formula); const rewritten = context.window.StudyMath.compile(stage.math);
+    for (const x of samples) {
+        const a = input({ x }); const b = rewritten({ x });
+        assert.ok(Math.abs(a - b) < 1e-9 * Math.max(1, Math.abs(a)), formula + ' identity at ' + x);
+    }
+}

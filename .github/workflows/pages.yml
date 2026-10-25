@@ -52,6 +52,21 @@ jobs:
           node --test service/schedule/worker.test.mjs
       - name: Export for project hosting
         run: python3 scripts/export-pages.py
+      - uses: actions/cache@v4
+        id: manim-cache
+        with:
+          path: .manim-cache
+          key: manim-v1-${{ hashFiles('assets/limits-engine.js', 'assets/manim-export.js', 'assets/manim-scene.py', 'scripts/build-limit-videos.cjs', 'scripts/render-limit-videos.py', 'scripts/manim/requirements.txt') }}
+      - name: Render course-limit videos with Manim
+        if: steps.manim-cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq pkg-config libcairo2-dev libpango1.0-dev ffmpeg texlive-latex-extra texlive-fonts-recommended dvisvgm
+          python3 -m pip install -r scripts/manim/requirements.txt
+          node scripts/build-limit-videos.cjs
+          python3 scripts/render-limit-videos.py
+      - name: Publish theme-matched videos
+        run: python3 scripts/render-limit-videos.py --publish-only
       - name: Prepare Android offline updates
         run: |
           python3 -m pip install CairoSVG==2.7.1
@@ -69,6 +84,7 @@ jobs:
           node tests/executable-tools.test.cjs
           node tests/limits.test.cjs
           node tests/academic-tools.test.cjs
+          node tests/manim.test.cjs
           node android/tests/mobile.test.cjs
           node android/tests/admin.test.cjs
           node android/tests/controls.test.cjs

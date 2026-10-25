@@ -46,3 +46,8 @@ python3 scripts/export-pages.py
 На `/textbooks/` опубликованы четыре присланных PDF. Файлы доступны по HTTPS из `/books/`; рядом с каждой книгой есть онлайн-ссылка и отдельное сохранение офлайн. Для сайта используется CacheStorage и `textbooks-sw.js`, для Android — существующее файловое хранилище и PDF-просмотрщик.
 
 Оригинальные байты хранятся частями в `books/source/`, контрольные суммы — в `books/sources.json`. После экспорта сайта и подготовки Android feed выполните `python3 scripts/prepare-textbooks.py`. Команда проверяет части и собирает полные PDF только в `pages-output/books/`. Не копируйте PDF в dist, APK или Android feed. Каталог и интерфейс доставляются штатным обновлением материалов без нового APK.
+
+
+## Видео Manim
+
+Workflow после статического экспорта восстанавливает cache `.manim-cache` или собирает 12 роликов из 6 проверенных решений в светлой и тёмной темах. Затем `scripts/render-limit-videos.py --publish-only` копирует MP4 и каталог в `pages-output/assets/limit-videos/`. Бинарники не коммитятся. Для локальной подготовки сцен: `node scripts/build-limit-videos.cjs`; для рендера нужны системные зависимости Manim и `python3 -m pip install -r scripts/manim/requirements.txt`, затем `python3 scripts/render-limit-videos.py`. Обычная сборка конспектов не требует установленного Manim. Ролики генерируются из той же цепочки, которую показывает решатель; смена алгоритма меняет cache key и имена файлов.

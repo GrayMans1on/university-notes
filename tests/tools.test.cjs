@@ -5,7 +5,7 @@ const { JSDOM } = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const wait = () => new Promise((resolve) => setTimeout(resolve, 15));
 const memory = new Map();
-async function page(route, scripts = ['assets/tool-core.js', 'assets/tool-session.js', 'assets/math-runtime.js', 'assets/math-tools.js', 'assets/flow-runtime.js', 'assets/flow-export.js', 'assets/flow-editor.js', 'assets/limits-ui.js', 'assets/tools.js'], native = null) {
+async function page(route, scripts = ['assets/tool-core.js', 'assets/tool-session.js', 'assets/math-runtime.js', 'assets/math-tools.js', 'assets/flow-runtime.js', 'assets/flow-export.js', 'assets/flow-editor.js', 'assets/limits-ui.js', 'assets/derivatives-engine.js', 'assets/linear-engine.js', 'assets/radix-engine.js', 'assets/academic-tools-ui.js', 'assets/tools.js'], native = null) {
     const dom = new JSDOM(fs.readFileSync(path.join(root, 'dist', route, 'index.html'), 'utf8'), {
         url: 'https://study.local/' + route + '/', runScripts: 'outside-only', pretendToBeVisual: true,
     });
@@ -170,6 +170,7 @@ function input(window, label, value, event = 'input') {
     assert.equal(w.document.querySelector('.limit-result').textContent, '', 'old worker cannot write a stale result');
     click(w, 'Вычислить предел'); const secondWorker = w.testWorkers[1];
     secondWorker.onmessage({ data: { job: secondWorker.sent.job, result: { kind: 'finite', latex: '1', steps: [{ math: 'x' }],
+        chain: [{ math: 'x', note: 'Single displayed proof' }, { math: '1' }], chainComplete: true,
         sides: [{ side: 'left', steps: [{ text: 'Internal left proof' }] },
             { side: 'right', steps: [{ text: 'Single displayed proof' }] }] } } });
     assert.match(w.document.querySelector('.limit-result').textContent, /Single displayed proof/);
@@ -187,6 +188,21 @@ function input(window, label, value, event = 'input') {
     click(w, 'Вычислить предел');
     assert.equal(w.testWorkers[0].sent.direction, 'both');
     assert.equal(w.testWorkers[0].sent.expression, '1/x'); dom.window.close();
+
+    dom = await page('tools/derivatives'); w = dom.window;
+    click(w, 'Найти производную'); assert.match(w.document.querySelector('.academic-result').textContent, /cos/); dom.window.close();
+    dom = await page('tools/systems'); w = dom.window;
+    click(w, 'Две свободные переменные'); click(w, 'Вычислить');
+    assert.match(w.document.querySelector('.academic-result').textContent, /Бесконечно много решений/); dom.window.close();
+    dom = await page('tools/matrices'); w = dom.window;
+    input(w, 'Действие', 'inverse', 'change'); click(w, 'Вычислить');
+    assert.match(w.document.querySelector('.academic-result').textContent, /Обратная матрица/); dom.window.close();
+    dom = await page('tools/radix'); w = dom.window;
+    click(w, 'Вычислить'); assert.match(w.document.querySelector('.academic-result').textContent, /CE6/);
+    input(w, 'Режим', 'calculate', 'change'); input(w, 'Первое число', '111'); input(w, 'Второе число', '1');
+    click(w, 'Вычислить'); assert.match(w.document.querySelector('.radix-columns').textContent, /1000/);
+    input(w, 'Операция', '/', 'change'); click(w, 'Вычислить');
+    assert.ok(w.document.querySelector('.radix-division')); dom.window.close();
 
     dom = await page('tools/converter'); w = dom.window;
     assert.equal(w.document.querySelectorAll('.converter-grid label').length, 4);

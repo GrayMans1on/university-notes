@@ -77,6 +77,9 @@
             order.input.value = system ? '3 4 1 2' : ''; if (!system) { mode.input.value = 'inverse'; }
             output.replaceChildren(); session.changed();
         }));
+        const updateOrder = () => { order.label.hidden = mode.input.value === 'determinant'; };
+        mode.input.addEventListener('change', updateOrder);
+        new MutationObserver(updateOrder).observe(output, { childList: true }); updateOrder();
         root.append(mode.label, matrix.label, element('p', system
             ? 'Последний столбец — правая часть. Элементы разделяйте пробелами, строки — переводом строки. До 6 уравнений и 6 неизвестных.'
             : 'Квадратная матрица до 6×6. Поддерживаются целые числа, десятичные и обычные дроби.', 'tool-help'),
@@ -123,12 +126,27 @@
                     output.append(element('h2', (result.approximate ? '≈ ' : '= ') + result.result),
                         element('p', 'Основание ответа: ' + (result.to || result.base)));
                     if (mode.input.value === 'calculate') {
-                        const rows = [left.input.value, operator.input.options[operator.input.selectedIndex].text + ' ' + right.input.value];
-                        const partials = result.partials || []; rows.push(...partials, result.result);
-                        const width = Math.max(...rows.map((r) => r.length)); const column = element('pre', undefined, 'radix-columns');
-                        column.textContent = rows.map((r, i) => (i === 2 || i === rows.length - 1 ? '─'.repeat(width) + '\n' : '') + r.padStart(width)).join('\n');
-                        output.append(column, element('p', result.operator === '/' ? 'Деление выполняется в выбранном основании. При дробных числах одинаково сдвигаем точку в делимом и делителе.'
-                            : 'Считаем по разрядам в выбранном основании, без перевода целых чисел в десятичную систему.', 'tool-help'));
+                        if (result.operator === '/') {
+                            const division = element('div', undefined, 'radix-division');
+                            const work = element('pre', result.normalized[0], 'radix-division-work');
+                            const quotient = element('div', undefined, 'radix-division-quotient');
+                            quotient.append(element('div', result.normalized[1]), element('strong', result.result));
+                            division.append(work, quotient); output.append(division);
+                        } else {
+                            const align = (value) => {
+                                const scale = Math.max(...[left.input.value, right.input.value].map((v) => (v.replace(',', '.').split('.')[1] || '').length));
+                                const parts = value.trim().replace(',', '.').split('.');
+                                return result.operator !== '*' && scale ? parts[0] + '.' + (parts[1] || '').padEnd(scale, '0') : value;
+                            };
+                            const rows = [align(left.input.value), operator.input.options[operator.input.selectedIndex].text + ' ' + align(right.input.value)];
+                            rows.push(...(result.partials || []), result.result);
+                            const width = Math.max(...rows.map((r) => r.length)); const column = element('pre', undefined, 'radix-columns');
+                            column.textContent = rows.map((r, i) => (i === 2 || i === rows.length - 1 ? '─'.repeat(width) + '\n' : '') + r.padStart(width)).join('\n');
+                            output.append(column);
+                        }
+                        output.append(element('p', result.operator === '/' ? 'Деление выполняется в выбранном основании. При дробных числах одинаково сдвигаем точку в делимом и делителе. Поразрядные вычитания и остатки показаны ниже.'
+                            : result.operator === '*' ? 'Умножаем цифры без точек, складываем сдвинутые частичные произведения; в ответе отделяем суммарное количество дробных разрядов. Знаки учитываем отдельно.'
+                                : 'Считаем по разрядам в выбранном основании, без перевода целых чисел в десятичную систему. При разных знаках сравниваем модули и вычитаем меньший из большего.', 'tool-help'));
                     }
                     const list = element('ol', undefined, 'radix-steps');
                     for (const step of result.steps) { list.append(element('li', typeof step === 'string' ? step : step.text)); }

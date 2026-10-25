@@ -33,7 +33,7 @@ class LimitSolution(Scene):
             explanation = Text(note, font='DejaVu Sans', font_size=19, line_spacing=1.2, color=palette['muted'])
             if explanation.width > 12:
                 explanation.scale_to_fit_width(12)
-            explanation.to_edge(DOWN, buff=0.65)
+            explanation.to_edge(DOWN, buff=1.4)
             self.play(FadeIn(explanation), run_time=0.25)
             if hint is not None:
                 self.play(FadeOut(hint), run_time=0.15)

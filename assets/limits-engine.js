@@ -86,7 +86,8 @@
         }
         const variable = options.variable === 'n' ? 'n' : 'x';
         const raw = normalize(parse(expression)); validate(raw);
-        const pointAst = exact(normalize(parse(destination)));
+        const pointText = destination.replace(/^(\s*[+-]?\s*)(?:inf(?:inity)?|∞)\s*$/i, '$1\\infty');
+        const pointAst = exact(normalize(parse(pointText)));
         const pointValue = pointAst === 'PositiveInfinity' ? Infinity : pointAst === 'NegativeInfinity' ? -Infinity
             : evaluate(pointAst, 0).n;
         if (depends(pointAst) || Number.isNaN(pointValue)) { throw new Error('Точка должна быть вещественным числом, +∞ или −∞.'); }
@@ -207,7 +208,7 @@
                     math: `\\frac{${latex(polyAt(rp.p, point))}}{${latex(polyAt(rp.q, point))}}` });
                 return finite(['Divide', polyAt(rp.p, point), polyAt(rp.q, point)]);
             }
-            const delta = ['Subtract', 'x', point];
+            const delta = zero(point) ? 'x' : ['Subtract', 'x', point];
             if (p.order || q.order) {
                 steps.push({ text: 'Выделяем множители, обращающиеся в ноль. Сокращение допустимо в проколотой окрестности точки.',
                     math: `\\frac{(${latex(delta)})^{${p.order}}(${latex(polynomialAst(p.quotient))})}{(${latex(delta)})^{${q.order}}(${latex(polynomialAst(q.quotient))})}` });
@@ -406,7 +407,7 @@
                 }
                 noDomain();
             }
-            return exact(['Power', value, power]);
+            return n === 0 && power > 0 ? 0 : exact(['Power', value, fraction]);
         }
         function powerGerm(g, exponent, point, side, steps) {
             const n = numeric(exponent);
@@ -688,21 +689,132 @@
                 : l.power < 0 ? 'Отрицательная степень положительного t неограниченно растёт; знак задаёт оставшийся множитель.'
                     : 'Степень t равна нулю; остаётся предел частного.', resultTex(result));
         }
+        // Require continuity of every original subtree before simplifying a substitution.
+        // This preserves holes such as (x-x)/(x-x) and rejects boundary-only domains.
+        function continuousValue(node, point) {
+            tick();
+            if (node === 'x') { return point; }
+            if (!Array.isArray(node)) {
+                return Number.isFinite(evaluate(node, point).n) ? exact(node) : null;
+            }
+            const [op, ...args] = node;
+            const values = args.map((arg) => continuousValue(arg, point));
+            if (values.some((value) => value === null)) { return null; }
+            const numbers = values.map(numeric); const a = numbers[0];
+            const arithmetic = ['Add', 'Subtract', 'Negate', 'Multiply', 'Rational', 'Square', 'Abs', 'Sin', 'Cos', 'Exp', 'Arctan'];
+            if (op === 'Divide' && numbers[1] === 0) { return null; }
+            if (['Ln', 'Log', 'Lg', 'Lb'].includes(op)) {
+                const base = op === 'Ln' ? Math.E : op === 'Lb' ? 2 : numbers[1] ?? 10;
+                if (!(a > 0) || !(base > 0) || base === 1) { return null; }
+            } else if (['Arcsin', 'Arccos'].includes(op)) {
+                if (!(Math.abs(a) < 1)) { return null; }
+            } else if (op === 'Sqrt' || op === 'Root' || op === 'Power') {
+                const exponent = op === 'Sqrt' ? divide(1, 2) : op === 'Root' ? divide(1, values[1]) : values[1];
+                const power = numeric(exponent);
+                if (!Number.isFinite(power) || (a === 0 && power <= 0)
+                    || (op === 'Power' && a <= 0 && depends(args[1]))) { return null; }
+                if (op === 'Root' && (!Number.isInteger(numbers[1]) || numbers[1] === 0 || depends(args[1]))) { return null; }
+                if (a <= 0 && !Number.isInteger(power)) {
+                    const fraction = exact(exponent);
+                    if (depends(args[1]) || !Array.isArray(fraction) || fraction[0] !== 'Rational'
+                        || Math.abs(fraction[2] % 2) !== 1) { return null; }
+                }
+                try {
+                    const value = realPower(values[0], exponent);
+                    return Number.isFinite(numeric(value)) ? value : null;
+                } catch { return null; }
+            } else if (['Floor', 'Ceil'].includes(op)) {
+                if (Number.isInteger(a) && depends(args[0])) { return null; }
+            } else if (op === 'Sign') {
+                if (a === 0 && depends(args[0])) { return null; }
+            } else if (['Tan', 'Cot'].includes(op)) {
+                const denominator = exact([op === 'Tan' ? 'Cos' : 'Sin', values[0]]);
+                if (zero(denominator)) { return null; }
+            } else if (!arithmetic.includes(op) && op !== 'Divide') { return null; }
+            const value = exact([op, ...values]);
+            return Number.isFinite(numeric(value)) ? value : null;
+        }
+        // Recognize standard ratios in the original variable, without a coordinate change.
+        function standardQuotient(node, point, side, steps) {
+            if (node?.[0] !== 'Divide') { return null; }
+            const numerator = node[1]; let argument; let scale = 1; let power = 1; let type;
+            if (['Sin', 'Tan', 'Arcsin', 'Arctan'].includes(numerator?.[0])) {
+                argument = numerator[1]; type = numerator[0];
+            } else if (numerator?.[0] === 'Ln') {
+                argument = ['Subtract', numerator[1], 1]; type = 'Ln';
+            } else if (numerator?.[0] === 'Subtract' && zero(sub(numerator[2], 1))) {
+                const first = numerator[1];
+                if (first?.[0] === 'Exp') { argument = first[1]; type = 'Exp'; }
+                if (first?.[0] === 'Power' && !depends(first[2]) && numeric(first[1]) !== Math.E) {
+                    argument = ['Subtract', first[1], 1]; scale = first[2]; type = 'Power';
+                }
+                if (first?.[0] === 'Sqrt') {
+                    argument = ['Subtract', first[1], 1]; scale = divide(1, 2); type = 'Power';
+                }
+            } else if (numerator?.[0] === 'Subtract' && zero(sub(numerator[1], 1)) && numerator[2]?.[0] === 'Cos') {
+                argument = numerator[2][1]; scale = divide(1, 2); power = 2; type = 'Cos';
+            }
+            if (!argument) { return null; }
+            argument = exact(argument);
+            const inner = rational(argument);
+            if (!inner || inner.p.every(zero) || inner.q.every(zero)
+                || !zero(polyAt(inner.p, point)) || zero(polyAt(inner.q, point))) { return null; }
+            const factorAst = power === 2 ? ['Square', argument] : argument;
+            const ratio = rational(['Divide', factorAst, node[2]]);
+            if (!ratio) { return null; }
+            const proof = []; const coefficient = rationalLimit(ratio, point, side, proof);
+            if (coefficient.kind !== 'finite') { return null; }
+            const standard = ['Divide', numerator, factorAst];
+            const answer = mul(scale, coefficient.value);
+            note(steps, type === 'Sin' ? 'Выделяем первый замечательный предел; внутренний аргумент стремится к нулю.'
+                : 'Выделяем стандартное отношение из конспекта; внутренний аргумент стремится к нулю.',
+                `${latex(argument)}\\longrightarrow0,\\qquad ${latex(standard)}\\longrightarrow${latex(scale)}`, 'standard');
+            const unitCoefficient = zero(sub(coefficient.value, 1));
+            if (!unitCoefficient || JSON.stringify(argument) !== JSON.stringify(node[2])) {
+                note(steps, 'Домножаем и делим на внутренний аргумент, чтобы применить этот предел.',
+                    `${latex(node)}=${latex(standard)}\\cdot ${latex(['Divide', factorAst, node[2]])}`, 'standard');
+                steps.push(...proof);
+                note(steps, 'Перемножаем найденные пределы.',
+                    `${latex(scale)}\\cdot ${latex(coefficient.value)}=${latex(answer)}`, 'standard');
+            }
+            return finite(answer);
+        }
         function limit(node, point, side, steps, depth = 0) {
             tick(); if (depth > 12) { return unknown('Превышена глубина последовательных преобразований.'); }
+            if (Number.isFinite(pointValue)) {
+                const value = continuousValue(node, point);
+                if (value !== null) {
+                    note(steps, 'Прямая подстановка допустима: выражение непрерывно в этой точке.',
+                        `${latex(node)}\\big|_{x=${latex(point)}}=${latex(value)}`, 'continuity');
+                    return finite(value);
+                }
+                if (node?.[0] === 'Divide') {
+                    const a = continuousValue(node[1], point); const b = continuousValue(node[2], point);
+                    if (a !== null && b !== null && zero(a) && zero(b)) {
+                        note(steps, 'Прямая подстановка даёт неопределённость 0/0. Ищем подходящее преобразование.',
+                            '\\frac{0}{0}');
+                    }
+                }
+            }
             const r = rational(node);
             if (r) { return rationalLimit(r, point, side, steps); }
-            if (node?.[0] === 'Divide' && ['Sin', 'Tan', 'Arcsin', 'Arctan'].includes(node[1]?.[0])
-                && JSON.stringify(node[1][1]) === JSON.stringify(node[2])
-                && rational(node[2]) && !rational(node[2]).p.every(zero) && !rational(node[2]).q.every(zero)) {
-                const innerSteps = []; const inner = limit(node[2], point, side, innerSteps, depth + 1);
-                if (inner.kind === 'finite' && zero(inner.value)) {
-                    note(steps, 'Вводим внутренний аргумент u; он стремится к нулю.',
-                        `u=${latex(node[2])}\\longrightarrow0`, 'standard');
-                    note(steps, node[1][0] === 'Sin' ? 'Применяем первый замечательный предел.'
-                        : 'Применяем стандартное следствие из первого замечательного предела.',
-                        `\\lim_{u\\to0}\\frac{${latex([node[1][0], 'u'])}}u=1`, 'standard');
-                    return finite(1);
+            if (Number.isFinite(pointValue)) {
+                const standard = standardQuotient(node, point, side, steps);
+                if (standard) { return standard; }
+            }
+            if (Number.isFinite(pointValue) && ['Add', 'Subtract', 'Negate', 'Multiply', 'Divide'].includes(node?.[0])) {
+                const proof = [];
+                const values = node.slice(1).map((arg) => limit(arg, point, side, proof, depth + 1));
+                if (values.every((value) => value.kind === 'finite')
+                    && (node[0] !== 'Divide' || !zero(values[1].value))) {
+                    const constants = values.map((value) => value.value);
+                    const answer = toResult(exact([node[0], ...constants]));
+                    if (answer.kind === 'finite') {
+                        steps.push(...proof);
+                        note(steps, 'Применяем арифметические свойства к найденным пределам частей выражения.',
+                            `${latex([node[0], ...constants])}=${resultTex(answer)}`, 'continuity');
+                        return answer;
+                    }
                 }
             }
             let failure;
@@ -847,6 +959,7 @@
             const replaceVariable = (text) => variable === 'n' ? text.replace(/\bx\b/g, 'n') : text;
             return { side: side < 0 ? 'left' : 'right', ...result,
                 steps: decorate(steps).map((s) => ({ ...s, ...(s.math ? { math: replaceVariable(s.math) } : {}) })) };
+
         }
         if (variable === 'n' && pointValue !== Infinity) { throw new Error('Для последовательности n выберите n → +∞.'); }
         const sides = Number.isFinite(pointValue) ? direction === 'both' ? [analyze(-1), analyze(1)]

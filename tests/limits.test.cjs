@@ -104,3 +104,45 @@ assert.equal(solve('\\arccos(x)', '1', 'right').kind, 'domain');
 assert.equal(solve('\\arccos(x)', '1', 'left').kind, 'finite');
 assert.equal(solve('\\arcsin(x)', '-1', 'left').kind, 'domain');
 assert.equal(solve('(-x-\\ln(x))^2/e^x', '\\infty').value, 0);
+
+// Strategy selection must keep ordinary substitution and standard ratios short.
+for (const [expression, point] of [
+    ['\\sin(x)+\\ln(x)+\\sqrt{x}', '1'],
+    ['(x^2+1)/(x+3)', '2'],
+    ['\\arctan(x)+e^x', '0'],
+    ['x^{2/3}', '-8'],
+]) {
+    const result = solve(expression, point);
+    assert.equal(result.kind, 'finite');
+    for (const side of result.sides) {
+        assert.match(side.steps[0].text, /Прямая подстановка допустима/);
+        assert.equal(side.steps.length, 2, expression);
+    }
+    checkMath(result);
+}
+for (const [expression, expected] of [
+    ['\\sin(7x)/(3x)', 7 / 3], ['\\tan(4x)/x', 4],
+    ['(e^{5x}-1)/x', 5], ['\\ln(1+3x)/x', 3],
+    ['(1-\\cos(2x))/x^2', 2], ['(\\sqrt{1+6x}-1)/x', 3],
+    ['\\sin(x-1)/(x-1)', 1],
+    ['\\sin(x)/x+\\ln(1+x)/x', 2],
+]) {
+    const point = expression.includes('x-1') ? '1' : '0';
+    const result = solve(expression, point);
+    assert.equal(result.kind, 'finite', expression);
+    assert.ok(Math.abs(ce.box(result.value).N().re - expected) < 1e-12, expression);
+    assert.doesNotMatch(JSON.stringify(result.sides), /Переносим предельную|Вводим положительное|t\\\\to/);
+    checkMath(result);
+}
+for (const point of ['inf', 'infinity', '+inf', '+infinity', '∞']) {
+    assert.equal(solve('1/x', point).value, 0, point);
+}
+assert.equal(solve('x', '-infinity').sign, -1);
+// A finite value at a boundary or at a discontinuity is not a continuity proof.
+assert.equal(solve('\\sqrt{x}', '0', 'left').kind, 'domain');
+assert.equal(solve('\\arcsin(x)', '1', 'right').kind, 'domain');
+assert.equal(solve('\\lfloor x\\rfloor', '0').kind, 'dne');
+assert.ok(!['finite', 'infinite'].includes(solve('(x-x)/(x-x)', '0').kind));
+console.log('Limit strategy: guarded direct substitution, original-variable standard ratios, compositions and infinity aliases passed.');
+
+assert.ok(!['finite', 'infinite'].includes(solve('(-1)^x', '1').kind));

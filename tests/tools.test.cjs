@@ -156,13 +156,24 @@ function input(window, label, value, event = 'input') {
     assert.equal(w.localStorage.getItem('study-workspace'), memory.get('study-workspace')); dom.window.close();
 
     dom = await page('tools/limits'); w = dom.window;
+    assert.equal(w.document.querySelectorAll('.limit-input-box select').length, 1);
+    assert.ok(!w.document.body.textContent.includes('Приближение'));
+    for (const input of w.document.querySelectorAll('.limit-input-box math-field')) {
+        assert.equal(input.inlineShortcuts.inf, '\\infty');
+        assert.equal(input.inlineShortcuts.infinity, '\\infty');
+        assert.equal(input.inlineShortcuts.in, undefined);
+    }
     click(w, 'Вычислить предел'); const firstWorker = w.testWorkers[0];
+    assert.equal(firstWorker.sent.direction, 'both');
     click(w, 'sin x / x'); assert.equal(firstWorker.terminated, true);
     firstWorker.onmessage({ data: { job: firstWorker.sent.job, result: { kind: 'finite', latex: '99', steps: [{ math: 'x' }] } } });
     assert.equal(w.document.querySelector('.limit-result').textContent, '', 'old worker cannot write a stale result');
     click(w, 'Вычислить предел'); const secondWorker = w.testWorkers[1];
-    secondWorker.onmessage({ data: { job: secondWorker.sent.job, result: { kind: 'finite', latex: '1', steps: [{ math: 'x' }] } } });
-    assert.match(w.document.querySelector('.limit-result').textContent, /Решение/);
+    secondWorker.onmessage({ data: { job: secondWorker.sent.job, result: { kind: 'finite', latex: '1', steps: [{ math: 'x' }],
+        sides: [{ side: 'left', steps: [{ text: 'Internal left proof' }] },
+            { side: 'right', steps: [{ text: 'Single displayed proof' }] }] } } });
+    assert.match(w.document.querySelector('.limit-result').textContent, /Single displayed proof/);
+    assert.doesNotMatch(w.document.querySelector('.limit-result').textContent, /Internal left proof|Проверка слева/);
     input(w, 'Выражение под знаком предела', 'x'); assert.equal(w.document.querySelector('.limit-result').textContent, '');
     dom.window.close();
 

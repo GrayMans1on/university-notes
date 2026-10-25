@@ -4,11 +4,17 @@
         const { element, field, select, button, row, say } = window.StudyToolUI;
         const M = window.StudyMathTools; M.setup();
         const expression = M.mathField('Выражение под знаком предела', '\\frac{\\sin x}{x}');
-        expression.input.addEventListener('mount', () => {
-            expression.input.inlineShortcuts = { ...expression.input.inlineShortcuts, tg: '\\tan', ctg: '\\cot', arctg: '\\arctan' };
-        });
         const destination = M.mathField('Точка предела', '0');
-        const direction = select('Приближение', [['both', 'С двух сторон'], ['left', 'Слева'], ['right', 'Справа']], 'both');
+        for (const input of [expression.input, destination.input]) {
+            input.addEventListener('mount', () => {
+                const shortcuts = { ...input.inlineShortcuts };
+                // Short prefixes must not replace the start of "inf" or "infinity".
+                for (const key of ['in', '!in', 'notin', 'isin', 'xin', 'infin', 'infty']) { delete shortcuts[key]; }
+                input.inlineShortcuts = { ...shortcuts, inf: '\\infty', infinity: '\\infty',
+                    tg: '\\tan', ctg: '\\cot', arctg: '\\arctan' };
+                input.inlineShortcutTimeout = 0;
+            });
+        }
         const variable = select('Переменная', [['x', 'x'], ['n', 'n']], 'x');
         const parameters = field('Значения параметров', ''); parameters.input.placeholder = 'a=2; b=3';
         parameters.input.maxLength = 400;
@@ -40,11 +46,12 @@
         const session = window.StudySessions.files(root, {
             filename: 'limit.csulimit', extension: '.csulimit', validate,
             get: () => ({ format: 'csu-limit', version: 1, expression: expression.input.value,
-                destination: destination.input.value, direction: direction.input.value,
+                destination: destination.input.value, direction: 'both',
                 variable: variable.input.value, parameters: parameters.input.value }),
             set: (data) => {
                 stop(); expression.input.value = data.expression; destination.input.value = data.destination;
-                direction.input.value = data.direction; variable.input.value = data.variable;
+                variable.input.value = data.variable;
+                if (data.direction !== 'both') { say('Файл открыт. Сейчас вычисляется общий предел с двух сторон.'); }
                 parameters.input.value = data.parameters; updateDirection(); result.replaceChildren();
             },
         });
@@ -72,25 +79,15 @@
             const solved = ['finite', 'infinite'].includes(data.kind);
             const heading = element('div', undefined, 'limit-answer');
             heading.append(element('h2', solved ? 'Решение' : data.kind === 'dne' ? 'Предел не существует'
-                : data.kind === 'domain' ? 'Нет области определения с выбранной стороны' : 'Не удалось решить изученными методами'));
+                : data.kind === 'domain' ? 'Проверьте область определения' : 'Не удалось решить изученными методами'));
             if (data.latex) { heading.append(math(data.steps[0].math + '=' + data.latex, 'limit-final-formula')); }
             if (data.reason) { heading.append(element('p', data.reason)); }
             result.append(heading);
             const sides = data.sides || []; const source = data.sources;
-            if (solved && sides.length === 2) {
-                steps(sides[1].steps, result, source);
-                const check = element('details', undefined, 'limit-side-check'); check.append(element('summary', 'Проверка слева — тот же результат'));
-                steps(sides[0].steps, check, source); result.append(check,
-                    element('p', 'Оба односторонних предела совпадают. Получен двусторонний предел.', 'limit-conclusion'));
-            } else if (sides.length === 1) { steps(sides[0].steps, result, source); }
-            else {
-                for (const side of sides) {
-                    const section = element('section', undefined, 'limit-side');
-                    section.append(element('h3', side.side === 'left' ? 'Слева' : 'Справа'));
-                    if (side.reason) { section.append(element('p', side.reason)); }
-                    steps(side.steps, section, source); result.append(section);
-                }
-            }
+            // Keep domain/sign checks in the engine, but present one course-style solution.
+            const proof = sides.find((side) => side.side === 'right') || sides[0];
+            if (solved && proof) { steps(proof.steps, result, source); }
+            else if (data.kind === 'unknown' && proof?.steps.length) { steps(proof.steps, result, source); }
         }
         function stop() {
             job += 1; clearTimeout(timer); worker?.terminate(); worker = null;
@@ -117,20 +114,19 @@
                     element('p', 'Превышено время разбора. Ответ не определён; это ограничение алгоритма.')); say('');
             }, 10000);
             worker.postMessage({ job: currentJob, expression: expression.input.value, destination: destination.input.value,
-                direction: direction.input.value, options: { variable: variable.input.value, parameters: values } });
+                direction: 'both', options: { variable: variable.input.value, parameters: values } });
         }, 'primary');
-        const sideTag = element('span', '', 'limit-direction-tag'); sideTag.setAttribute('aria-hidden', 'true');
         function updateDirection() {
             const pointText = destination.input.value.replace(/\\[a-zA-Z]+/g, 'p').replace(/[{}\s]/g, '');
-            destination.input.style.width = Math.max(32, Math.min(132, pointText.length * 9 + 12)) + 'px';
-            sideTag.textContent = direction.input.value === 'left' ? '−' : direction.input.value === 'right' ? '+' : '';
-            direction.input.disabled = variable.input.value === 'n';
+            const width = Math.max(30, Math.min(140, pointText.length * 10 + 8));
+            destination.input.style.width = width + 'px';
+            operator.style.minWidth = Math.max(76, width + 48) + 'px';
         }
         variable.input.addEventListener('change', () => {
-            if (variable.input.value === 'n') { destination.input.value = '\\infty'; direction.input.value = 'both'; }
-            updateDirection();
+            if (variable.input.value === 'n') { destination.input.value = '\\infty'; }
+            stop(); updateDirection(); result.replaceChildren(); session.changed();
         });
-        for (const input of [expression.input, destination.input, direction.input, variable.input, parameters.input]) {
+        for (const input of [expression.input, destination.input, parameters.input]) {
             input.addEventListener('input', () => { stop(); updateDirection(); result.replaceChildren(); session.changed(); });
         }
         function hideCaption(label) {
@@ -138,7 +134,7 @@
         }
         hideCaption(expression.label); hideCaption(destination.label); hideCaption(variable.label);
         const operator = element('div', undefined, 'limit-operator'); operator.append(element('span', 'lim', 'limit-word'));
-        const target = element('div', undefined, 'limit-target'); target.append(variable.label, element('span', '→'), destination.label, sideTag);
+        const target = element('div', undefined, 'limit-target'); target.append(variable.label, element('span', '→'), destination.label);
         operator.append(target);
         const inputBox = element('div', undefined, 'limit-input-box'); inputBox.append(operator, expression.label);
         const help = element('details', undefined, 'limit-course-help'); help.append(element('summary', 'Методы из пройденного курса'));
@@ -150,15 +146,16 @@
         const samples = row();
         for (const [name, code, point] of [['Сокращение', '\\frac{x^2-1}{x-1}', '1'], ['sin x / x', '\\frac{\\sin x}{x}', '0'],
             ['Сопряжённое', '\\sqrt{x^2+1}-x', '\\infty'], ['Второй замечательный', '(1+2x)^{3/x}', '0'],
-            ['Разные стороны', '\\frac{x}{1-x}', '1']]) {
+            ['Разрыв функции', '\\frac{x}{1-x}', '1']]) {
             samples.append(button(name, () => {
                 stop(); result.replaceChildren(); expression.input.value = code; destination.input.value = point;
-                variable.input.value = 'x'; direction.input.value = 'both'; updateDirection(); session.changed();
+                variable.input.value = 'x'; updateDirection(); session.changed();
             }));
         }
         examples.append(samples);
-        root.append(inputBox, row(calculateButton, button('Остановить', stop), direction.label), constants, help, examples, result);
-        updateDirection();
+        root.append(inputBox, row(calculateButton, button('Остановить', stop)), constants, help, examples, result);
+        const hint = element('p', 'Точка под lim: число, inf или infinity → ∞. Вычисляется общий предел.', 'tool-help');
+        inputBox.after(hint); updateDirection();
     }
     window.StudyLimitUI = { limits };
 })();

@@ -89,7 +89,7 @@
                 data.chain.forEach((entry, index) => {
                     const term = math((index ? '=' : '') + entry.math, 'limit-chain-term'); chain.append(term);
                     if (entry.annotation) {
-                        const hint = math('\left[' + entry.annotation + '\right]', 'limit-chain-hint');
+                        const hint = math('\\left[' + entry.annotation + '\\right]', 'limit-chain-hint');
                         hint.title = 'Подсказка о форме после подстановки; не значение выражения.'; chain.append(hint);
                     }
                 });

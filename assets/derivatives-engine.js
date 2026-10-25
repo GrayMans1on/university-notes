@@ -5,7 +5,9 @@
             throw new Error('Введите формулу длиной до 1200 символов.');
         }
         const ce = new window.ComputeEngine.ComputeEngine(); const steps = []; const conditions = new Set();
-        const parsed = ce.parse(expression, { canonical: false });
+        const functionAliases = { sh: 'sinh', ch: 'cosh', th: 'tanh', cth: 'coth', tg: 'tan', ctg: 'cot', arctg: 'arctan' };
+        const source = expression.replace(/\\operatorname\{(sh|ch|th|cth|tg|ctg|arctg)\}/g, (_, name) => '\\' + functionAliases[name]);
+        const parsed = ce.parse(source, { canonical: false });
         if (!parsed.isValid) { throw new Error('Проверьте формулу и скобки.'); }
         const depends = (node) => node === 'x' || (Array.isArray(node) && node.slice(1).some(depends));
         const exact = (node) => ce.box(node).evaluate().json;
@@ -58,9 +60,15 @@
                 if (op === 'Root' && (depends(v) || !Number.isInteger(num(v)) || num(v) < 2)) {
                     throw new Error('Для корня нужен постоянный целый порядок ≥ 2.');
                 }
-                if (op !== 'Square') { requireCondition(u, '>0'); }
-                answer = mul(exponent, power(u, sub(exponent, 1)), visit(u, depth + 1));
-                rule = 'Переписываем корень как степень и применяем правило сложной функции';
+                if (op === 'Root' && num(v) % 2 === 1) {
+                    requireCondition(u, '\\ne0');
+                    answer = div(visit(u, depth + 1), mul(v, ['Root', power(u, num(v) - 1), v]));
+                    rule = 'Производная корня нечётного порядка и правило сложной функции; подкоренное выражение отлично от нуля';
+                } else {
+                    if (op !== 'Square') { requireCondition(u, '>0'); }
+                    answer = mul(exponent, power(u, sub(exponent, 1)), visit(u, depth + 1));
+                    rule = 'Переписываем корень как степень и применяем правило сложной функции';
+                }
             } else if (op === 'Power') {
                 if (!depends(v)) {
                     const exponent = num(v);

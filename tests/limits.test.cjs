@@ -182,3 +182,6 @@ for (const [formula, point, samples] of [
         assert.ok(Math.abs(a - b) < 1e-9 * Math.max(1, Math.abs(a)), formula + ' identity at ' + x);
     }
 }
+
+assert.equal(solve('\\sin(x)/x', '0').chain.length, 2);
+assert.doesNotMatch(JSON.stringify(solve('\\sin(x)/x', '0').chain), /x\^0/);

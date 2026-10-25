@@ -49,7 +49,7 @@
                 const base = new URL('.', document.querySelector('script[src*="manim-export.js"]').src);
                 const href = new URL(url.replace(/^\/assets\//, ''), base).href;
                 const playing = !player.paused; const position = player.currentTime || 0;
-                player.src = href; player.hidden = false; download.href = href; download.download = 'limit-' + theme() + '.mp4'; download.hidden = false;
+                player.preload = 'metadata'; player.src = href; player.hidden = false; download.href = href; download.download = 'limit-' + theme() + '.mp4'; download.hidden = false;
                 player.addEventListener('loadedmetadata', () => {
                     player.currentTime = Math.min(position, Math.max(0, player.duration - .1));
                     if (playing) { player.play().catch(() => {}); }

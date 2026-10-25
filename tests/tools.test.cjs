@@ -21,7 +21,10 @@ async function page(route, scripts = ['assets/tool-core.js', 'assets/tool-sessio
     dom.window.HTMLAnchorElement.prototype.click = function () {};
     dom.window.HTMLElement.prototype.getBoundingClientRect = () => ({ left: 0, top: 0, width: 800, height: 600 });
     dom.window.ComputeEngine = require('@cortex-js/compute-engine');
-    dom.window.katex = { render(text, block) { block.textContent = text; } };
+    dom.window.katex = { render(text, block) {
+        if (route === 'tools/limits') { block.innerHTML = require('katex').renderToString(text, { throwOnError: true, strict: 'ignore' }); }
+        else { block.textContent = text; }
+    } };
     dom.window.testWorkers = [];
     dom.window.Worker = class {
         constructor() { dom.window.testWorkers.push(this); }
@@ -170,11 +173,12 @@ function input(window, label, value, event = 'input') {
     assert.equal(w.document.querySelector('.limit-result').textContent, '', 'old worker cannot write a stale result');
     click(w, 'Вычислить предел'); const secondWorker = w.testWorkers[1];
     secondWorker.onmessage({ data: { job: secondWorker.sent.job, result: { kind: 'finite', latex: '1', steps: [{ math: 'x' }],
-        chain: [{ math: 'x', note: 'Single displayed proof' }, { math: '1' }], chainComplete: true,
+        chain: [{ math: 'x', note: 'Single displayed proof', annotation: '\\frac00' }, { math: '1' }], chainComplete: true,
         sides: [{ side: 'left', steps: [{ text: 'Internal left proof' }] },
             { side: 'right', steps: [{ text: 'Single displayed proof' }] }] } } });
     assert.match(w.document.querySelector('.limit-result').textContent, /Single displayed proof/);
     assert.doesNotMatch(w.document.querySelector('.limit-result').textContent, /Internal left proof|Проверка слева/);
+    assert.doesNotMatch(w.document.querySelector('.limit-chain-hint .katex-html').textContent, /left|ight/);
     input(w, 'Выражение под знаком предела', 'x'); assert.equal(w.document.querySelector('.limit-result').textContent, '');
     dom.window.close();
 

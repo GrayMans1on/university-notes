@@ -228,8 +228,9 @@
                 const factored = ['Divide', factorTerm(p.order, p.quotient), factorTerm(q.order, q.quotient)];
                 trace.push({ kind: 'limit', math: latex(factored), note: 'Выделяем обращающиеся в ноль множители.', source: 'algebra' });
                 steps.push({ text: 'Выделяем множители, обращающиеся в ноль. Сокращение допустимо в проколотой окрестности точки.', math: latex(factored) });
-                const reduced = exact(['Multiply', ['Power', delta, p.order - q.order],
-                    ['Divide', polynomialAst(p.quotient), polynomialAst(q.quotient)]]);
+                const quotient = ['Divide', polynomialAst(p.quotient), polynomialAst(q.quotient)];
+                const reduced = exact(p.order === q.order ? quotient
+                    : ['Multiply', ['Power', delta, p.order - q.order], quotient]);
                 trace.push({ kind: 'limit', math: latex(reduced), note: 'Сокращаем в проколотой окрестности.', source: 'algebra' });
             }
             if (p.zero || p.order > q.order) { return finish(finite(0)); }
@@ -835,11 +836,13 @@
             }
             const p = factor(ratio.p, point); const q = factor(ratio.q, point);
             const delta = zero(point) ? 'x' : sub('x', point);
-            const remaining = exact(['Multiply', ['Power', delta, p.order - q.order],
-                ['Divide', polynomialAst(p.quotient), polynomialAst(q.quotient)]]);
+            const quotient = ['Divide', polynomialAst(p.quotient), polynomialAst(q.quotient)];
+            const remaining = exact(p.order === q.order ? quotient
+                : ['Multiply', ['Power', delta, p.order - q.order], quotient]);
+            const directStandard = zero(sub(remaining, 1));
             return { ...finite(answer), traceBilateral: true,
-                chainExpressions: [{ kind: 'limit', math: (zero(sub(remaining, 1)) ? '' : latex(remaining) + '\\cdot ') + latex(standard),
-                    note: 'Выделяем стандартное отношение в исходной переменной.', source: 'standard' },
+                chainExpressions: [...(directStandard ? [] : [{ kind: 'limit', math: (zero(sub(remaining, 1)) ? '' : latex(remaining) + '\\cdot ') + latex(standard),
+                    note: 'Выделяем стандартное отношение в исходной переменной.', source: 'standard' }]),
                 { kind: 'value', math: latex(exact(['Multiply', scale, coefficient.value])),
                     note: 'Применяем замечательный предел и арифметические свойства.', source: 'standard' }] };
         }

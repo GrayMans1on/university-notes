@@ -44,6 +44,10 @@
     function derivatives(root) {
         window.StudyMathTools.setup(); const { element, button, row, say } = window.StudyToolUI;
         const expression = window.StudyMathTools.mathField('Функция f(x)', 'x^2\\sin x');
+        expression.input.addEventListener('mount', () => {
+            expression.input.inlineShortcuts = { ...expression.input.inlineShortcuts, sh: '\\sinh', ch: '\\cosh',
+                th: '\\tanh', cth: '\\coth', tg: '\\tan', ctg: '\\cot', arctg: '\\arctan' };
+        });
         const output = element('section', undefined, 'academic-result'); output.setAttribute('aria-live', 'polite');
         const session = files(root, 'csu-derivative', { expression }, output, '.csuderivative');
         root.append(expression.label, row(button('Найти производную', () => {

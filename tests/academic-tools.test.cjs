@@ -46,6 +46,16 @@ for (const [formula, expected] of derivativeCases) {
         assert.ok(Math.abs(fn({ x }) - expected(x)) < 1e-9 * Math.max(1, Math.abs(expected(x))), formula + ' at ' + x);
     }
 }
+for (const [formula, expected] of [
+    ['\\operatorname{sh}(x)', (x) => Math.cosh(x)],
+    ['\\sqrt[3]{x}', (x) => 1 / (3 * Math.cbrt(x * x))],
+    ['\\sqrt[3]{(1-x^3)/(1+x^3)}', (x) => -2 * x * x / ((1 + x ** 3) ** 2 * Math.cbrt(((1 - x ** 3) / (1 + x ** 3)) ** 2))],
+]) {
+    const result = D.solve(formula); checkSteps(result); const fn = context.window.StudyMath.compile(result.ast);
+    for (const x of [-8, -2, .3, 2, 8]) {
+        assert.ok(Math.abs(fn({ x }) - expected(x)) < 1e-8 * Math.max(1, Math.abs(expected(x))), formula + ' negative-root domain at ' + x);
+    }
+}
 assert.ok(D.solve('\\ln|x|').conditions.some((c) => c.includes('ne0')));
 assert.throws(() => D.solve('\\lfloor x\\rfloor'));
 assert.throws(() => D.solve('1/(x-x)'));

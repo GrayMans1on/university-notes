@@ -522,18 +522,23 @@
             }
             fail();
         }
-        function rationalize(node, steps) {
+        function rationalize(node, steps, denominators = null) {
             if (!Array.isArray(node)) { return node; }
             const [op, ...args] = node;
-            const parts = args.map((a) => rationalize(a, steps));
+            const parts = args.map((a) => rationalize(a, steps, denominators));
             if (op !== 'Subtract' || parts.length !== 2) { return [op, ...parts]; }
             const [a, b] = parts;
             const root = (v) => Array.isArray(v) && (v[0] === 'Sqrt' ? { body: v[1], n: 2 }
                 : v[0] === 'Root' && [2, 3].includes(numeric(v[2])) ? { body: v[1], n: numeric(v[2]) } : null);
-            const left = root(a); const right = root(b); const n = left?.n || right?.n;
+            const hasRoot = (value) => Array.isArray(value) && (['Sqrt', 'Root'].includes(value[0])
+                || value[0] === 'Power' && !depends(value[2]) && !Number.isInteger(numeric(value[2]))
+                || value.slice(1).some(hasRoot));
+            const left = root(a); const right = root(b); const n = left?.n || right?.n || (hasRoot(a) || hasRoot(b) ? 2 : 0);
             if (!n || (left && right && left.n !== right.n)) { return [op, ...parts]; }
             const numerator = ['Subtract', left ? left.body : ['Power', a, n], right ? right.body : ['Power', b, n]];
             const denominator = n === 2 ? ['Add', a, b] : ['Add', ['Square', a], ['Multiply', a, b], ['Square', b]];
+            if (zero(denominator)) { return [op, ...parts]; }
+            if (denominators) { denominators.push(denominator); }
             const result = ['Divide', numerator, denominator];
             note(steps, n === 2 ? 'Умножаем разность корней на сопряжённое и делим на него.'
                 : 'Используем разность кубов, чтобы убрать кубические корни из числителя.',
@@ -910,11 +915,24 @@
                     const result = germLimit(g);
                     const conclusion = []; explainGerm(g, result, point, side, conclusion, node);
                     steps.push(...standardSteps, conclusion.shift(), ...proof, ...conclusion);
-                    const presentation = []; const conjugated = rationalize(node, []);
+                    const presentation = []; const denominators = []; const conjugated = rationalize(node, [], denominators);
                     if (JSON.stringify(prepared) !== JSON.stringify(node)) {
                         presentation.push({ kind: 'limit', math: latex(prepared), note: 'Преобразуем разности и выделяем стандартные отношения.', source: 'standard' });
                     }
+                    let validConjugate = false;
                     if (JSON.stringify(conjugated) !== JSON.stringify(node)) {
+                        const budget = operations; const previousAtoms = atoms; const previousIds = atomIds;
+                        atoms = new Map(atoms); atomIds = new Map(atomIds);
+                        try {
+                            validConjugate = denominators.every((denominator) => {
+                                const value = Number.isFinite(pointValue) ? continuousValue(denominator, point) : null;
+                                if (value !== null && !zero(value)) { return true; }
+                                return !zero(leadingGerm(germ(denominator, point, side, [])).value);
+                            });
+                        } catch { /* An unverified display identity must not change a proven answer. */ }
+                        finally { operations = budget; atoms = previousAtoms; atomIds = previousIds; }
+                    }
+                    if (validConjugate) {
                         presentation.push({ kind: 'limit', math: latex(conjugated), note: 'Домножаем на сопряжённое и используем разность степеней.', source: 'algebra' });
                     }
                     return { ...result, chainExpressions: [...presentation, ...originalGermTrace(g, point, side)], traceBilateral: analyticTrace(node) };

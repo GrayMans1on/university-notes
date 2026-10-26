@@ -174,6 +174,7 @@ for (const [formula, point, samples] of [
     ['(e^{x^2}-\\cos x)/x^2', '0', [-.2, -.01, .01, .2]],
     ['(1+2x)^{3/x}', '0', [-.1, -.01, .01, .1]],
     ['\\sqrt{x^2+1}-x', '\\infty', [10, 100]],
+    ['(\\sqrt[5]{4x^{10}+3}-2\\sqrt{7x^5+6})/(3\\sqrt[5]{2x^{10}-1}+\\sqrt{5x^5+8})', '\\infty', [10, 100]],
 ]) {
     const result = solve(formula, point); const stage = result.sides.at(-1).chainExpressions[0];
     const input = context.window.StudyMath.compile(formula); const rewritten = context.window.StudyMath.compile(stage.math);
@@ -212,3 +213,6 @@ for (const formula of ['(1-1/x)^{x^2}', '(1+1/x)^{x^2}']) {
     const result = solve(formula, 'inf'); assert.equal(result.kind, formula.includes('-1') ? 'finite' : 'infinite'); checkMath(result);
 }
 console.log('Reference variant 33: nine limits, detailed second remarkable limit and original sequence variable passed.');
+
+const nonzeroConjugate = solve('\\sqrt{x}-(-\\sqrt{x})', 'inf');
+assert.equal(nonzeroConjugate.kind, 'infinite'); checkMath(nonzeroConjugate);

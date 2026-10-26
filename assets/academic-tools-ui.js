@@ -26,13 +26,14 @@
                 }
                 value[key] = data[key];
             }
+            if (format === 'csu-system' && !value.matrix.includes('=')) {
+                value.matrix = window.StudyLinear.equations(value.matrix);
+            }
             return value;
         }
         const session = window.StudySessions.files(root, { filename: 'study' + extension, extension, get, validate,
             set: (data) => { for (const [key, field] of Object.entries(fields)) { field.input.value = data[key]; }
-                if (format === 'csu-system' && !fields.matrix.input.value.includes('=')) {
-                    fields.matrix.input.value = window.StudyLinear.equations(fields.matrix.input.value);
-                } output.replaceChildren(); } });
+                output.replaceChildren(); } });
         for (const field of Object.values(fields)) {
             for (const event of ['input', 'change']) {
                 field.input.addEventListener(event, () => { output.replaceChildren(); session.changed(); });

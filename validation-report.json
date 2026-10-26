@@ -70,7 +70,9 @@
     "tools/derivatives",
     "tools/systems",
     "tools/matrices",
-    "tools/radix"
+    "tools/radix",
+    "tools/venn",
+    "tools/relations"
   ],
   "searchSections": 715,
   "mathCount": 6812,

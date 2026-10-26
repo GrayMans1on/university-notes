@@ -89,6 +89,7 @@ jobs:
           node tests/limits.test.cjs
           node tests/academic-tools.test.cjs
           node tests/manim.test.cjs
+          node tests/discrete.test.cjs
           node android/tests/mobile.test.cjs
           node android/tests/admin.test.cjs
           node android/tests/controls.test.cjs

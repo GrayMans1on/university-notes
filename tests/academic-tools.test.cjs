@@ -103,3 +103,11 @@ console.log('Academic tools: exact determinants/inverses/systems, course derivat
 
 assert.equal(D.solve('x^1').latex, '1');
 assert.equal(context.window.StudyMath.compile(D.solve('(x^2+1)^1').ast)({ x: 0 }), 0);
+
+const equationResult = L.solve('x1 - x2 + 10x3 = 15\nx1 + 10x2 = 50\n-10x1 + 5x2 - 3x3 = 1');
+assert.equal(equationResult.particular.join(','), '200/113,545/113,204/113'); checkSteps(equationResult);
+assert.equal(L.solve('2(x1 + x2) = x2 + 5\nx1/2 - x2 = 1/2').particular.join(','), '11/5,3/5');
+assert.equal(L.solve('x1 + x3 = 2').free.join(','), '2,3');
+assert.equal(L.solve('x1 = 1\nx1 = 2').kind, 'inconsistent');
+assert.equal(L.solve(L.equations('2 1 5\n1 -1 1')).particular.join(','), '2,1');
+for (const text of ['x1*x2=1', 'x1/x2=1', 'x7=1', 'x1^2=1', 'x1=1=2', 'x1=alert(1)', 'x1 + = 2']) { assert.throws(() => L.solve(text), text); }

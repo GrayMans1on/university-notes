@@ -42,6 +42,68 @@
     }
     const copy = (a) => a.map((r) => [...r]);
     const strings = (a) => a.map((r) => r.map(String));
+    function parseEquations(text) {
+        if (typeof text !== 'string' || text.length > 6000) { throw new Error('Система слишком велика.'); }
+        const lines = text.trim().split(/\n|;/).filter((line) => line.trim());
+        if (!lines.length || lines.length > 6) { throw new Error('Введите от 1 до 6 уравнений, каждое в своей строке.'); }
+        let highest = 0;
+        const vector = (constant = F(0)) => [constant, ...Array.from({ length: 6 }, () => F(0))];
+        const hasVariable = (value) => value.slice(1).some((v) => !v.zero);
+        function side(source) {
+            const value = source.replace(/−/g, '-').replace(/,/g, '.').replace(/x_\{([1-6])\}|x_([1-6])/g, 'x$1$2');
+            const tokens = value.match(/x[1-6](?!\d)|\d+(?:\.\d+)?|[()+*/-]/g) || [];
+            if (tokens.join('') !== value.replace(/\s/g, '')) { throw new Error('Используйте x1…x6, числа, скобки и + − * /.'); }
+            let index = 0;
+            function atom() {
+                const token = tokens[index++];
+                if (token === '+' || token === '-') {
+                    const a = atom(); return token === '-' ? a.map((v) => v.neg()) : a;
+                }
+                if (token === '(') {
+                    const a = sum(); if (tokens[index++] !== ')') { throw new Error('Закройте скобку.'); } return a;
+                }
+                if (/^x[1-6]$/.test(token || '')) {
+                    const n = Number(token[1]); highest = Math.max(highest, n); const a = vector(); a[n] = F(1); return a;
+                }
+                if (!/^\d+(?:\.\d+)?$/.test(token || '')) { throw new Error('Не завершён член уравнения.'); }
+                return vector(F(token));
+            }
+            function product() {
+                let a = atom();
+                while (index < tokens.length && (['*', '/'].includes(tokens[index]) || /^(?:x|\d|\()/.test(tokens[index]))) {
+                    const explicit = ['*', '/'].includes(tokens[index]); const op = explicit ? tokens[index++] : '*';
+                    const b = atom();
+                    if (op === '/') {
+                        if (hasVariable(b)) { throw new Error('Деление на выражение с неизвестной не является линейным.'); }
+                        a = a.map((v) => v.div(b[0]));
+                    } else {
+                        if (hasVariable(a) && hasVariable(b)) { throw new Error('Произведение неизвестных не является линейным.'); }
+                        a = hasVariable(b) ? b.map((v) => v.mul(a[0])) : a.map((v) => v.mul(b[0]));
+                    }
+                }
+                return a;
+            }
+            function sum() {
+                let a = product();
+                while (tokens[index] === '+' || tokens[index] === '-') {
+                    const op = tokens[index++]; const b = product(); a = a.map((v, i) => op === '+' ? v.add(b[i]) : v.sub(b[i]));
+                }
+                return a;
+            }
+            const a = sum(); if (index !== tokens.length) { throw new Error('Проверьте скобки и знаки.'); } return a;
+        }
+        const rows = lines.map((line, i) => {
+            try {
+                const parts = line.split('='); if (parts.length !== 2) { throw new Error('Нужен один знак =.'); }
+                const left = side(parts[0]); const right = side(parts[1]); return left.map((v, j) => v.sub(right[j]));
+            } catch (error) { throw new Error('Строка ' + (i + 1) + ': ' + error.message); }
+        });
+        if (!highest) { throw new Error('Укажите хотя бы одну неизвестную x1…x6.'); }
+        return rows.map((a) => [...a.slice(1, highest + 1), a[0].neg()]);
+    }
+    function equations(text) {
+        return parse(text).map((row) => row.slice(0, -1).map((v, i) => '(' + v + ')*x' + (i + 1)).join(' + ') + ' = ' + row.at(-1)).join('\n');
+    }
     function tex(a, split = 0, determinant = false) {
         const columns = a[0].length;
         const format = split ? 'r'.repeat(split) + '|' + 'r'.repeat(columns - split) : 'r'.repeat(columns);
@@ -113,7 +175,8 @@
         return a.map((row) => b[0].map((_, j) => row.reduce((v, x, k) => v.add(x.mul(b[k][j])), F(0))));
     }
     function solve(text, mode = 'system', order = '') {
-        const input = parse(text); const columns = input[0].length;
+        const input = mode === 'system' && text.includes('=') ? parseEquations(text) : parse(text);
+        const columns = input[0].length;
         if (mode === 'determinant') { return determinant(input); }
         if (!['system', 'inverse'].includes(mode)) { throw new Error('Неизвестный режим.'); }
         const n = mode === 'system' ? columns - 1 : columns;
@@ -161,5 +224,5 @@
         steps.push({ text: 'Подстановка проверена в исходной системе для частного решения и всех свободных направлений.', math: 'AX=B' });
         return { kind: free.length ? 'infinite' : 'unique', latex, particular: particular.map(String), basis: basis.map((v) => v.map(String)), free: free.map((i) => i + 1), pivots: pivots.map((i) => i + 1), steps };
     }
-    window.StudyLinear = { Fraction, parse, solve, determinant, tex };
+    window.StudyLinear = { Fraction, parse, parseEquations, equations, solve, determinant, tex };
 })();

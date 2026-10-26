@@ -29,7 +29,10 @@
             return value;
         }
         const session = window.StudySessions.files(root, { filename: 'study' + extension, extension, get, validate,
-            set: (data) => { for (const [key, field] of Object.entries(fields)) { field.input.value = data[key]; } output.replaceChildren(); } });
+            set: (data) => { for (const [key, field] of Object.entries(fields)) { field.input.value = data[key]; }
+                if (format === 'csu-system' && !fields.matrix.input.value.includes('=')) {
+                    fields.matrix.input.value = window.StudyLinear.equations(fields.matrix.input.value);
+                } output.replaceChildren(); } });
         for (const field of Object.values(fields)) {
             for (const event of ['input', 'change']) {
                 field.input.addEventListener(event, () => { output.replaceChildren(); session.changed(); });
@@ -68,7 +71,7 @@
     }
     function linear(root, system = false) {
         const { element, field, select, button, row, say } = window.StudyToolUI;
-        const matrix = field(system ? 'Расширенная матрица [A | B]' : 'Матрица A', system ? '2 1 5\n1 -1 1' : '2 1\n1 1', 'textarea');
+        const matrix = field(system ? 'Уравнения — по одному в строке' : 'Матрица A', system ? 'x1 - x2 + 10x3 = 15\nx1 + 10x2 = 50\n-10x1 + 5x2 - 3x3 = 1' : '2 1\n1 1', 'textarea');
         matrix.input.className = 'matrix-input'; matrix.input.spellcheck = false;
         const mode = select('Действие', system ? [['system', 'Решить систему методом Гаусса']]
             : [['determinant', 'Определитель'], ['inverse', 'Обратная матрица']], system ? 'system' : 'determinant');
@@ -77,7 +80,7 @@
         const session = files(root, system ? 'csu-system' : 'csu-matrix', { matrix, mode, order }, output, system ? '.csusystem' : '.csumatrix');
         const examples = element('details'); examples.append(element('summary', 'Пример из конспекта'));
         examples.append(button(system ? 'Две свободные переменные' : 'Обратная матрица 3×3', () => {
-            matrix.input.value = system ? '12 9 3 10 13\n4 3 1 2 3\n8 6 2 5 7' : '3 -4 5\n2 -3 1\n3 -5 -1';
+            matrix.input.value = system ? '12x1 + 9x2 + 3x3 + 10x4 = 13\n4x1 + 3x2 + x3 + 2x4 = 3\n8x1 + 6x2 + 2x3 + 5x4 = 7' : '3 -4 5\n2 -3 1\n3 -5 -1';
             order.input.value = system ? '3 4 1 2' : ''; if (!system) { mode.input.value = 'inverse'; }
             output.replaceChildren(); session.changed();
         }));
@@ -85,7 +88,7 @@
         mode.input.addEventListener('change', updateOrder);
         new MutationObserver(updateOrder).observe(output, { childList: true }); updateOrder();
         root.append(mode.label, matrix.label, element('p', system
-            ? 'Последний столбец — правая часть. Элементы разделяйте пробелами, строки — переводом строки. До 6 уравнений и 6 неизвестных.'
+            ? 'Каждая строка — уравнение с x1…x6. Неизвестные можно писать с обеих сторон; пропущенные коэффициенты равны нулю. Поддерживаются скобки и дроби. До 6 уравнений.'
             : 'Квадратная матрица до 6×6. Поддерживаются целые числа, десятичные и обычные дроби.', 'tool-help'),
         order.label, row(button('Вычислить', () => {
             output.replaceChildren(); say(''); session.changed();

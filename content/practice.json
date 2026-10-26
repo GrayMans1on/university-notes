@@ -6064,5 +6064,181 @@
       "hint": "",
       "variant": 1
     }
+  ],
+  "Английский|Компьютерная система: устройство и периферия": [
+    {
+      "id": "task-1",
+      "variant": 1,
+      "type": "matching",
+      "title": "Компоненты и функции",
+      "question": "Сопоставь компонент компьютерной системы с его функцией.",
+      "solution": "CPU выполняет инструкции; main memory хранит обрабатываемые данные; storage хранит файлы и программы; port служит для подключения.",
+      "hint": "",
+      "pairs": [
+        {
+          "left": "CPU",
+          "right": "Executes program instructions"
+        },
+        {
+          "left": "Main memory",
+          "right": "Holds data and instructions currently being processed"
+        },
+        {
+          "left": "Storage devices",
+          "right": "Store data and programs"
+        },
+        {
+          "left": "Port",
+          "right": "Connects an external device"
+        }
+      ]
+    },
+    {
+      "id": "task-2",
+      "variant": 1,
+      "type": "multi",
+      "title": "Устройства ввода",
+      "question": "Выбери все устройства ввода.",
+      "solution": "Microphone, mouse и scanner вводят данные. Headphones и printer выводят результат.",
+      "hint": "",
+      "options": [
+        "Microphone",
+        "Headphones",
+        "Mouse",
+        "Printer",
+        "Scanner"
+      ],
+      "correct": [
+        0,
+        2,
+        4
+      ]
+    },
+    {
+      "id": "task-3",
+      "variant": 1,
+      "type": "input",
+      "title": "Резервная копия",
+      "question": "Какой английский фразовый глагол означает «создавать резервную копию»?",
+      "solution": "Back up. Например: Back up your data.",
+      "hint": "",
+      "fields": [
+        {
+          "label": "Глагол",
+          "kind": "text",
+          "accepted": [
+            "back up",
+            "to back up"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "task-4",
+      "variant": 1,
+      "type": "reasoning",
+      "title": "Объяснить обработку данных",
+      "question": "Объясни на английском этапы обработки доходов и расходов: input, processing, storage, output.",
+      "solution": "The user enters data about income and expenses. The CPU processes the data according to program instructions. Files and programs are kept in storage. Results are displayed or printed.",
+      "hint": "",
+      "criteria": [
+        "Ввод, обработка и вывод названы в правильном порядке.",
+        "Хранение не смешано с вычислениями.",
+        "Приведены примеры устройств ввода и вывода."
+      ]
+    }
+  ],
+  "Английский|Типы компьютеров и описание характеристик": [
+    {
+      "id": "task-1",
+      "variant": 1,
+      "type": "matching",
+      "title": "Типы компьютеров",
+      "question": "Сопоставь тип компьютера с отличительным признаком.",
+      "solution": "Mainframe — многопользовательская обработка; desktop — настольный ПК; laptop — переносной компьютер; PDA — карманный органайзер; wearable — носимый компьютер.",
+      "hint": "",
+      "pairs": [
+        {
+          "left": "Mainframe",
+          "right": "Many users and terminals; large-scale data processing"
+        },
+        {
+          "left": "Desktop PC",
+          "right": "Designed to be placed on a desk"
+        },
+        {
+          "left": "Laptop",
+          "right": "Portable computer with a built-in keyboard and touchpad"
+        },
+        {
+          "left": "PDA",
+          "right": "Hand-held personal organizer"
+        },
+        {
+          "left": "Wearable computer",
+          "right": "Worn on the user’s body"
+        }
+      ]
+    },
+    {
+      "id": "task-2",
+      "variant": 1,
+      "type": "input",
+      "title": "Характеристики Toshiba Satellite",
+      "question": "В рекламе указаны 1,024 MB RAM; 100 GB HDD; four USB ports. Укажи объём накопителя в GB и число USB-портов.",
+      "solution": "Накопитель — 100 GB; USB-портов — 4. 1,024 MB обозначает RAM.",
+      "hint": "",
+      "fields": [
+        {
+          "label": "Накопитель, GB",
+          "kind": "number",
+          "expected": "100"
+        },
+        {
+          "label": "USB-порты",
+          "kind": "number",
+          "expected": "4"
+        }
+      ]
+    },
+    {
+      "id": "task-3",
+      "variant": 1,
+      "type": "input",
+      "title": "Распознавание ввода",
+      "question": "Заполни термины: распознавание голоса и распознавание рукописного ввода.",
+      "solution": "Voice recognition; handwriting recognition.",
+      "hint": "",
+      "fields": [
+        {
+          "label": "Голос",
+          "kind": "text",
+          "accepted": [
+            "voice recognition"
+          ]
+        },
+        {
+          "label": "Рукописный ввод",
+          "kind": "text",
+          "accepted": [
+            "handwriting recognition"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "task-4",
+      "variant": 1,
+      "type": "reasoning",
+      "title": "Ноутбук в деловой работе",
+      "question": "Объясни на английском, чем ноутбук удобен для работы в разных местах.",
+      "solution": "A laptop is portable. Its screen, keyboard and pointing device are built in. A battery pack allows work without an electrical outlet.",
+      "hint": "",
+      "criteria": [
+        "Названа переносимость.",
+        "Указаны встроенные устройства и аккумулятор.",
+        "Возможная сопоставимая мощность не превращена в утверждение о равенстве всех моделей."
+      ]
+    }
   ]
 }

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 270" role="img" aria-label="Input → Processing → Output; storage exchanges data with processing.">
+<defs><marker id="english-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8Z" fill="#36465e"/></marker></defs>
+<g fill="#dce6ff" stroke="#254cce" stroke-width="2"><rect x="25" y="25" width="230" height="105" rx="15"/><rect x="335" y="25" width="230" height="105" rx="15"/><rect x="645" y="25" width="230" height="105" rx="15"/></g>
+<rect x="335" y="190" width="230" height="60" rx="12" fill="#d7f0eb" stroke="#168276" stroke-width="2"/>
+<g stroke="#36465e" stroke-width="3" marker-end="url(#english-arrow)"><path d="M263 77H323"/><path d="M573 77H633"/><path d="M450 143V179" marker-start="url(#english-arrow)"/></g>
+<g fill="#36465e" font-family="DejaVu Sans" text-anchor="middle"><text x="140" y="60" font-size="21">Input · Ввод</text><text x="140" y="99" font-size="16">Keyboard, mouse</text><text x="450" y="60" font-size="18">Processing · Обработка</text><text x="450" y="99" font-size="16">CPU · Instructions</text><text x="760" y="60" font-size="21">Output · Вывод</text><text x="760" y="99" font-size="16">Monitor, printer</text><text x="450" y="228" font-size="20">Storage · Хранение</text></g>
+</svg>

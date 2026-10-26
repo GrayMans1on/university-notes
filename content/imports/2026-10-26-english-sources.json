@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "importDate": "2026-10-26",
+  "lessonDate": "2026-10-26",
+  "files": [
+    {
+      "file": "Screenshot_20261026_100532.zip",
+      "bytes": 4284189,
+      "sha256": "eac3ef11f680bebc19dcd323666cad2dad8b2f14f1695a145f453e85cd01b99a",
+      "images": [
+        {
+          "file": "Screenshot_20261026_100532.png",
+          "bytes": 1664140,
+          "sha256": "91aeef4b5ea89589a2dbe15a0ef6948c3d5a2d7f1357b80415b0976744fcc559"
+        },
+        {
+          "file": "Screenshot_20261026_102045.png",
+          "bytes": 731933,
+          "sha256": "794128192da405e28d388101004e9ba8f4916e8ffd97c2f1b11a57056472f7c5"
+        },
+        {
+          "file": "Screenshot_20261026_105118_Word.png",
+          "bytes": 520593,
+          "sha256": "75d87c5df913305b68b02a09450a72163cef6a34298491e44ea31ba4ab0b63d7"
+        },
+        {
+          "file": "Screenshot_20261026_105123_Word.png",
+          "bytes": 523848,
+          "sha256": "66d9cdb5cf279bf7ce40d9dda476ff1e676ce1ad7abd8e5871bfa50e5ce02aea"
+        },
+        {
+          "file": "Screenshot_20261026_105129_Word.png",
+          "bytes": 399672,
+          "sha256": "84908a70df9c6bd67d9d181c217f339fafe626454769558c3a8162187a05ce86"
+        },
+        {
+          "file": "Screenshot_20261026_105139_Word.png",
+          "bytes": 451205,
+          "sha256": "9c57ff5735898b88d7ae7274df14d1dba52b1f94de542bca13f456f04b1b7cf4"
+        },
+        {
+          "file": "Screenshot_20261026_105142_Word.png",
+          "bytes": 374077,
+          "sha256": "adcfad33335cf83e2f999f6117f272a8d1a9ec3f23e995f0cf485ce05693d540"
+        }
+      ]
+    },
+    {
+      "file": "Англ практика 26 окт (transcribed on 26-Oct-2026 14-52-11).txt",
+      "bytes": 50870,
+      "sha256": "138f2be5d70f576e41c38ab20675e3d5771db8e0b6d86f4c333fce79fafdd049"
+    }
+  ]
+}

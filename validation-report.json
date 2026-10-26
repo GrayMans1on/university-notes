@@ -28,7 +28,7 @@
     {
       "title": "Английский",
       "slug": "english",
-      "topics": 9
+      "topics": 11
     },
     {
       "title": "Матанализ",
@@ -74,14 +74,14 @@
     "tools/venn",
     "tools/relations"
   ],
-  "searchSections": 715,
+  "searchSections": 729,
   "mathCount": 6812,
   "mathErrors": [],
-  "studyTopics": 123,
+  "studyTopics": 125,
   "referenceEntries": 152,
   "formulaGroups": 30,
-  "questions": 351,
-  "practiceTasks": 895,
+  "questions": 359,
+  "practiceTasks": 903,
   "practiceTypes": [
     "multi",
     "matching",

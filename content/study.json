@@ -3936,5 +3936,63 @@
         "answer": "С монахом Филофеем, XVI век."
       }
     ]
+  },
+  "Английский|Компьютерная система: устройство и периферия": {
+    "summary": [
+      "Компьютер принимает данные, обрабатывает их по инструкциям и выдаёт результат; файлы и программы хранятся на накопителях.",
+      "CPU, основная память, устройства ввода/вывода и порты выполняют разные функции."
+    ],
+    "rules": [],
+    "questions": [
+      {
+        "type": "recall",
+        "question": "Чем hardware отличается от software?",
+        "answer": "Hardware — физические компоненты, software — программы и инструкции."
+      },
+      {
+        "type": "recall",
+        "question": "Назови функции CPU, main memory и storage devices.",
+        "answer": "CPU выполняет инструкции; main memory хранит обрабатываемые инструкции и данные; storage devices хранят данные и программы."
+      },
+      {
+        "type": "recall",
+        "question": "К каким группам относятся microphone, headphones и mouse?",
+        "answer": "Microphone и mouse — input; headphones — output. Mouse также является pointing device."
+      },
+      {
+        "type": "recall",
+        "question": "Чем port отличается от connector?",
+        "answer": "Port — разъём, connector — подключаемый к нему соединитель кабеля."
+      }
+    ]
+  },
+  "Английский|Типы компьютеров и описание характеристик": {
+    "summary": [
+      "Тип компьютера определяется способом использования, устройством ввода, переносимостью и возможностями работы.",
+      "Характеристики модели читаются отдельно: экран, память, накопитель, порты и питание."
+    ],
+    "rules": [],
+    "questions": [
+      {
+        "type": "recall",
+        "question": "Какие признаки отличают mainframe от desktop PC?",
+        "answer": "Mainframe рассчитан на крупномасштабную обработку и одновременную работу пользователей через терминалы; desktop PC — персональный настольный компьютер."
+      },
+      {
+        "type": "recall",
+        "question": "Как расшифровываются TFT, LCD и USB?",
+        "answer": "Thin film transistor; liquid crystal display; Universal Serial Bus."
+      },
+      {
+        "type": "recall",
+        "question": "Какое устройство заменяет мышь в рекламе Toshiba Satellite?",
+        "answer": "Touchpad."
+      },
+      {
+        "type": "recall",
+        "question": "Чем voice recognition отличается от handwriting recognition?",
+        "answer": "Распознавание голоса и распознавание рукописных символов соответственно."
+      }
+    ]
   }
 }

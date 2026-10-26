@@ -28,10 +28,11 @@ for video in catalog['videos']:
         if not target.is_file() or target.stat().st_size < 1000:
             raise RuntimeError(f'Missing or empty video: {target}')
         if not PUBLISH_ONLY:
-            probe = subprocess.run([
-                'ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'json', str(target),
-            ], check=True, capture_output=True, text=True)
-            duration = float(json.loads(probe.stdout)['format']['duration'])
+            import av
+            with av.open(str(target)) as container:
+                if not container.streams.video or container.duration is None:
+                    raise RuntimeError(f'Missing video stream or duration: {name}')
+                duration = container.duration / av.time_base
             if not 3 <= duration <= 120:
                 raise RuntimeError(f'Unexpected video duration: {name}, {duration}')
         shutil.copyfile(target, output / name)

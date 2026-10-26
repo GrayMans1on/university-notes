@@ -51,3 +51,6 @@ python3 scripts/export-pages.py
 ## Видео Manim
 
 Workflow после статического экспорта восстанавливает cache `.manim-cache` или собирает 12 роликов из 6 проверенных решений в светлой и тёмной темах. Затем `scripts/render-limit-videos.py --publish-only` копирует MP4 и каталог в `pages-output/assets/limit-videos/`. Бинарники не коммитятся. Для локальной подготовки сцен: `node scripts/build-limit-videos.cjs`; для рендера нужны системные зависимости Manim и `python3 -m pip install -r scripts/manim/requirements.txt`, затем `python3 scripts/render-limit-videos.py`. Обычная сборка конспектов не требует установленного Manim. Ролики генерируются из той же цепочки, которую показывает решатель; смена алгоритма меняет cache key и имена файлов.
+
+
+В Actions рендер выполняется в официальном контейнере `manimcommunity/manim:v0.19.0`, без apt/pip установки Manim на runner. Node заранее создаёт сцены, контейнер запускается с UID/GID runner и временным HOME; PyAV проверяет видеопоток и длительность. Таймаут загрузки образа — 180 секунд, всего этапа — 10 минут. Это временная среда сборки, не серверный компонент сайта.

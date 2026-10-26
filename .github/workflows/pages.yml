@@ -59,22 +59,16 @@ jobs:
           key: manim-v1-${{ hashFiles('assets/limits-engine.js', 'assets/manim-export.js', 'assets/manim-scene.py', 'scripts/build-limit-videos.cjs', 'scripts/render-limit-videos.py', 'scripts/manim/requirements.txt') }}
           restore-keys: |
             manim-v1-
-      - name: Install Manim dependencies
-        if: steps.manim-cache.outputs.cache-hit != 'true'
-        timeout-minutes: 10
-        run: |
-          apt_options=(-o Acquire::Retries=1 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 -o Acquire::ForceIPv4=true)
-          if ! timeout --kill-after=10s 90s sudo apt-get "${apt_options[@]}" update; then
-            echo 'Package index refresh timed out or failed; using the runner image indexes.'
-          fi
-          timeout --kill-after=10s 360s sudo env DEBIAN_FRONTEND=noninteractive apt-get "${apt_options[@]}" install -y -qq pkg-config libcairo2-dev libpango1.0-dev ffmpeg texlive-latex-extra texlive-fonts-recommended dvisvgm
-          timeout --kill-after=10s 180s python3 -m pip install --disable-pip-version-check --timeout 20 --retries 2 -r scripts/manim/requirements.txt
       - name: Render course-limit videos with Manim
         if: steps.manim-cache.outputs.cache-hit != 'true'
         timeout-minutes: 10
         run: |
           node scripts/build-limit-videos.cjs
-          python3 scripts/render-limit-videos.py
+          timeout --kill-after=10s 180s docker pull manimcommunity/manim:v0.19.0
+          docker run --rm --user "$(id -u):$(id -g)" \
+            -e HOME=/tmp -e XDG_CACHE_HOME=/tmp/.cache \
+            -v "$PWD:/manim" -w /manim --entrypoint python \
+            manimcommunity/manim:v0.19.0 scripts/render-limit-videos.py
       - name: Publish theme-matched videos
         run: python3 scripts/render-limit-videos.py --publish-only
       - name: Prepare Android offline updates

@@ -185,3 +185,30 @@ for (const [formula, point, samples] of [
 
 assert.equal(solve('\\sin(x)/x', '0').chain.length, 2);
 assert.doesNotMatch(JSON.stringify(solve('\\sin(x)/x', '0').chain), /x\^0/);
+
+
+// Variant 33 from the supplied typical calculation and the owner's worked pages.
+for (const [formula, point, variable, expected] of [
+    ['((3n-2)^3-(n+4)^3)/((2n+1)^3-(n-1)^3)', 'inf', 'n', 26 / 7],
+    ['(\\sqrt[5]{4n^{10}+3}-2\\sqrt{7n^5+6})/(3\\sqrt[5]{2n^{10}-1}+\\sqrt{5n^5+8})', 'inf', 'n', -2 * Math.sqrt(35) / 5],
+    ['n(\\sqrt{n^4+2n^3+3n^2+5n+1}-\\sqrt{n^4+2n^3+3n^2+n+4})', 'inf', 'n', 2],
+    ['((3n^2-2n+5)/(3n^2+4n-1))^{2n^2-n+3}', 'inf', 'n', 0],
+    ['(x^4-9x^2)/(x-3)', '3', 'x', 54],
+    ['(x^4-9x^2)/(x^3-27)', '3', 'x', 2],
+    ['(\\sqrt{x^2+2x+4}-\\sqrt{2x^2-x})/(\\sqrt{x^2+3x+4}-\\sqrt{2x^2-x+4})', '4', 'x', 5 * Math.sqrt(14) / 14],
+    ['\\arctan(4x)(1-\\cos(6x))/(x\\ln(1+3x)\\tan(2x))', '0', 'x', 12],
+    ['(7^x-4^x)/(\\tan(5x)-\\sin(3x))', '0', 'x', Math.log(7 / 4) / 2],
+]) {
+    const result = solve(formula, point, 'both', { variable });
+    assert.equal(result.kind, 'finite', formula); assert.equal(result.chainComplete, true, formula);
+    assert.ok(Math.abs(ce.box(result.value).N().re - expected) < 1e-10, formula); checkMath(result);
+    if (variable === 'n') { assert.doesNotMatch(JSON.stringify(result.chain), /(?<![A-Za-z\\])x(?![A-Za-z])/); }
+}
+const second33 = solve('((3n^2-2n+5)/(3n^2+4n-1))^{2n^2-n+3}', 'inf', 'both', { variable: 'n' });
+assert.ok(second33.chain.length >= 7); assert.equal(second33.chain[0].annotation, '1^{\\infty}');
+assert.ok(second33.chain.some((s) => s.math === 'e^{-\\infty}'));
+assert.ok(second33.chain.some((s) => s.math.includes('e^{\\lim')));
+for (const formula of ['(1-1/x)^{x^2}', '(1+1/x)^{x^2}']) {
+    const result = solve(formula, 'inf'); assert.equal(result.kind, formula.includes('-1') ? 'finite' : 'infinite'); checkMath(result);
+}
+console.log('Reference variant 33: nine limits, detailed second remarkable limit and original sequence variable passed.');

@@ -42,4 +42,4 @@ class LimitSolution(Scene):
                 hint = MathTex(r'\left[' + step['annotation'] + r'\right]', color=palette['accent'], font_size=31)
                 hint.next_to(formula, DOWN, buff=0.6)
                 self.play(FadeIn(hint), run_time=0.3)
-            self.wait(1.4 if index < len(DATA['chain']) - 1 else 2.4)
+            self.wait(min(7.0, max(2.4, len(step['math']) / 45 + len(note) / 70)))

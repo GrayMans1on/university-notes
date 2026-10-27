@@ -51,7 +51,8 @@
     };
     const icon = (name) => {
         const result = node('span', 'app-icon');
-        result.style.setProperty('--app-icon', `url('/assets/material-icons/${name}.svg')`);
+        const source = name === 'tools' ? '/assets/tools-icon.svg' : `/assets/material-icons/${name}.svg`;
+        result.style.setProperty('--app-icon', `url('${source}')`);
         result.setAttribute('aria-hidden', 'true');
         return result;
     };
@@ -60,7 +61,7 @@
     nav.setAttribute('aria-label', 'Главное меню');
     const navigation = [
         ['Дисциплины', '/disciplines/', 'grid_on'], ['Расписание', '/schedule/', 'calendar_month'],
-        ['Инструменты', '/tools/', 'calculate'], ['Учебники', '/textbooks/', 'menu_book'],
+        ['Инструменты', '/tools/', 'tools'], ['Учебники', '/textbooks/', 'menu_book'],
         ['Настройки', '/settings/', 'tune'],
     ];
     for (const [label, url, name] of navigation) {

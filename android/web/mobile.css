@@ -35,5 +35,5 @@ body:has(#disciplines) .site-credit{display:none}
 body:has(#disciplines) .topbar{display:flex!important}.discipline-search{display:block;margin:10px 0 12px}.discipline-search input{width:100%;padding:10px 12px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;font:inherit}.subject-card[hidden]{display:none!important}
 
 /* Compact tool selection and consistent document navigation. */
-.app-tools-back{display:inline-block;color:var(--app-blue);margin-bottom:12px}.tools-grid .app-icon{flex-shrink:0;color:var(--app-blue)}
+.app-tools-back{display:inline-block;color:var(--app-blue);margin-bottom:12px}.tools-grid .app-icon{width:28px;height:28px;flex-shrink:0;color:var(--blue)}
 body:has(.study-tools) .app-nav{z-index:60}body:has(.study-tools) .study-tools{padding-bottom:12px}

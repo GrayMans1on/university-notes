@@ -57,6 +57,10 @@ function page(route) {
     const home = page('/disciplines/');
     await new Promise((resolve) => setTimeout(resolve, 30));
     assert.equal(home.window.document.querySelectorAll('.app-nav a').length, 5);
+    for (const icon of home.window.document.querySelectorAll('.app-nav .app-icon')) {
+        const source = icon.style.getPropertyValue('--app-icon').match(/url\(['"]?([^'")]+)['"]?\)/)[1];
+        assert.ok(fs.existsSync(root + '/android/generated/assets/site' + source), 'Navigation icon exists: ' + source);
+    }
     assert.equal(home.window.document.getElementById('schedule-academic-group'), null);
     const search = home.window.document.getElementById('discipline-search');
     assert.ok(search, 'Discipline search is visible on the home screen');

@@ -31,16 +31,7 @@ if not signed and candidate.exists():
         subprocess.run(['git', 'merge-base', '--is-ancestor', source, 'HEAD'], cwd=root, check=True)
         subprocess.run(['git', 'diff', '--exit-code', source, 'HEAD', '--', 'android/app', 'android/web'], cwd=root, check=True)
         # The public blob contains an already signed APK, never a private key.
-        sha = record['blobSha']
-        if not re.fullmatch(r'[0-9a-f]{40}', sha):
-            raise ValueError('Invalid APK blob SHA')
         release_url = f'https://github.com/GrayMans1on/university-notes/releases/download/android-v{version_name}/app.apk'
-        request = urllib.request.Request(
-            'https://api.github.com/repos/GrayMans1on/university-notes/git/blobs/' + sha,
-            headers={'Accept': 'application/vnd.github.raw+json', 'User-Agent': 'university-notes-release'})
-        token = os.environ.get('GH_TOKEN')
-        if token:
-            request.add_header('Authorization', 'Bearer ' + token)
         # Prefer the permanent release asset on repeated builds.
         try:
             with urllib.request.urlopen(release_url, timeout=90) as response:
@@ -48,8 +39,24 @@ if not signed and candidate.exists():
         except urllib.error.HTTPError as error:
             if error.code != 404:
                 raise
-            with urllib.request.urlopen(request, timeout=90) as response:
-                data = response.read(30 * 1024 * 1024 + 1)
+            parts = record.get('blobParts', [record.get('blobSha')])
+            if not isinstance(parts, list) or not 1 <= len(parts) <= 40:
+                raise ValueError('Invalid APK transfer parts')
+            data = bytearray()
+            for sha in parts:
+                if not isinstance(sha, str) or not re.fullmatch(r'[0-9a-f]{40}', sha):
+                    raise ValueError('Invalid APK blob SHA')
+                request = urllib.request.Request(
+                    'https://api.github.com/repos/GrayMans1on/university-notes/git/blobs/' + sha,
+                    headers={'Accept': 'application/vnd.github.raw+json', 'User-Agent': 'university-notes-release'})
+                token = os.environ.get('GH_TOKEN')
+                if token:
+                    request.add_header('Authorization', 'Bearer ' + token)
+                with urllib.request.urlopen(request, timeout=90) as response:
+                    part = response.read(30 * 1024 * 1024 + 1)
+                data.extend(base64.b64decode(part, validate=True) if 'blobParts' in record else part)
+                if len(data) > 30 * 1024 * 1024:
+                    raise ValueError('Signed APK exceeds size limit')
         if len(data) != record['size'] or hashlib.sha256(data).hexdigest() != record['sha256']:
             raise ValueError('Signed APK size/hash mismatch')
         apk = output / 'app.apk'

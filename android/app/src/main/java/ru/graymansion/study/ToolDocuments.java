@@ -6,7 +6,7 @@ import java.util.Set;
 
 final class ToolDocuments {
     private static final Set<String> TYPES = new java.util.HashSet<>(java.util.Arrays.asList(
-        "application/json", "image/svg+xml", "image/png", "text/plain"));
+        "application/json", "image/svg+xml", "image/png", "text/plain", "text/x-python", "text/x-csharp"));
 
     static byte[] decode(String name, String mime, String data) {
         if (name == null || !name.matches("[\\p{L}\\p{N} _.-]{1,100}") || name.contains("..")

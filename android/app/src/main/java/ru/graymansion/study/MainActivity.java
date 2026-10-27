@@ -18,6 +18,7 @@ import android.print.PrintManager;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -40,6 +41,7 @@ public final class MainActivity extends Activity {
     private File content;
     private String downloadPath;
     private boolean fileDialogOpen;
+    private ValueCallback<Uri[]> fileChooser;
     private ConnectivityManager.NetworkCallback callback;
     private static final Set<String> KEYS = new java.util.HashSet<>(java.util.Arrays.asList("mobile-bookmarks", "mobile-last", "study-reading-settings", "study-admin-unlocked", "study-admin-draft", "study-workspace", "study-announcement-draft"));
 
@@ -145,6 +147,35 @@ public final class MainActivity extends Activity {
             }
         });
         web.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback, FileChooserParams params) {
+                if (fileDialogOpen) {
+                    callback.onReceiveValue(null);
+                    return true;
+                }
+                try {
+                    fileDialogOpen = true;
+                    fileChooser = callback;
+                    Intent open = new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("*/*")
+                        .addCategory(Intent.CATEGORY_OPENABLE);
+                    startActivityForResult(open, 303);
+                } catch (Exception ignored) {
+                    fileDialogOpen = false;
+                    fileChooser = null;
+                    callback.onReceiveValue(null);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onJsBeforeUnload(WebView view, String url, String message, JsResult result) {
+                new AlertDialog.Builder(MainActivity.this).setMessage("Есть несохранённая работа. Уйти без сохранения?")
+                    .setPositiveButton("Уйти", (dialog, which) -> result.confirm())
+                    .setNegativeButton("Остаться", (dialog, which) -> result.cancel())
+                    .setOnCancelListener(dialog -> result.cancel()).show();
+                return true;
+            }
+
             @Override
             public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
                 new AlertDialog.Builder(MainActivity.this).setMessage(message)
@@ -267,11 +298,18 @@ public final class MainActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        web.loadUrl(ContentStore.ORIGIN + safeRoute(intent.getStringExtra("route")));
+        String target = JSONObject.quote(ContentStore.ORIGIN + safeRoute(intent.getStringExtra("route")));
+        web.evaluateJavascript("(()=>{const go=()=>location.assign(" + target + ");"
+            + "if(window.StudyActiveSession){window.StudyActiveSession.replace(go);}else{go();}})()", null);
     }
 
     @Override
     public void onBackPressed() {
+        web.evaluateJavascript("(()=>{const go=()=>StudyNative.navigateBack();"
+            + "if(window.StudyActiveSession){window.StudyActiveSession.replace(go);}else{go();}})()", null);
+    }
+
+    private void navigateBack() {
         if (web.canGoBack()) {
             web.goBack();
         } else {
@@ -281,6 +319,10 @@ public final class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        if (fileChooser != null) {
+            fileChooser.onReceiveValue(null);
+            fileChooser = null;
+        }
         Updater.listener = null;
         if (callback != null) {
             getSystemService(ConnectivityManager.class).unregisterNetworkCallback(callback);
@@ -293,6 +335,14 @@ public final class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int request, int result, Intent intent) {
         super.onActivityResult(request, result, intent);
+        if (request == 303) {
+            fileDialogOpen = false;
+            if (fileChooser != null) {
+                fileChooser.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(result, intent));
+                fileChooser = null;
+            }
+            return;
+        }
         if (request == 301) {
             fileDialogOpen = false;
             if (result != RESULT_OK || intent == null || intent.getData() == null) {
@@ -372,6 +422,11 @@ public final class MainActivity extends Activity {
 
     public final class Bridge {
         @JavascriptInterface
+        public void navigateBack() {
+            runOnUiThread(MainActivity.this::navigateBack);
+        }
+
+        @JavascriptInterface
         public void exportDocument(String name, String mime, String data) {
             runOnUiThread(() -> {
                 if (fileDialogOpen) {
@@ -429,7 +484,7 @@ public final class MainActivity extends Activity {
 
         @JavascriptInterface
         public String version() {
-            return "1.2.1";
+            return "1.3.0";
         }
 
         @JavascriptInterface

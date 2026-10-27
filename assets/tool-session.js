@@ -50,7 +50,7 @@
         const { element, button, row, exportFile, say } = window.StudyToolUI;
         const session = new Session(async () => {
             const value = options.validate(options.get());
-            exportFile(options.filename, 'application/json', JSON.stringify(value, null, 2));
+            await exportFile(options.filename, 'application/json', JSON.stringify(value, null, 2));
         });
         const file = element('input'); file.type = 'file'; file.accept = options.extension + ',.json,application/json'; file.hidden = true;
         file.addEventListener('change', async () => {
@@ -63,7 +63,9 @@
             finally { file.value = ''; }
         });
         const status = element('span', '', 'tool-help'); status.id = 'session-status';
-        const toolbar = row(button('Сохранить файл', async () => { await session.save(); session.saved(); }),
+        const toolbar = row(button('Сохранить файл', async () => {
+            try { await session.save(); session.saved(); } catch (error) { say(error.message); }
+        }),
             button('Открыть файл', () => file.click()), status);
         toolbar.classList.add('session-toolbar'); root.append(toolbar, file); session.update();
         if (options.legacy) {

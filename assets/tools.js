@@ -49,7 +49,15 @@
             if (typeof window.StudyNative.exportDocument !== 'function') {
                 throw new Error('Для сохранения файлов из приложения установите APK 1.2.0. На сайте экспорт уже доступен.');
             }
-            window.StudyNative.exportDocument(name, mime, data); say('Выберите место сохранения файла.'); return;
+            const saved = new Promise((resolve, reject) => {
+                window.addEventListener('study-file-export', (event) => {
+                    if (event.detail.success) { resolve(); } else { reject(new Error(event.detail.message)); }
+                }, { once: true });
+                window.StudyNative.exportDocument(name, mime, data);
+            });
+            saved.catch(() => {});
+            say('Выберите место сохранения файла.');
+            return saved;
         }
         const blob = mime === 'image/png' ? null : new Blob([data], { type: mime });
         const url = blob ? URL.createObjectURL(blob) : data;

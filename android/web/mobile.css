@@ -8,7 +8,7 @@ body.campus-map-page .campus-map{position:fixed;inset:0 0 var(--app-nav-height,8
 body.campus-map-page .campus-map iframe{height:100%;min-height:0}
 body.campus-map-page .topbar{display:none!important}
 
-.app-nav{grid-template-columns:repeat(6,minmax(0,1fr))}.app-nav a{font-size:9px;min-width:0;gap:3px}.app-nav .app-icon{width:22px;height:22px}
+.app-nav{grid-template-columns:repeat(5,minmax(0,1fr))}.app-nav a{font-size:9px;min-width:0;gap:3px}.app-nav .app-icon{width:22px;height:22px}
 body:has(#disciplines) .topbar{display:none!important}
 body:has(#disciplines) .library-layout{padding:14px 12px!important}
 body:has(#disciplines) .home-section-heading h1{font-size:22px;margin:0}
@@ -33,3 +33,7 @@ body:has(#disciplines) .site-credit{display:none}
 
 /* Keep both discipline filtering and full-text search visible. */
 body:has(#disciplines) .topbar{display:flex!important}.discipline-search{display:block;margin:10px 0 12px}.discipline-search input{width:100%;padding:10px 12px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;font:inherit}.subject-card[hidden]{display:none!important}
+
+/* Compact tool selection and consistent document navigation. */
+.app-tools-back{display:inline-block;color:var(--app-blue);margin-bottom:12px}.tools-grid .app-icon{flex-shrink:0;color:var(--app-blue)}
+body:has(.study-tools) .app-nav{z-index:60}body:has(.study-tools) .study-tools{padding-bottom:12px}

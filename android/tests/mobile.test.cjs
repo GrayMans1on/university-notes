@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '../..');
 const state = new Map();
 let subgroup = 1;
 function page(route) {
-    const file = path.join(root, 'dist', route.replace(/^\//, ''), 'index.html');
+    const file = path.join(root, 'android/generated/assets/site', route.replace(/^\//, ''), 'index.html');
     const dom = new JSDOM(fs.readFileSync(file, 'utf8'), { url: 'https://study.local' + route, runScripts: 'outside-only' });
     const window = dom.window;
     window.matchMedia = () => ({ matches: false, addEventListener() {} });
@@ -56,7 +56,7 @@ function page(route) {
     reading.window.close();
     const home = page('/disciplines/');
     await new Promise((resolve) => setTimeout(resolve, 30));
-    assert.equal(home.window.document.querySelectorAll('.app-nav a').length, 6);
+    assert.equal(home.window.document.querySelectorAll('.app-nav a').length, 5);
     assert.equal(home.window.document.getElementById('schedule-academic-group'), null);
     const search = home.window.document.getElementById('discipline-search');
     assert.ok(search, 'Discipline search is visible on the home screen');
@@ -66,14 +66,28 @@ function page(route) {
     search.value = '';
     search.dispatchEvent(new home.window.Event('input'));
     assert.deepEqual([...home.window.document.querySelectorAll('.app-nav a')].map((a) => a.pathname),
-        ['/disciplines/', '/schedule/', '/map/', '/textbooks/', '/bookmarks/', '/settings/']);
+        ['/disciplines/', '/schedule/', '/tools/', '/textbooks/', '/settings/']);
     const cards = home.window.document.querySelectorAll('.app-card');
     assert.equal(cards.length, 2);
     assert.match(cards[1].href, /\/notes\/informatics\/#/);
     assert.ok(cards[0].querySelector('strong').textContent.length > 0);
     assert.ok(cards[0].querySelector('img'), 'Classroom card includes a map preview');
-    assert.equal(cards[0].pathname, '/map/', 'Next lesson restores the classroom map');
+    assert.equal(cards[0].pathname, '/schedule/', 'Next lesson opens the timetable');
+    const tools = page('/tools/');
+    const toolLinks = [...tools.window.document.querySelectorAll('.tools-grid a')].map((link) => link.pathname);
+    assert.ok(toolLinks.includes('/map/'));
+    assert.ok(toolLinks.includes('/bookmarks/'));
+    for (const path of toolLinks) {
+        assert.ok(fs.existsSync(root + '/android/generated/assets/site' + path + 'index.html'), path);
+    }
+    for (const path of ['/map/', '/tools/limits/', '/reference/', '/check/']) {
+        const nested = page(path);
+        assert.equal(nested.window.document.querySelector('.app-nav [aria-current="page"]').pathname, '/tools/');
+        nested.window.close();
+    }
+    tools.window.close();
     const saved = page('/bookmarks/');
+    assert.equal(saved.window.document.querySelector('.app-nav [aria-current="page"]').pathname, '/tools/');
     assert.equal(saved.window.document.querySelectorAll('.app-bookmarks-list li').length, 2);
     saved.window.document.querySelector('.app-bookmarks-list input').checked = true;
     saved.window.document.querySelector('.app-bookmark-tools button').click();

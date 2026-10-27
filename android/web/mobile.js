@@ -60,8 +60,8 @@
     nav.setAttribute('aria-label', 'Главное меню');
     const navigation = [
         ['Дисциплины', '/disciplines/', 'grid_on'], ['Расписание', '/schedule/', 'calendar_month'],
-        ['Карта', '/map/', 'map'], ['Учебники', '/textbooks/', 'menu_book'],
-        ['Закладки', '/bookmarks/', 'bookmark'], ['Настройки', '/settings/', 'tune'],
+        ['Инструменты', '/tools/', 'calculate'], ['Учебники', '/textbooks/', 'menu_book'],
+        ['Настройки', '/settings/', 'tune'],
     ];
     for (const [label, url, name] of navigation) {
         const link = node('a', '');
@@ -114,8 +114,23 @@
         heading.after(button);
     }
     refreshButtons();
+    if (location.pathname === '/tools/') {
+        const heading = document.querySelector('.study-tools h1');
+        heading.textContent = 'Инструменты';
+        const link = node('a', 'tool-card');
+        link.href = '/bookmarks/';
+        const text = node('span', '');
+        text.append(node('strong', '', 'Закладки'), node('small', '', 'Сохранённые темы и материалы.'));
+        link.append(icon('bookmark'), text);
+        document.querySelector('.tools-grid').firstElementChild.after(link);
+    }
+    for (const link of document.querySelectorAll('.breadcrumbs a[href="/tools/"]')) {
+        link.textContent = 'Инструменты';
+    }
     function showBookmarks() {
-        overlay.replaceChildren(node('h1', '', 'Закладки'));
+        const back = node('a', 'app-tools-back', 'Инструменты');
+        back.href = '/tools/';
+        overlay.replaceChildren(back, node('h1', '', 'Закладки'));
         if (!bookmarks.length) {
             overlay.append(node('p', 'app-note', 'Закладок пока нет. Откройте тему и нажмите «Создать закладку».'));
             return;
@@ -246,7 +261,8 @@
         }
         for (const link of nav.children) {
             const active = location.pathname.startsWith(new URL(link.href).pathname)
-                || link.pathname === '/disciplines/' && location.pathname.startsWith('/notes/');
+                || link.pathname === '/disciplines/' && location.pathname.startsWith('/notes/')
+                || link.pathname === '/tools/' && ['/map/', '/bookmarks/', '/reference/', '/check/'].some((path) => location.pathname.startsWith(path));
             if (active) { link.setAttribute('aria-current', 'page'); } else { link.removeAttribute('aria-current'); }
         }
     }
@@ -333,7 +349,7 @@
             body.append(node('strong', '', 'Пар в расписании нет'));
             return;
         }
-        nextCard.href = next.mapUrl || '/schedule/';
+        nextCard.href = '/schedule/';
         const today = window.StudySchedule.isoDate(day) === now.date;
         const bells = window.StudySchedule.lessonTime(schedule, next);
         const ongoing = today && bells[0] <= now.time;

@@ -34,6 +34,10 @@
         const theme = () => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
         async function load() {
             const current = ++generation;
+            if (window.StudyNative) {
+                status.textContent = 'Видео доступны на сайте; расчёт и экспорт сцены работают офлайн.';
+                return;
+            }
             try {
                 if (!catalog) {
                     catalog = fetch('/assets/limit-videos/catalog.json?v=__MANIM_BUILD__').then((response) => {
@@ -70,6 +74,11 @@
             exportFile('limit-animation.py', 'text/x-python', scene(await response.text(), data));
             say('Команда рендера указана в первой строке .py. Сцена содержит текущее решение.');
         }), download), player);
+        if (window.StudyNative) {
+            const online = element('a', 'Открыть видео на сайте');
+            online.href = 'https://graymans1on.github.io/university-notes/tools/limits/';
+            panel.append(online);
+        }
         root.append(panel);
         const cleanup = new MutationObserver(() => {
             if (!panel.isConnected) {

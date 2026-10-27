@@ -15,21 +15,7 @@ if OUTPUT.exists():
     shutil.rmtree(OUTPUT)
 SITE.mkdir(parents=True)
 shutil.copytree(ROOT / 'dist', SITE, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.pdf', '*.PDF', '.*'))
-# Site-only tools must never enter the offline application or its update feed.
-shutil.rmtree(SITE / 'tools', ignore_errors=True)
-for name in ('tools.css', 'tools-v2.css', 'tool-core.js', 'reader-tools.js', 'tools.js', 'tools-v2.js',
-             'flow-editor.js', 'flow-runtime.js', 'math-tools.js', 'math-runtime.js',
-             'tool-session.js', 'limits-ui.js', 'limits-worker.js', 'limits-engine.js',
-             'manim-export.js', 'manim-scene.py', 'flow-export.js', 'derivatives-engine.js', 'linear-engine.js', 'radix-engine.js', 'academic-tools-ui.js', 'discrete-engine.js', 'discrete-ui.js',
-             'tool-catalog.json', 'teachers.json', 'announcements.json', 'katex.min.js'):
-    (SITE / 'assets' / name).unlink(missing_ok=True)
-shutil.rmtree(SITE / 'assets/mathlive', ignore_errors=True)
-shutil.rmtree(SITE / 'assets/compute-engine', ignore_errors=True)
-for page in SITE.rglob('*.html'):
-    text = page.read_text()
-    text = re.sub(r'<(?:script|link)\b[^>]*(?:manim-export\.js|flow-export\.js|derivatives-engine\.js|linear-engine\.js|radix-engine\.js|academic-tools-ui\.js|discrete-engine\.js|discrete-ui\.js|tool-session\.js|limits-ui\.js|tools\.css|tools-v2\.css|tool-core\.js|reader-tools\.js|tools\.js|tools-v2\.js|flow-editor\.js|flow-runtime\.js|math-tools\.js|math-runtime\.js)[^>]*>(?:</script>)?', '', text)
-    text = re.sub(r'<a\b[^>]*href="/tools/[^"\s]*"[^>]*>.*?</a>', '', text, flags=re.S)
-    page.write_text(text)
+# Tools share the site's resources; PDFs and rendered videos stay outside the bundle.
 renamed = {}
 for file in list(SITE.rglob('*')):
     if file.is_file() and not file.name.isascii():
@@ -184,6 +170,6 @@ for file in sorted(SITE.rglob('*')):
         data = file.read_bytes()
         files[file.relative_to(SITE).as_posix()] = {'size': len(data), 'sha256': hashlib.sha256(data).hexdigest()}
 version = hashlib.sha256(json.dumps(files, sort_keys=True).encode()).hexdigest()
-manifest = {'schema': 1, 'minAppVersion': 7, 'version': version, 'files': files}
+manifest = {'schema': 1, 'minAppVersion': 9, 'version': version, 'files': files}
 (OUTPUT / 'bundle-manifest.json').write_text(json.dumps(manifest))
 print(json.dumps({'files': len(files), 'bytes': sum(f['size'] for f in files.values()), 'thumbnails': len(created), 'version': version}))

@@ -16,6 +16,7 @@ if OUTPUT.exists():
 SITE.mkdir(parents=True)
 shutil.copytree(ROOT / 'dist', SITE, dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.pdf', '*.PDF', '.*'))
 # Tools share the site's resources; PDFs and rendered videos stay outside the bundle.
+shutil.rmtree(SITE / 'assets/limit-videos', ignore_errors=True)
 renamed = {}
 for file in list(SITE.rglob('*')):
     if file.is_file() and not file.name.isascii():

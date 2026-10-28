@@ -44,7 +44,9 @@ const limitsVersion = createHash('sha256').update(fs.readFileSync(path.join(asse
 const limitsUiPath = path.join(assets, 'limits-ui.js');
 fs.writeFileSync(limitsUiPath, fs.readFileSync(limitsUiPath, 'utf8').replace('__LIMITS_BUILD__', limitsVersion));
 const manimVersion = createHash('sha256').update(fs.readFileSync(path.join(assets, 'manim-scene.py')))
-    .update(fs.readFileSync(path.join(assets, 'limits-engine.js'))).digest('hex').slice(0, 12);
+    .update(fs.readFileSync(path.join(assets, 'limits-engine.js')))
+    .update(fs.readFileSync(path.join(root, 'scripts/build-limit-videos.cjs')))
+    .update(fs.readFileSync(path.join(root, 'scripts/render-limit-videos.py'))).digest('hex').slice(0, 12);
 const manimUiPath = path.join(assets, 'manim-export.js');
 fs.writeFileSync(manimUiPath, fs.readFileSync(manimUiPath, 'utf8').replaceAll('__MANIM_BUILD__', manimVersion));
 const serviceConfig = JSON.parse(fs.readFileSync(path.join(root, 'assets/schedule-service.json'), 'utf8'));

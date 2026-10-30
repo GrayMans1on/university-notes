@@ -149,7 +149,7 @@ jobs:
         run: |
           tag="android-v${APP_VERSION}"
           if ! gh release view "$tag" >/dev/null 2>&1; then
-            gh release create "$tag" android/release-output/app.apk android/release-output/app-release.json --target "$GITHUB_SHA" --title "Android ${APP_VERSION}" --notes "Добавлена вкладка Инструменты с картой, закладками и учебными инструментами. Ближайшая пара открывает расписание; данные сохраняются."
+            gh release create "$tag" android/release-output/app.apk android/release-output/app-release.json --target "$GITHUB_SHA" --title "Android ${APP_VERSION}" --notes "В просмотрщике учебников добавлена отдельная нижняя панель с ползунком страниц. Быстрый переход по книге без перекрытия PDF; позиции чтения и скачанные книги сохраняются."
           fi
       - name: Preserve the published APK feed during material-only updates
         if: steps.apk.outputs.signed != 'true'

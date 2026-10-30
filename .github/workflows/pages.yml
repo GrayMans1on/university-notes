@@ -87,6 +87,7 @@ jobs:
           dotnet-version: '8.0.x'
       - name: Test mobile interface
         run: |
+          node tests/exams.test.cjs
           node tests/textbooks.test.cjs
           node tests/tools.test.cjs
           node tests/executable-tools.test.cjs

@@ -263,7 +263,7 @@
         for (const link of nav.children) {
             const active = location.pathname.startsWith(new URL(link.href).pathname)
                 || link.pathname === '/disciplines/' && location.pathname.startsWith('/notes/')
-                || link.pathname === '/tools/' && ['/map/', '/bookmarks/', '/reference/', '/check/'].some((path) => location.pathname.startsWith(path));
+                || link.pathname === '/tools/' && ['/map/', '/bookmarks/', '/reference/', '/check/', '/exams/'].some((path) => location.pathname.startsWith(path));
             if (active) { link.setAttribute('aria-current', 'page'); } else { link.removeAttribute('aria-current'); }
         }
     }

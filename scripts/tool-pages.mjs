@@ -17,6 +17,7 @@ export const toolPages = [
 ];
 export function buildToolPages(writePage, icons) {
     const cards = [['/map/', 'Карта ЧелГУ', 'Кабинеты, этажи и маршруты.', 'map'],
+        ['/exams/', 'Зачёты и экзамены', 'Даты и ответы для подготовки.', 'fact_check'],
         ...toolPages.map(([id, title, text, icon]) => ['/tools/' + id + '/', title, text, icon]),
         ['/reference/', 'Формулы', 'Справочник по дисциплинам.', 'calculate'],
         ['/check/', 'Самопроверка', 'Задания и вопросы для повторения.', 'fact_check']];

@@ -55,6 +55,7 @@
     "disciplines",
     "schedule",
     "textbooks",
+    "exams",
     "bookmarks",
     "settings",
     "tools",
@@ -74,8 +75,8 @@
     "tools/venn",
     "tools/relations"
   ],
-  "searchSections": 775,
-  "mathCount": 7297,
+  "searchSections": 795,
+  "mathCount": 8198,
   "mathErrors": [],
   "studyTopics": 138,
   "referenceEntries": 163,

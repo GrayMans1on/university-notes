@@ -1,0 +1,301 @@
+{
+  "schema": 1,
+  "importDate": "2026-10-30",
+  "files": [
+    {
+      "file": "Конспекты Блокнот 30.10.26.zip",
+      "bytes": 145962710,
+      "sha256": "100d942e101a05281457ad001e868449a74635457c2edd71659053d30970097f",
+      "images": [
+        {
+          "page": 1,
+          "file": "20261030_162900.jpg",
+          "bytes": 3088629,
+          "sha256": "790432e1ada7bd76fec0bf380bcd7c3eceec0266c2bb11b69cf258a13825c5f0"
+        },
+        {
+          "page": 2,
+          "file": "20261030_162903.jpg",
+          "bytes": 3102614,
+          "sha256": "9392e81ec24a9723b1505e0a4dc85966ed915d680c0cb038f0d0560c0cc10751"
+        },
+        {
+          "page": 3,
+          "file": "20261030_162909.jpg",
+          "bytes": 3089182,
+          "sha256": "c49be8733f2f637e52e4c3b37c26e9c6d4ef94d8ec4d01ada47e67a3c9d14db4"
+        },
+        {
+          "page": 4,
+          "file": "20261030_162912.jpg",
+          "bytes": 3120737,
+          "sha256": "b8cc591967d3e01bef918bc6351308ceecf144c557401ece470a23da6d5ef2f0"
+        },
+        {
+          "page": 5,
+          "file": "20261030_162916.jpg",
+          "bytes": 3077968,
+          "sha256": "d2fc640e8d19b89ec4a4c95185964693dd255a176d47bc9e25d7990e66cf8667"
+        },
+        {
+          "page": 6,
+          "file": "20261030_162918.jpg",
+          "bytes": 3117064,
+          "sha256": "f97d22ab34fcddfdcb3939f3009dcd6440637c89b12487d8f305008c4f3e46f8"
+        },
+        {
+          "page": 7,
+          "file": "20261030_162923.jpg",
+          "bytes": 3051430,
+          "sha256": "2f4c8bf55976b457ecf706244b058ea3e35fd69e208e204e6ce91ddaf1be3829"
+        },
+        {
+          "page": 8,
+          "file": "20261030_162925.jpg",
+          "bytes": 3105706,
+          "sha256": "0f644b3fd6dcb6da3b6264c31a5bfa155d5d998433ce5789c2e6a13e37943124"
+        },
+        {
+          "page": 9,
+          "file": "20261030_162929.jpg",
+          "bytes": 2999980,
+          "sha256": "17eb479956f7dbf83ccc7e5229b7c60b00550901cb2091d0a511598c757ce965"
+        },
+        {
+          "page": 10,
+          "file": "20261030_162930.jpg",
+          "bytes": 3119806,
+          "sha256": "8f86b1a64226bb10ef4beabacdf0895190170dd7b30a1b5049ed83f9cb9ccfbc"
+        },
+        {
+          "page": 11,
+          "file": "20261030_162935.jpg",
+          "bytes": 3043613,
+          "sha256": "6b2b405548dd721cc81db5ff28644d178e5c9715175ffe76dcc0394a03bcdcbf"
+        },
+        {
+          "page": 12,
+          "file": "20261030_162937.jpg",
+          "bytes": 3083560,
+          "sha256": "2c5aea6b59af66d8fa423c9dd7308384298119dfec6f4300c1e38dc6a8b7ca84"
+        },
+        {
+          "page": 13,
+          "file": "20261030_162946.jpg",
+          "bytes": 3060445,
+          "sha256": "2bd0c916226413293f9f010ca79409ddf31d4f46f9f6d91a1dcfb6e834693cd6"
+        },
+        {
+          "page": 14,
+          "file": "20261030_162947.jpg",
+          "bytes": 3050727,
+          "sha256": "9b5a6f60205cfded6a8892cce11c1a8ac30885d45b63b715f24309635e6cebfd"
+        },
+        {
+          "page": 15,
+          "file": "20261030_162954.jpg",
+          "bytes": 3077006,
+          "sha256": "06dab087fdb75ac405d352f0ea567b8f1e4a6f0b8c9e56788add0014195f38d3"
+        },
+        {
+          "page": 16,
+          "file": "20261030_162956.jpg",
+          "bytes": 3039942,
+          "sha256": "2a30b518775b70e47f025d22f5e28150ed499f7ded6a8485c2ceb0af38fe0779"
+        },
+        {
+          "page": 17,
+          "file": "20261030_162959.jpg",
+          "bytes": 3058782,
+          "sha256": "8b5ce172cd7dd20dde01d8541ee356de27bf357185f4da91b871e39a6a3d1bce"
+        },
+        {
+          "page": 18,
+          "file": "20261030_163001.jpg",
+          "bytes": 3041083,
+          "sha256": "c336bdee0fff39a78051ee7767a82a16bcce6aa4196acf5976673f2a228c6dcb"
+        },
+        {
+          "page": 19,
+          "file": "20261030_163005.jpg",
+          "bytes": 3055769,
+          "sha256": "760c63e40be0d1588508c10aca74ca4ec795c31661f58bcf354a99ed373b3e74"
+        },
+        {
+          "page": 20,
+          "file": "20261030_163007.jpg",
+          "bytes": 3050978,
+          "sha256": "4c888abd5d48c2d4ddf561b310b56d38462529188b581e0e6df9b88d9f3a22db"
+        },
+        {
+          "page": 21,
+          "file": "20261030_163011.jpg",
+          "bytes": 3012874,
+          "sha256": "81bacf9f364c06407a8b9ad7e4796f5696cc713223f870b11f467e861da7de8e"
+        },
+        {
+          "page": 22,
+          "file": "20261030_163013.jpg",
+          "bytes": 3041378,
+          "sha256": "f5d089f55dd6922f08f317030d280257da168397171c227e3d33ec4604a27060"
+        },
+        {
+          "page": 23,
+          "file": "20261030_163017.jpg",
+          "bytes": 3056567,
+          "sha256": "50e44b93fd0616b82bbf9f615e4f6cfa378f51814d2a05fc36c6371b65892f79"
+        },
+        {
+          "page": 24,
+          "file": "20261030_163018.jpg",
+          "bytes": 3068755,
+          "sha256": "daeb35b8bf9e7faabb2a32abe4883032b0fbe2eb750827b38bb865caf438de8e"
+        },
+        {
+          "page": 25,
+          "file": "20261030_163023.jpg",
+          "bytes": 3088133,
+          "sha256": "20bf962c29ab4b3c57a6a9899f8bfee77d305c9739f5f38b26e40b68b0fa7355"
+        },
+        {
+          "page": 26,
+          "file": "20261030_163025.jpg",
+          "bytes": 3083155,
+          "sha256": "90bd8d42409e29fb5bc49691d2852e2661d888255496af48e29f710dffc30084"
+        },
+        {
+          "page": 27,
+          "file": "20261030_163029.jpg",
+          "bytes": 3094218,
+          "sha256": "bc204649d06b4e794244dbb91e99f551bca30845b8a8b6656a58c3e8a8c1a18c"
+        },
+        {
+          "page": 28,
+          "file": "20261030_163034.jpg",
+          "bytes": 3071576,
+          "sha256": "d06d326e2963e3082c88636d66ed593d5418f2c942521c473e56f0c169d9d56c"
+        },
+        {
+          "page": 29,
+          "file": "20261030_163040.jpg",
+          "bytes": 3049725,
+          "sha256": "a7c532e547c9a84bddbc4f7b33d7c494904c1af1824bd4bd57434cf7b53be831"
+        },
+        {
+          "page": 30,
+          "file": "20261030_163041.jpg",
+          "bytes": 3064912,
+          "sha256": "3802c076f8d616f8bf2931097d67f6bc27c6894f75f24901034c6be96716891b"
+        },
+        {
+          "page": 31,
+          "file": "20261030_163047.jpg",
+          "bytes": 3027629,
+          "sha256": "29c8cf088bad8b9d63aca7f129ae1cb11998048907a13374bbfc7826814feaeb"
+        },
+        {
+          "page": 32,
+          "file": "20261030_163049.jpg",
+          "bytes": 3081429,
+          "sha256": "4c9e6b77587eb25ed3b07f6d695dfa722378baf266345fc3d812cccb1810db01"
+        },
+        {
+          "page": 33,
+          "file": "20261030_163053.jpg",
+          "bytes": 3029860,
+          "sha256": "b16a789ad6bfab9cff2f5c602aa9a193890fd5913911b9e57b6765bb3474e603"
+        },
+        {
+          "page": 34,
+          "file": "20261030_163055.jpg",
+          "bytes": 3142836,
+          "sha256": "6a0dcda1d959884d5116c947ae6cc56fed27d5e0dbee82bafca397e931a3961b"
+        },
+        {
+          "page": 35,
+          "file": "20261030_163059.jpg",
+          "bytes": 3023603,
+          "sha256": "4d50c9ca00b7e1b1c149e1dda9f11e192e9ddb4386d5b1ac728086a20d76543f"
+        },
+        {
+          "page": 36,
+          "file": "20261030_163101.jpg",
+          "bytes": 3076815,
+          "sha256": "c5ad483168a6cb4519867612322c473ff4da2bd80da3cd5895c44ca8a04a5bc5"
+        },
+        {
+          "page": 37,
+          "file": "20261030_163105.jpg",
+          "bytes": 3037016,
+          "sha256": "da587510893d469f6b38f971426a9c570bc673325286d2d3cae6f1ac7873193e"
+        },
+        {
+          "page": 38,
+          "file": "20261030_163107.jpg",
+          "bytes": 3087575,
+          "sha256": "9e0981d6447d1a8e7c925632532036c4193e618b413ee1b9e0ae1610e502cf58"
+        },
+        {
+          "page": 39,
+          "file": "20261030_163111.jpg",
+          "bytes": 3032496,
+          "sha256": "57fbbbc8864402236ec586f9b2ebaea18f66c8d92b845c14c3b2e4c426b4a689"
+        },
+        {
+          "page": 40,
+          "file": "20261030_163139.jpg",
+          "bytes": 3097721,
+          "sha256": "70c3e1b8321db8714dbad08961eddad185253cc602b2e48f4511e0dd79b8465c"
+        },
+        {
+          "page": 41,
+          "file": "20261030_163143.jpg",
+          "bytes": 3111441,
+          "sha256": "47e464823ffad8a3f56ed6e235f5735ee30a7ca34a0c43a646c9d73a9fc8858b"
+        },
+        {
+          "page": 42,
+          "file": "20261030_163145.jpg",
+          "bytes": 3157702,
+          "sha256": "76e3127f4b0071156d5158a9f2d96094646f0f6236c8926d378f936862cb0f93"
+        },
+        {
+          "page": 43,
+          "file": "20261030_163150.jpg",
+          "bytes": 3097511,
+          "sha256": "b1b27335b19dffd87ae949b77f1abe0b911eadc5d0c97390f96aa3ba3abbcaef"
+        },
+        {
+          "page": 44,
+          "file": "20261030_163152.jpg",
+          "bytes": 3139809,
+          "sha256": "37ad6e37ed57819a368c978e8717f8b7680f510d559053c4cb9c5b58da507c50"
+        },
+        {
+          "page": 45,
+          "file": "20261030_163156.jpg",
+          "bytes": 3091001,
+          "sha256": "3cd65f7690dfeb7918c20eb629245a6e31d0e77056112dc0c9240beb95b78e50"
+        },
+        {
+          "page": 46,
+          "file": "20261030_163159.jpg",
+          "bytes": 3207541,
+          "sha256": "1868589283f40ebce28a4b2817f65875a9e51c8e492f3d3011fe79ed84c808bb"
+        },
+        {
+          "page": 47,
+          "file": "20261030_163204.jpg",
+          "bytes": 3152372,
+          "sha256": "ce29746713beefb8732de3ac612c52274169175daf03782b0cae32a6bc7420de"
+        },
+        {
+          "page": 48,
+          "file": "20261030_163206.jpg",
+          "bytes": 3052461,
+          "sha256": "2256572a12c6f2975f50407870dc428fccd50ccfaddf0d38282a6047844ffa6c"
+        }
+      ]
+    }
+  ]
+}

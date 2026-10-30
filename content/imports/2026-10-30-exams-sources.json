@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "importDate": "2026-10-30",
+  "purpose": "Вопросы зачёта по матанализу для микросессии и Markdown-референс",
+  "files": [
+    {
+      "file": "matanaliz-ekzamen-temy-1-semestr(1).md",
+      "bytes": 20677,
+      "sha256": "0081579a010b37ffe5c5d55ba7c3ac078006954c5467d4663bea32655962ef16"
+    },
+    {
+      "file": "image(20261030-122804).png",
+      "bytes": 1706229,
+      "sha256": "6c9fa003a41c4cf097790222807d424fe4736e5e7e9a3a2bcb4fabc1884c86f8"
+    },
+    {
+      "file": "image(20261030-122804-1).png",
+      "bytes": 1673170,
+      "sha256": "67aef581370865d488d02406c3a74b08dbc25e35921469fc8a0cb381177f91cb"
+    }
+  ],
+  "curriculumCommit": "8e938bfef4ffc4f147522552f18eb400be692860",
+  "assessmentDate": null,
+  "selectedNumbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    20,
+    21
+  ],
+  "excludedNumbers": [
+    19,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+  ]
+}

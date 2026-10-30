@@ -9,6 +9,7 @@ import android.graphics.pdf.PdfRenderer;
 import android.graphics.drawable.GradientDrawable;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.WindowInsets;
@@ -22,6 +23,9 @@ public final class PdfActivity extends Activity {
     private Bitmap bitmap;
     private PdfImage image;
     private TextView counter;
+    private TextView pagePreview;
+    private SeekBar pageSlider;
+    private boolean draggingPage;
     private Button previous;
     private Button next;
     private int page;
@@ -87,8 +91,47 @@ public final class PdfActivity extends Activity {
         root.addView(hint);
         image = new PdfImage(this);
         root.addView(image, new LinearLayout.LayoutParams(-1, 0, 1));
-        previous.setOnClickListener((view) -> { page--; render(); });
-        next.setOnClickListener((view) -> { page++; render(); });
+        android.view.View divider = new android.view.View(this);
+        int line = Color.parseColor(dark ? "#33445F" : "#E2E7F0");
+        divider.setBackgroundColor(line);
+        root.addView(divider, new LinearLayout.LayoutParams(-1, dp(1)));
+        LinearLayout pageControls = new LinearLayout(this);
+        pageControls.setOrientation(LinearLayout.VERTICAL);
+        pageControls.setBackgroundColor(surface);
+        pageControls.setMinimumHeight(dp(88));
+        pageControls.setPadding(dp(16), dp(8), dp(16), dp(12));
+        pagePreview = new TextView(this);
+        pagePreview.setTextColor(ink);
+        pagePreview.setTextSize(12);
+        pagePreview.setGravity(android.view.Gravity.CENTER);
+        pageControls.addView(pagePreview);
+        pageSlider = new SeekBar(this);
+        pageSlider.setContentDescription("Быстрый переход по страницам учебника");
+        pageSlider.setEnabled(false);
+        pageSlider.setProgressTintList(android.content.res.ColorStateList.valueOf(accent));
+        pageSlider.setThumbTintList(android.content.res.ColorStateList.valueOf(accent));
+        pageSlider.setProgressBackgroundTintList(android.content.res.ColorStateList.valueOf(line));
+        pageControls.addView(pageSlider, new LinearLayout.LayoutParams(-1, dp(48)));
+        root.addView(pageControls, new LinearLayout.LayoutParams(-1, -2));
+        pageSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (renderer == null) { return; }
+                updatePagePreview(progress);
+                if (fromUser && !draggingPage) { goToPage(progress); }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { draggingPage = true; }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                draggingPage = false;
+                goToPage(seekBar.getProgress());
+            }
+        });
+        previous.setOnClickListener((view) -> goToPage(page - 1));
+        next.setOnClickListener((view) -> goToPage(page + 1));
         try {
             bookId = getIntent().getStringExtra("book");
             org.json.JSONObject book = Textbooks.find(this, bookId);
@@ -102,6 +145,25 @@ public final class PdfActivity extends Activity {
         } catch (Exception ignored) {
             Toast.makeText(this, "Не удалось открыть PDF", Toast.LENGTH_LONG).show();
             finish();
+        }
+    }
+
+    private int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
+    }
+
+    private void updatePagePreview(int selected) {
+        String label = "Страница " + (selected + 1) + " из " + renderer.getPageCount();
+        pagePreview.setText(label);
+        if (Build.VERSION.SDK_INT >= 30) { pageSlider.setStateDescription(label); }
+    }
+
+    private void goToPage(int requested) {
+        if (renderer == null) { return; }
+        int target = Math.max(0, Math.min(requested, renderer.getPageCount() - 1));
+        if (target != page) {
+            page = target;
+            render();
         }
     }
 
@@ -138,6 +200,10 @@ public final class PdfActivity extends Activity {
             image.setContentDescription("Страница " + (page + 1));
             previous.setEnabled(page > 0);
             next.setEnabled(page + 1 < renderer.getPageCount());
+            pageSlider.setMax(renderer.getPageCount() - 1);
+            pageSlider.setProgress(page);
+            pageSlider.setEnabled(renderer.getPageCount() > 1);
+            updatePagePreview(page);
             getSharedPreferences("pdf-pages", 0).edit().putInt(bookId, page).apply();
         } catch (RuntimeException ignored) {
             Toast.makeText(this, "Не удалось отобразить страницу PDF", Toast.LENGTH_LONG).show();

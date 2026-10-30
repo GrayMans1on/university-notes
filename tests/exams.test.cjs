@@ -33,6 +33,19 @@ assert.ok(download.includes('Дата: не указана'));
 assert.ok(download.includes('](https://graymans1on.github.io/university-notes/notes/calculus/#'));
 assert.equal((download.match(/^### №/gm) || []).length, 20);
 assert.ok(!download.includes('](/'), 'Downloaded references must work outside the site');
+const expanded = fs.readFileSync('dist' + document.querySelector('.exam-expanded').getAttribute('href'), 'utf8');
+assert.equal(expanded, fs.readFileSync('content/' + entry.expandedContent, 'utf8')
+    .replace(/\]\(\//g, '](https://graymans1on.github.io/university-notes/'));
+assert.ok(!expanded.includes('](/'));
+assert.ok(download.split(/\s+/).length < expanded.split(/\s+/).length * 0.6,
+    'The primary handout must stay concise; complete explanations remain in the expanded download');
+for (const heading of document.querySelectorAll('.exam-answers h3')) {
+    let text = '';
+    for (let node = heading.nextElementSibling; node && node.tagName !== 'H3'; node = node.nextElementSibling) {
+        text += node.textContent;
+    }
+    assert.ok(text.includes('?'), 'Each theory question must contain explicit short questions and answers');
+}
 assert.equal(document.querySelector('#search-scope option[value="exams"]').textContent, 'Этот раздел');
 const search = JSON.parse(fs.readFileSync('dist/assets/search-index.json', 'utf8'));
 const questions = search.filter((item) => item.slug === 'exams');

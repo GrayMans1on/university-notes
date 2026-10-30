@@ -48,6 +48,17 @@ export function buildExams({ root, output, writePage, renderMarkdown, searchInde
         fs.mkdirSync(folder, { recursive: true });
         fs.writeFileSync(path.join(folder, entry.id + '.md'), '# ' + heading + '\n\n'
             + entry.title + '\n\nДата: ' + date + '\n\n' + portableMarkdown);
+        let expandedLink = '';
+        if (entry.expandedContent) {
+            if (entry.expandedContent !== 'exams/' + entry.id + '-expanded.md') {
+                throw new Error('Invalid expanded exam content path');
+            }
+            const expanded = fs.readFileSync(path.join(root, 'content', entry.expandedContent), 'utf8');
+            fs.writeFileSync(path.join(folder, entry.id + '-expanded.md'), expanded.replace(/\]\(\//g,
+                '](https://graymans1on.github.io/university-notes/'));
+            expandedLink = `<a class="exam-expanded" href="/downloads/exams/${entry.id}-expanded.md" download>`
+                + 'Подробные ответы (Markdown)</a>';
+        }
         const toc = headings.filter((item) => item.depth === 3).map((item) =>
             `<a href="#${encodeURIComponent(item.id)}">${escapeHtml(item.title)}</a>`).join('');
         const partial = entry.questions.filter((question) => question.status === 'partial');
@@ -58,7 +69,8 @@ export function buildExams({ root, output, writePage, renderMarkdown, searchInde
             + `<h2>${escapeHtml(heading)}</h2><p class="exam-date">Дата: ${dateHtml}</p>`
             + `<p class="exam-coverage">${numbers.length} вопросов · частично: `
             + partial.map((question) => '№' + question.number).join(', ') + '</p>'
-            + `<div class="exam-actions"><a class="exam-download" href="${download}" download>Скачать Markdown</a>`
+            + `<div class="exam-actions"><a class="exam-download" href="${download}" download>Краткие ответы (Markdown)</a>`
+            + expandedLink
             + '<button class="print-button" type="button">Печать / PDF</button></div></header>'
             + `<nav class="exam-contents" aria-label="Вопросы: ${escapeHtml(heading)}">${toc}</nav>`
             + `<div class="exam-answers">${html}</div></article>`);

@@ -8,12 +8,12 @@
     {
       "title": "ОРГ",
       "slug": "statehood",
-      "topics": 13
+      "topics": 17
     },
     {
       "title": "Линал",
       "slug": "linear-algebra",
-      "topics": 22
+      "topics": 24
     },
     {
       "title": "Совр технологии",
@@ -23,7 +23,7 @@
     {
       "title": "Дискретка",
       "slug": "discrete-math",
-      "topics": 14
+      "topics": 15
     },
     {
       "title": "Английский",
@@ -33,7 +33,7 @@
     {
       "title": "Матанализ",
       "slug": "calculus",
-      "topics": 31
+      "topics": 32
     },
     {
       "title": "Информатика",
@@ -75,14 +75,14 @@
     "tools/venn",
     "tools/relations"
   ],
-  "searchSections": 795,
-  "mathCount": 7722,
+  "searchSections": 837,
+  "mathCount": 8095,
   "mathErrors": [],
-  "studyTopics": 138,
-  "referenceEntries": 163,
+  "studyTopics": 146,
+  "referenceEntries": 165,
   "formulaGroups": 34,
-  "questions": 385,
-  "practiceTasks": 925,
+  "questions": 393,
+  "practiceTasks": 950,
   "practiceTypes": [
     "multi",
     "matching",

@@ -1,0 +1,626 @@
+{
+  "importDate": "2026-10-31",
+  "baseCommit": "ed9d6eb2ccaaea624dc81f436afb843611bac2b6",
+  "sources": [
+    {
+      "file": "30.10 Матанал (transcribed on 31-Oct-2026 09-38-25).txt",
+      "bytes": 74682,
+      "sha256": "06a1f2692b490bad47b6b3a5fa9e40487482dd38f91d644dbbde661fdb56b677"
+    },
+    {
+      "file": "Дискретка лек 27.10.26.rar",
+      "bytes": 61930619,
+      "sha256": "6fcd296bb34814838d82ed91a74fce4420d42449cedc6d3cfa131b661cc3acf2"
+    },
+    {
+      "file": "Информатика 24,10,26.rar",
+      "bytes": 43621413,
+      "sha256": "18c7c581f91637f72de8ba9206b55dab7c4f1683e885a9bb0b78c9e0f9be27cc"
+    },
+    {
+      "file": "линал лек 22 окт., 13.30​ (transcribed on 31-Oct-2026 09-41-43).txt",
+      "bytes": 69436,
+      "sha256": "2a9ee0bfe326b9e19bd03d65f77f1d388f244a24f02b7b01c004e2b2ec1fbf53"
+    },
+    {
+      "file": "линал лек 29 окт., 13.29​ (transcribed on 31-Oct-2026 09-44-48).txt",
+      "bytes": 60663,
+      "sha256": "8dcd6fa715c6d08cef0f008aa185f9476c67cb55c2825c9e54bbf22663c7b93a"
+    },
+    {
+      "file": "линал пр 23 окт., 11.51​ (transcribed on 31-Oct-2026 09-49-02).txt",
+      "bytes": 60180,
+      "sha256": "c6c726bd9727201ce51caaf9c91466c6291fa4d818bb853d5eb68d71e0c04a8f"
+    },
+    {
+      "file": "линал прак 30 окт., 11.29​ (transcribed on 31-Oct-2026 09-54-58).txt",
+      "bytes": 93042,
+      "sha256": "30cf4f2eac88a984731079b3e87abbb6926d357cfb2dce57463b52da9ca16aa4"
+    },
+    {
+      "file": "мат анализ лек 23 окт., 09.42​ (transcribed on 31-Oct-2026 09-59-35).txt",
+      "bytes": 88716,
+      "sha256": "22669745005224ff6cea25f53fb6c7231553197f8a8a75611cb20ec1a20572dc"
+    },
+    {
+      "file": "матанализ лек 30 окт., 09.40​ (transcribed on 31-Oct-2026 10-04-28).txt",
+      "bytes": 75022,
+      "sha256": "06f50f26bf9d4179a8bd8d3904a04e2dc03e37670aed749acc5991b83720b424"
+    },
+    {
+      "file": "матанализ прак 28 окт., 08.14​ (transcribed on 31-Oct-2026 10-08-19).txt",
+      "bytes": 47995,
+      "sha256": "d516125db8a721f6f247fa5bf062f4c030509fea9769baad23fe540094ca2fd5"
+    },
+    {
+      "file": "орг видеолекции 27 окт., 11.26​ (transcribed on 31-Oct-2026 10-12-02).txt",
+      "bytes": 104145,
+      "sha256": "54b6e1ae627b5657080d403c1d9ae35bd37c407e6dc04c605d0caf0fee3d88da"
+    },
+    {
+      "file": "практ дискретка 28.10.26.rar",
+      "bytes": 1199155,
+      "sha256": "dbe3eed49512ddb7ba5723a407e93cfff848dd2bfae38d4126cca1efcdfde545"
+    },
+    {
+      "file": "физика 23 окт., 08.00​ (transcribed on 31-Oct-2026 10-15-50).txt",
+      "bytes": 82319,
+      "sha256": "ee8184c79b37700913c572d19c304b4040f68e8ae8d87e8f005dab244ae41205"
+    }
+  ],
+  "archiveMembers": [
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_50_2026-10-30_23-35-11.jpg",
+      "bytes": 91535,
+      "sha256": "e79362cef161ae947622891be30348d8d427b16ac8963deeb236066b92581217"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_51_2026-10-30_23-35-11.jpg",
+      "bytes": 118052,
+      "sha256": "820094f0b4d323e6b79eada37fb4887b706b27e1d0e2e0a30c8b0f6799ff02aa"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "дискретка лек 27 окт., 13.16​.m4a",
+      "bytes": 58221268,
+      "sha256": "beb140f86330d8e618feceaa8eb6e3a7a36bc90df5989becb550ffb0aae17277"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_1_2026-10-30_23-35-10.jpg",
+      "bytes": 99504,
+      "sha256": "c4eba2ea78f8ec5029b1141fd21822f73a1ce13ddfc163c4b782e5409112940c"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_2_2026-10-30_23-35-10.jpg",
+      "bytes": 250131,
+      "sha256": "ad36e6108b011dbdf93b9227ae2f781c19bd50ffdd26655e18a69854bb6befd7"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_3_2026-10-30_23-35-10.jpg",
+      "bytes": 104410,
+      "sha256": "22fddd624a7b14ab03582b3a50ceb09100972fe83d701507e5e41e6264c85782"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_4_2026-10-30_23-35-10.jpg",
+      "bytes": 109443,
+      "sha256": "bfd0c99a90c3a0be7105ce3fc6e1af5373db616505ab94982858c1d6ad91ba2e"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_5_2026-10-30_23-35-10.jpg",
+      "bytes": 76934,
+      "sha256": "a0c9cad43433dd0e0356a4e3af24720d14ba44f05600a06fbcbcc2c265271372"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_6_2026-10-30_23-35-10.jpg",
+      "bytes": 108236,
+      "sha256": "2055211cf8a79d4f87ea8262ff532055a89d7eb5d9377890afe26759840b026e"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_7_2026-10-30_23-35-10.jpg",
+      "bytes": 103100,
+      "sha256": "6f3479333728c7ca47dd97b237fbeabf8b324b210255d9cb968554bd4d80f961"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_8_2026-10-30_23-35-10.jpg",
+      "bytes": 75206,
+      "sha256": "13d9752b9492a4e5731276b2e9e84d3c23c5a1c2118b402d9bb6d2a4b937f544"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_9_2026-10-30_23-35-10.jpg",
+      "bytes": 131974,
+      "sha256": "ecbcbdd21a9c7b2af32e1c03836f2301447201ed9244db1d5acffaae55fd5d12"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_10_2026-10-30_23-35-10.jpg",
+      "bytes": 89287,
+      "sha256": "8de4bfde79458e540d215bbbf4ac0844372ddbdead2e9994ddd0faabdbf7d565"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_11_2026-10-30_23-35-10.jpg",
+      "bytes": 100961,
+      "sha256": "284f8ffc8581b9637257bcf6ed6ec6542a0c7a83912d74e230d6625f32d3cdd5"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_12_2026-10-30_23-35-10.jpg",
+      "bytes": 123525,
+      "sha256": "8db2b40edb1b9e41845a6aef832598b543361fd97b97c53a1b399f32296fa4bc"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_13_2026-10-30_23-35-10.jpg",
+      "bytes": 91720,
+      "sha256": "a6dd2259573fe49f1bcb816f330784bdc1c827cc34857320407f0e6dd36cdb94"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_14_2026-10-30_23-35-10.jpg",
+      "bytes": 88462,
+      "sha256": "b628458057a758e09b41551395bad6d829bb8437a8cacef9e9f6356473e1553c"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_15_2026-10-30_23-35-10.jpg",
+      "bytes": 113371,
+      "sha256": "ce1eb50761cb6092716a4528201cd552d28effe289959a32e3b8676c5591048f"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_16_2026-10-30_23-35-10.jpg",
+      "bytes": 93400,
+      "sha256": "87f99ee08f1c80c94a524a0d991c2dc2f66a096ec4d627242c7909766fd98700"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_17_2026-10-30_23-35-10.jpg",
+      "bytes": 87019,
+      "sha256": "df439c36c3730ef5618eab17ec61628a396e3b4ca182ffb4d780349409fe74dd"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_18_2026-10-30_23-35-10.jpg",
+      "bytes": 102338,
+      "sha256": "807bb3f07c16fd5149c6713252effee26adffb9a2c2ee0f1fa488c4348197856"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_19_2026-10-30_23-35-10.jpg",
+      "bytes": 130263,
+      "sha256": "061990e66e64d964b8936d9a326fb6a29ae34ca1e301ea350c299872d39a59f4"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_20_2026-10-30_23-35-10.jpg",
+      "bytes": 107456,
+      "sha256": "862f78b11b6325c5665bb3d2ef6337edd4228f16d93ac744c10b4ca6558b41fe"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_21_2026-10-30_23-35-10.jpg",
+      "bytes": 88189,
+      "sha256": "d783e350142757efdeb6f12e50f718dcfe9804a0a4ff784d8a41325d1ea7c3f1"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_22_2026-10-30_23-35-10.jpg",
+      "bytes": 107622,
+      "sha256": "23e19fcba1399722d37991c27dd6b1a04340881c24e263350f147208c4ba848b"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_23_2026-10-30_23-35-10.jpg",
+      "bytes": 82839,
+      "sha256": "cfda725891c1b0428faca6cbf892d74cd3dee9a8bd0a190cfd25bc7142f72ded"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_24_2026-10-30_23-35-10.jpg",
+      "bytes": 127395,
+      "sha256": "7fd91646a5ad909ed36594ccb301405107f810a0e686231127e4caf9f64b3147"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_25_2026-10-30_23-35-10.jpg",
+      "bytes": 80632,
+      "sha256": "9931ecfeaaf9a4fba38dddfe99dcbe14ae86d236403bf69d8e0f0c8780f7cc26"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_26_2026-10-30_23-35-11.jpg",
+      "bytes": 96957,
+      "sha256": "484cd015aabb92242529dbc731e41029acb2456d89cf45edf3f6fbe1f4292150"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_27_2026-10-30_23-35-11.jpg",
+      "bytes": 112123,
+      "sha256": "c4e05ee96863c030c124dcaba16c3e6ff04bf3edf9fcd75155a7618de6aec929"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_28_2026-10-30_23-35-11.jpg",
+      "bytes": 98841,
+      "sha256": "59c9d90078ce4417d8c16d01d664e2aeb0059233a0444efd85452516f5cf2ca9"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_29_2026-10-30_23-35-11.jpg",
+      "bytes": 91120,
+      "sha256": "55fd375bf26e051379d79a2ce2c688330f9d787dc7e2874e95972085dc1c7561"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_30_2026-10-30_23-35-11.jpg",
+      "bytes": 114710,
+      "sha256": "1c5680dec0aeff6ea037c697df6dfe5a38ac6abb76e0c109c152343cfd014619"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_31_2026-10-30_23-35-11.jpg",
+      "bytes": 95270,
+      "sha256": "70e532aae1c77ceb3639e831c31496a31b4cac64a814b8b9a9aa8a910d0d7192"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_32_2026-10-30_23-35-11.jpg",
+      "bytes": 95512,
+      "sha256": "a2e91481673f45b09a80579fc36dec5b56224f7ef25e4c719fbb815b1a2191ed"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_33_2026-10-30_23-35-11.jpg",
+      "bytes": 111079,
+      "sha256": "efb71e9710d3d76d950e6f6b95e0c9be4769637556560cf7fd06cb29f93f1ee1"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_34_2026-10-30_23-35-11.jpg",
+      "bytes": 96757,
+      "sha256": "578cea1673d1043d7a7341b322fc6320d0a15cd8fea2e81295e57617b754c09d"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_35_2026-10-30_23-35-11.jpg",
+      "bytes": 99304,
+      "sha256": "dc3cde476b2fce20dd45ef8cc2c3b97d90d2367b441284c225396d9f4a8f174c"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_36_2026-10-30_23-35-11.jpg",
+      "bytes": 103543,
+      "sha256": "6e4dd2535e2ec8a50bb0578cb8dc23d5dfc42e566b739be34656a71970e6750b"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_37_2026-10-30_23-35-11.jpg",
+      "bytes": 82827,
+      "sha256": "39617c40d1c4cfc9a64f18c8c740c8955d4482a32bd46f9d0a5a1a0db3f506fa"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_38_2026-10-30_23-35-11.jpg",
+      "bytes": 110457,
+      "sha256": "8958474e74bd316e7f30f5d4a4c93beac9709ed55feb58ed607a5a3f518c80be"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_39_2026-10-30_23-35-11.jpg",
+      "bytes": 84624,
+      "sha256": "c1a85653f14b386d054307cf22a9260fa779391539e618fd4fb413d82a5a6fc0"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_40_2026-10-30_23-35-11.jpg",
+      "bytes": 114294,
+      "sha256": "6401893c88dc21895db8a1d0493668c4ebacbca62d2955a7ee94b81055d1b1bb"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_41_2026-10-30_23-35-11.jpg",
+      "bytes": 96798,
+      "sha256": "a7cb28805430b4533ae798ae3618748e08a765f47a3238e06f1b23f9cd70374b"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_42_2026-10-30_23-35-11.jpg",
+      "bytes": 84867,
+      "sha256": "b9435eede1b43d9c6f6bac8fca983214164cdee60fb151c4f2b30a607235d74b"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_43_2026-10-30_23-35-11.jpg",
+      "bytes": 88924,
+      "sha256": "c1b5205dfc06e1e6aa58fba523ad80bfba6b6e3669c3c3b16ad6b245d21ff093"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_44_2026-10-30_23-35-11.jpg",
+      "bytes": 99103,
+      "sha256": "648214bb2dca51053b400797cc0342bb3bf4e685157f762d6b26cba0ef161cf9"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_45_2026-10-30_23-35-11.jpg",
+      "bytes": 109026,
+      "sha256": "42f27e10e7a9230ac0276b23ed49a520a20f25c7c090cec440e552a519db11d9"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_46_2026-10-30_23-35-11.jpg",
+      "bytes": 85683,
+      "sha256": "c1e97056fde0a2310c6f6e4144515548ce44b456011a57c98b009d24a2e9cd6d"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_47_2026-10-30_23-35-11.jpg",
+      "bytes": 103766,
+      "sha256": "5812f1d16baf09214e4234f4ebe7d6aba676197d0670658e062a50e84b839480"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_48_2026-10-30_23-35-11.jpg",
+      "bytes": 110807,
+      "sha256": "ed7f64ba74d0ecd6db6afb2fea7c8b1f16df5cd39cc78d4c3e601c4264f05397"
+    },
+    {
+      "archive": "Дискретка лек 27.10.26.rar",
+      "member": "photo_49_2026-10-30_23-35-11.jpg",
+      "bytes": 84095,
+      "sha256": "03a5fece8a1d7faaf74adccc77e225a692d6728555d9909329c8c5dd89aa51a5"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_29_2026-10-30_23-03-11.jpg",
+      "bytes": 256648,
+      "sha256": "d56051807f9f8238046dc9d3873229f75f8bb76b626ad7f2884cee8905c1f60a"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_30_2026-10-30_23-03-11.jpg",
+      "bytes": 75435,
+      "sha256": "b8e7a7dd31b12c036c6852aff9fc46abed08790baa3b481c96038b43a1abcd39"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_1_2026-10-30_23-03-11.jpg",
+      "bytes": 105536,
+      "sha256": "aa8d81e0d455789c7f6894a0cf577057d35df0fc3b925a01af4d2fdd190a4f1a"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_2_2026-10-30_23-03-11.jpg",
+      "bytes": 109549,
+      "sha256": "989b4c4e3622aab5aad7645302de2ea12f28556a721555e4a41549f44e9341a7"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_3_2026-10-30_23-03-11.jpg",
+      "bytes": 110281,
+      "sha256": "2ceb110a1f06ab9655a6d51ee8cc12197b16e98239e6a50b65b7c4f66b64ef3c"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_4_2026-10-30_23-03-11.jpg",
+      "bytes": 83690,
+      "sha256": "3cf99fcf3620a8c8f4e470ccfded5ce88a59e95889bb061be3a1ed629b9bef99"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_5_2026-10-30_23-03-11.jpg",
+      "bytes": 78337,
+      "sha256": "d69dc7b4b811f1d05aca35fb5d201f025c0e22c532a503bebf1781c1bff36baa"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_6_2026-10-30_23-03-11.jpg",
+      "bytes": 108621,
+      "sha256": "f4180ad7b52fb64c1ff18e46900099e69549842b4b1e4d23d6aa3a83eda45a83"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_7_2026-10-30_23-03-11.jpg",
+      "bytes": 99873,
+      "sha256": "bb95a358ac8709f10b64ebfb5bcbddcd264e28e6f68580cff03a2181520046a7"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_8_2026-10-30_23-03-11.jpg",
+      "bytes": 76418,
+      "sha256": "02e534e9315bec7faa868308603960a1c41f331dd6034d627eba1b8b2e05950c"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_9_2026-10-30_23-03-11.jpg",
+      "bytes": 100583,
+      "sha256": "6991caa51e77778ef8c0a10de6c45f24956d60a445b1cdb8ca55770e221ac230"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_10_2026-10-30_23-03-11.jpg",
+      "bytes": 94758,
+      "sha256": "fddaf5e5b15cc28f6f414de93bb67b109a7a356b60de6d28b2b15fdbcc3aba2c"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_11_2026-10-30_23-03-11.jpg",
+      "bytes": 85273,
+      "sha256": "a4fa1c579b4ef932076f70d683ee5c115fc403d585235e2376b4e1035ad10add"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_12_2026-10-30_23-03-11.jpg",
+      "bytes": 100141,
+      "sha256": "6995258787943b195db84830a98172b1a0209f9f40cdf65b6e2eefa0304e5d60"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_13_2026-10-30_23-03-11.jpg",
+      "bytes": 103872,
+      "sha256": "96b09bca77cd7a9de8b2ff977727603c71650fa72992608930a95bea5d076597"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_14_2026-10-30_23-03-11.jpg",
+      "bytes": 100799,
+      "sha256": "e4e6145d2d1df209aef2ffc974a3dff3ede1407d140c4d2ca6ddcab3291a97f3"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_15_2026-10-30_23-03-11.jpg",
+      "bytes": 112184,
+      "sha256": "491ce49360dcc9f10239d3885dfbd4cb37b261db40d5146d9acc7055196d80c2"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_16_2026-10-30_23-03-11.jpg",
+      "bytes": 77441,
+      "sha256": "01131011318143bb182795f1d419f4c44f30471341d711ac39c2f63b5b0bf338"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_17_2026-10-30_23-03-11.jpg",
+      "bytes": 72572,
+      "sha256": "64c294ce053bd54cf4a199b8e5e3da58e920d576baee55bd69c18cdfd5d877e2"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_18_2026-10-30_23-03-11.jpg",
+      "bytes": 83639,
+      "sha256": "d7814fa52a9dc431e7be7021469398094350746079f33c9e0c4b0d6aaf2b339e"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_19_2026-10-30_23-03-11.jpg",
+      "bytes": 90820,
+      "sha256": "75da5b061afbac634939234ad37fa0b43f5fc994d14cdddafd3620db7209bbc3"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_20_2026-10-30_23-03-11.jpg",
+      "bytes": 84582,
+      "sha256": "066b7cee7ed13ec5f3d8e23779d140af59836669f6f9bf2b23524d73a3e0614e"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_21_2026-10-30_23-03-11.jpg",
+      "bytes": 85175,
+      "sha256": "78399ddf0d055116b5bfeb64671cfef6b01372e231dfedbd8e4f2af6b3603186"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_22_2026-10-30_23-03-11.jpg",
+      "bytes": 95285,
+      "sha256": "a435fc544da6a68ef492629e759423da0da3c891bad6e99cccfa0ffa66b07213"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_23_2026-10-30_23-03-11.jpg",
+      "bytes": 101608,
+      "sha256": "7b169e86a5337b4e7a4e9af41583135872c8073b9ac0c82c874c4dcca840f03c"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_24_2026-10-30_23-03-11.jpg",
+      "bytes": 91356,
+      "sha256": "92ea39f77a6af1c02419ac8a9e92f838812911469ff9e45e797c4bec5479e51f"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_25_2026-10-30_23-03-11.jpg",
+      "bytes": 257004,
+      "sha256": "4277fb34c0400ae1038fdc24da3ea575ae01a3f9cafae42225d2be4c7db168a6"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_26_2026-10-30_23-03-11.jpg",
+      "bytes": 93579,
+      "sha256": "0b1a0bc1d3f456d3e0f8f2f23ac57b1c700b09faf2bd95c490d0f34c90310d46"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_27_2026-10-30_23-03-11.jpg",
+      "bytes": 109637,
+      "sha256": "bc0afc2daf2ea8e923dfe55ffea0d4f4f86f140bb2b6274d290e1aa6c5bdeb2c"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "photo_28_2026-10-30_23-03-11.jpg",
+      "bytes": 106502,
+      "sha256": "ffa306eec96d78079f5b32595162542c004fc6e40c26aebfaf3ee8474d6669dd"
+    },
+    {
+      "archive": "Информатика 24,10,26.rar",
+      "member": "информатика 24 окт., 11.32​.m4a",
+      "bytes": 41582583,
+      "sha256": "6540cb61f6b6d51d225e17b43f6669cfbefa8f6d75f133bc353ba5cd56b1e58e"
+    },
+    {
+      "archive": "практ дискретка 28.10.26.rar",
+      "member": "практ дискретка 28.10.26/photo_1_2026-10-30_23-42-27.jpg",
+      "bytes": 144867,
+      "sha256": "f2f0a5d8059bf4bd57e105d0075562246ff7517b33801570baa8ef6846255c7f"
+    },
+    {
+      "archive": "практ дискретка 28.10.26.rar",
+      "member": "практ дискретка 28.10.26/photo_2_2026-10-30_23-42-27.jpg",
+      "bytes": 158543,
+      "sha256": "74e03b6028f972fe807c2482afc5014080d1985a429f2cd75d3a3e4dd77e6fb4"
+    },
+    {
+      "archive": "практ дискретка 28.10.26.rar",
+      "member": "практ дискретка 28.10.26/photo_3_2026-10-30_23-42-27.jpg",
+      "bytes": 164974,
+      "sha256": "cb388b99acd15c482b1bbb77ee60ba17f2f46b3138526ddeec69f9e547e612af"
+    },
+    {
+      "archive": "практ дискретка 28.10.26.rar",
+      "member": "практ дискретка 28.10.26/photo_4_2026-10-30_23-42-27.jpg",
+      "bytes": 103722,
+      "sha256": "990fae5bf3c1c7a2f18fc8018367099cd2cd40f0c2e6714bdba349c689ad3a71"
+    },
+    {
+      "archive": "практ дискретка 28.10.26.rar",
+      "member": "практ дискретка 28.10.26/photo_5_2026-10-30_23-42-27.jpg",
+      "bytes": 151934,
+      "sha256": "38d5d4827702260f4648a593f6265ac2168311b3d09d54587ab757fb08cba54d"
+    },
+    {
+      "archive": "практ дискретка 28.10.26.rar",
+      "member": "практ дискретка 28.10.26/photo_6_2026-10-30_23-42-27.jpg",
+      "bytes": 135976,
+      "sha256": "6e4186ab4a48ad13083052737428847b6049664767d10f203f5b427a1f3cad93"
+    },
+    {
+      "archive": "практ дискретка 28.10.26.rar",
+      "member": "практ дискретка 28.10.26/photo_7_2026-10-30_23-42-27.jpg",
+      "bytes": 95521,
+      "sha256": "faef908353b25b697e91edf45e66a369bffa11ca8f5ba8e3a3298f0eb2f0ec6d"
+    },
+    {
+      "archive": "практ дискретка 28.10.26.rar",
+      "member": "практ дискретка 28.10.26/photo_8_2026-10-30_23-42-27.jpg",
+      "bytes": 139530,
+      "sha256": "92121f5eefa821e92f6bff8f8da8f44074fade4e802db8bf3c42fc59c6a10da0"
+    },
+    {
+      "archive": "практ дискретка 28.10.26.rar",
+      "member": "практ дискретка 28.10.26/photo_9_2026-10-30_23-42-27.jpg",
+      "bytes": 113285,
+      "sha256": "4106e5d7b026d5b275c81ec5c9b44b4b541186a23b021bb6bc077f33af819d43"
+    }
+  ],
+  "policy": "Original attachments are unchanged. Audio and photographs are not bundled with the website or APK."
+}

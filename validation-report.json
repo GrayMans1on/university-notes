@@ -18,7 +18,7 @@
     {
       "title": "Совр технологии",
       "slug": "modern-technologies",
-      "topics": 11
+      "topics": 13
     },
     {
       "title": "Дискретка",
@@ -75,14 +75,14 @@
     "tools/venn",
     "tools/relations"
   ],
-  "searchSections": 837,
-  "mathCount": 8095,
+  "searchSections": 847,
+  "mathCount": 8163,
   "mathErrors": [],
-  "studyTopics": 146,
-  "referenceEntries": 165,
-  "formulaGroups": 34,
-  "questions": 393,
-  "practiceTasks": 950,
+  "studyTopics": 148,
+  "referenceEntries": 167,
+  "formulaGroups": 35,
+  "questions": 401,
+  "practiceTasks": 966,
   "practiceTypes": [
     "multi",
     "matching",

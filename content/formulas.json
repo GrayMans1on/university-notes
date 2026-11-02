@@ -580,5 +580,18 @@
       "$f\\sim g\\iff f/g\\to1$ при ненулевом $g$ в рассматриваемой проколотой окрестности.",
       "$\\sin x\\sim x$, $\\arcsin x\\sim x$, $\\tan x\\sim x$, $\\arctan x\\sim x$, $\\ln(1+x)\\sim x$, $e^x-1\\sim x$ при $x\\to0$."
     ]
+  },
+  {
+    "subject": "Линал",
+    "slug": "linear-algebra",
+    "title": "Вычеты по модулю",
+    "id": "formulas-linear-algebra-residues",
+    "sources": [
+      "Операции и свойства алгебраического поля"
+    ],
+    "formulas": [
+      "$a\\in\\mathbb Z_m$ обратим по умножению $\\iff\\gcd(a,m)=1$, где $m\\ge2$.",
+      "$\\mathbb Z_m$ — поле $\\iff m$ — простое число."
+    ]
   }
 ]

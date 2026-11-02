@@ -1,0 +1,1342 @@
+{
+  "importDate": "2026-11-02",
+  "baseCommit": "fd358530ea39a1b979f57ebef027c864526b65b0",
+  "sources": [
+    {
+      "id": 1,
+      "name": "физика 09,10.rar",
+      "bytes": 65648336,
+      "sha256": "47788ffbeb60fc4f0f388f2a34c74b9a384fa9df53232c4df10751a08a5bb63b",
+      "members": [
+        {
+          "name": "photo_4_2026-11-01_00-47-39.jpg",
+          "bytes": 221485,
+          "sha256": "91a806406cfbebfb8ed811f1e7a8aa3d70e727639502851bf87202fba968fc57",
+          "photoIndex": 1
+        },
+        {
+          "name": "физика 9 окт., 08.00​.m4a",
+          "bytes": 65694744,
+          "sha256": "2bc5a6f2218c0fa40ec3984029a16c9f58335f0083adb0391398b3dc763ed14b"
+        },
+        {
+          "name": "photo_5_2026-11-01_00-47-39.jpg",
+          "bytes": 246013,
+          "sha256": "521a3ca673f43d9a187efbb736dd6424bfa07406f8696107877b530774286e5d",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_6_2026-11-01_00-47-40.jpg",
+          "bytes": 220936,
+          "sha256": "d8e00b360461d3ac3913fb32dc7b7e5857c6b1efd5eb6119509e779fe54df01e",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_7_2026-11-01_00-47-40.jpg",
+          "bytes": 227405,
+          "sha256": "448264686afe15d8a235ba653ecaf1ca01d48d3713b110ff83ba46bfa4f9bc29",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_8_2026-11-01_00-47-40.jpg",
+          "bytes": 232726,
+          "sha256": "19fe62507d063d4aa2c74d5da557ea124ad547189c8d716b02fa96135fb96b35",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_1_2026-11-01_00-47-39.jpg",
+          "bytes": 190754,
+          "sha256": "62af27ff0a145fd64be182d4a20aab0fefff4abdc49b12dea3ba72388c54952d",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_2_2026-11-01_00-47-39.jpg",
+          "bytes": 190949,
+          "sha256": "e890664f289d0349058df1a901b6e3cb6e640bcfdd4a5029a985dde71c762504",
+          "photoIndex": 7
+        },
+        {
+          "name": "photo_3_2026-11-01_00-47-39.jpg",
+          "bytes": 236050,
+          "sha256": "66ef7aef1a64c9ce3db37e0e2cd3bbdc5b6f35a2b33d0fa2d1dc2830c02d27f8",
+          "photoIndex": 8
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "28,10,26 матанализ пр.rar",
+      "bytes": 57735607,
+      "sha256": "547b3e23c04d024ac6be80dcf9734cbd09c9247010dcbdb2c76073c33ab8a065",
+      "members": [
+        {
+          "name": "photo_1_2026-10-31_23-18-09.jpg",
+          "bytes": 162951,
+          "sha256": "91db03309d67393b7ce9a41d1f3710ad55e571049abb58d7c81514a9c01c37f6",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_2_2026-10-31_23-18-09.jpg",
+          "bytes": 125175,
+          "sha256": "995269b6d1b94cfe0b0160fc4ed1f5b7be23217d8bd6ec8a71e82ccdb0590f8b",
+          "photoIndex": 2
+        },
+        {
+          "name": "матанализ прак 28 окт., 08.14​.m4a",
+          "bytes": 58980293,
+          "sha256": "cc8716ace864151cf51f847223e5509cd74ce17503b8d9fdf03a6f920b188c60"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "30,10,26 матанализ лек.rar",
+      "bytes": 63592684,
+      "sha256": "e7f536403de3beda183d4646d4c90531435c05e4bc20c3ab98bb495589f6349f",
+      "members": [
+        {
+          "name": "photo_1_2026-10-31_23-08-13.jpg",
+          "bytes": 99657,
+          "sha256": "c6f8d7db59eccd43a407b5bf53cf59bb31faaa13545a92be3b27f461f8fe1c98",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_2_2026-10-31_23-08-13.jpg",
+          "bytes": 101439,
+          "sha256": "cb986f3dd872fa1fcfd4adc0ca907e9491aae506e192fb78a5a293ec6e97f1ba",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_3_2026-10-31_23-08-13.jpg",
+          "bytes": 112707,
+          "sha256": "4a48f5fb7b782844455f2b1fef6d6c22ee5a085eb515c55ba3bf90d5bfb7ee00",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_4_2026-10-31_23-08-13.jpg",
+          "bytes": 110276,
+          "sha256": "e3f58adafd2cbd6f129368519e4a60d27de87a55d703fca1e7e12764a06a2282",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_5_2026-10-31_23-08-13.jpg",
+          "bytes": 110165,
+          "sha256": "f4d2523d3711a1df27ce82909053a726ca4a2f382df947aeacd97d51a1f2bac4",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_6_2026-10-31_23-08-13.jpg",
+          "bytes": 113840,
+          "sha256": "8438c83053d06ece17f34fe2573c80a3fdf4794d4b6e8b8e646a764ace58e6f0",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_7_2026-10-31_23-08-13.jpg",
+          "bytes": 123328,
+          "sha256": "0457ad8aac4c3f6cce5bec3ffbb8437db03aaa9431b055ef752876157b108057",
+          "photoIndex": 7
+        },
+        {
+          "name": "photo_8_2026-10-31_23-08-13.jpg",
+          "bytes": 76813,
+          "sha256": "7719565f07f567bb1451c2f1cd89a1cd4d5c4ee768457b3d16e48b3bda448c4b",
+          "photoIndex": 8
+        },
+        {
+          "name": "photo_9_2026-10-31_23-08-13.jpg",
+          "bytes": 61978,
+          "sha256": "bf45b87bd5036665e8e9c593b48203066c3ad8e179b5f5262be2d20455f8acf4",
+          "photoIndex": 9
+        },
+        {
+          "name": "photo_10_2026-10-31_23-08-13.jpg",
+          "bytes": 105971,
+          "sha256": "e3fbfde7cdf161d60d7c7c663f9a764c4c800e49760eaa015010057f63675f68",
+          "photoIndex": 10
+        },
+        {
+          "name": "photo_11_2026-10-31_23-08-13.jpg",
+          "bytes": 135956,
+          "sha256": "81b82a8fe0f378ceb5a811c044b4313957d15ba963fd869461284cfcb09ca855",
+          "photoIndex": 11
+        },
+        {
+          "name": "photo_12_2026-10-31_23-08-13.jpg",
+          "bytes": 120403,
+          "sha256": "9a011e8b9670f7eb21a18a6dbb2e50c664923efceb4814ae3fc3e3455561b8da",
+          "photoIndex": 12
+        },
+        {
+          "name": "photo_13_2026-10-31_23-08-13.jpg",
+          "bytes": 144145,
+          "sha256": "81a79119d69f6d341e23800a898c7644692a5803c02d95a6a2df0558caba59d6",
+          "photoIndex": 13
+        },
+        {
+          "name": "photo_14_2026-10-31_23-08-13.jpg",
+          "bytes": 118640,
+          "sha256": "6d289a2759ac7937352ae384c732888ed0b6d7e6334cad72f0859b2defadae84",
+          "photoIndex": 14
+        },
+        {
+          "name": "матанализ лек 30 окт., 09.40​.m4a",
+          "bytes": 63718290,
+          "sha256": "51502d4e9d0f80d0a317eae1543e5e16d570a015b0318d998ba39263490b7716"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "30.10.26 линал пр.rar",
+      "bytes": 59158769,
+      "sha256": "a961809713fd7244cf525c920176626bba1d60866ca0630610e3ef12579dfd40",
+      "members": [
+        {
+          "name": "photo_1_2026-10-31_23-03-15.jpg",
+          "bytes": 73267,
+          "sha256": "2124cd1462a3eaca4a538fce4e53ac0b7b1625589db6f3f0f8b05d19b9e11c35",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_2_2026-10-31_23-03-15.jpg",
+          "bytes": 77710,
+          "sha256": "dca85c8a6e8184bdccaf9e45d58f4b012ca11cc8494ebab191a56ce6fb547ec4",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_3_2026-10-31_23-03-15.jpg",
+          "bytes": 107651,
+          "sha256": "5991f9bcb9ae3090d12c39e01e32d750fe9cf2c7ba68501bf650f3a625d6b511",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_4_2026-10-31_23-03-15.jpg",
+          "bytes": 82151,
+          "sha256": "77b305ff4b17e48d3e1997cd28ddba70d72cabe53ac59d4d2510c2f184819888",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_5_2026-10-31_23-03-15.jpg",
+          "bytes": 79286,
+          "sha256": "da5ea75b42ca8cdf87e0a81f13bd42bc1ab6e1b7daa179aa2d93f313d8b1d417",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_6_2026-10-31_23-03-15.jpg",
+          "bytes": 48250,
+          "sha256": "8d3cb7cbffb534e2dce57b7cf2e3aa2231c7acc514aa20fd39fba1f50b73acaf",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_7_2026-10-31_23-03-15.jpg",
+          "bytes": 109610,
+          "sha256": "d57ecf6d8f2ae87be8601475d30743288e94d77033f4dde5cb68618143517100",
+          "photoIndex": 7
+        },
+        {
+          "name": "линал прак 30 окт., 11.29​.m4a",
+          "bytes": 60127438,
+          "sha256": "66be9261c33871c396ef63a0fbf2782dda187c41d32066f404706560d6429cea"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "дискр 13.10.rar",
+      "bytes": 44753807,
+      "sha256": "393c123907c2f9e49ddb91d6e4bca5b7ed831a7bc5afd1a81d242addbe7fca05",
+      "members": [
+        {
+          "name": "photo_1_2026-11-01_01-01-19.jpg",
+          "bytes": 81946,
+          "sha256": "a5e93c677cbd316dff9fa8eed527b1d5e711b37431f413a7dd3a9f6e940ac5d4",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_2_2026-11-01_01-01-19.jpg",
+          "bytes": 93442,
+          "sha256": "1c8f6649536a8bbfef4fe6efb51ac5d0b94055e5294ffe334bda4e8b96fe0cfe",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_3_2026-11-01_01-01-19.jpg",
+          "bytes": 97226,
+          "sha256": "a9ea8b3f2f5976884afd5062ee49bf737179f553fb8e1e7fc015f2ba66a773f1",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_4_2026-11-01_01-01-19.jpg",
+          "bytes": 96948,
+          "sha256": "3ca999e8b813849b49d63a62f9f908e1c15f6fbb453958ba59ce33715a6600f4",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_5_2026-11-01_01-01-19.jpg",
+          "bytes": 87513,
+          "sha256": "a55c158c0a6c73fd5c29aa43806e2150d4ae5e749cb93cf207f04f5ffc318d81",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_6_2026-11-01_01-01-19.jpg",
+          "bytes": 86839,
+          "sha256": "0d2d7238c1227ad488f4f32b93ebd67ac7e5cdd8708fb518863f56156621b9b5",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_7_2026-11-01_01-01-19.jpg",
+          "bytes": 98778,
+          "sha256": "8ab2313ba80158628e962ea3189c3dad0b3bd726975541191242cd67ea29c4af",
+          "photoIndex": 7
+        },
+        {
+          "name": "photo_8_2026-11-01_01-01-19.jpg",
+          "bytes": 81736,
+          "sha256": "8c1536ecbfa997fc180bb51a7df94ba949f1d1721eff69e6bc152bc4ebe43080",
+          "photoIndex": 8
+        },
+        {
+          "name": "photo_9_2026-11-01_01-01-19.jpg",
+          "bytes": 94550,
+          "sha256": "a1ccb8d776cf9c9953c462c36304685f7b93550201737fd548475acfd4e8bc69",
+          "photoIndex": 9
+        },
+        {
+          "name": "photo_10_2026-11-01_01-01-19.jpg",
+          "bytes": 95973,
+          "sha256": "9d19bbe628a8c268c05a9a953ca3b41244ca54afe839895445dfc7d25e141f34",
+          "photoIndex": 10
+        },
+        {
+          "name": "photo_11_2026-11-01_01-01-19.jpg",
+          "bytes": 98711,
+          "sha256": "ae764f15118a46d69e451e24c40672001baebef4ade28ea9ddd7a10a161154a1",
+          "photoIndex": 11
+        },
+        {
+          "name": "photo_12_2026-11-01_01-01-19.jpg",
+          "bytes": 97598,
+          "sha256": "ad86c1d1fdb84c51374d8cd4b497107581e68519794d30817ab3bcdbd219c845",
+          "photoIndex": 12
+        },
+        {
+          "name": "photo_13_2026-11-01_01-01-19.jpg",
+          "bytes": 88404,
+          "sha256": "9c5b71e57c1b63f1493e32d8940a3c331b8de848d5b9c66b254d5eabc5349e2e",
+          "photoIndex": 13
+        },
+        {
+          "name": "photo_14_2026-11-01_01-01-19.jpg",
+          "bytes": 87804,
+          "sha256": "398d4639540b354beb5a59fc564ea1ef98a1cd50cceca0ca17aeef176eb8a889",
+          "photoIndex": 14
+        },
+        {
+          "name": "photo_15_2026-11-01_01-01-19.jpg",
+          "bytes": 86659,
+          "sha256": "d6b7de5e87ffb2a016a05a3ef12e2aac61035b88866e3aa7eb3ba16c49bd25e4",
+          "photoIndex": 15
+        },
+        {
+          "name": "photo_16_2026-11-01_01-01-19.jpg",
+          "bytes": 77697,
+          "sha256": "7acf985c1a2c3214ce8057855fcf650d007fbee86dc37e0bf1774c44d0ec426f",
+          "photoIndex": 16
+        },
+        {
+          "name": "photo_17_2026-11-01_01-01-19.jpg",
+          "bytes": 82321,
+          "sha256": "87c79804f32dc0f0bbb665dfcc1a02ae2f55f2c4d6722e9bdfe31c832ee1095a",
+          "photoIndex": 17
+        },
+        {
+          "name": "photo_18_2026-11-01_01-01-19.jpg",
+          "bytes": 101987,
+          "sha256": "97e4d53954e7b393754c43481916db88b2a319c97f1168f26f94d589761bc611",
+          "photoIndex": 18
+        },
+        {
+          "name": "photo_19_2026-11-01_01-01-19.jpg",
+          "bytes": 86307,
+          "sha256": "25cf6a5dc98de9accb50477e17d26057f7902f1adb539cd56755c8bdde4a6151",
+          "photoIndex": 19
+        },
+        {
+          "name": "photo_20_2026-11-01_01-01-19.jpg",
+          "bytes": 88211,
+          "sha256": "e089bc21c24fb760f05d408643488c2c881538b085ee87d5d34ade6513c4ee53",
+          "photoIndex": 20
+        },
+        {
+          "name": "photo_21_2026-11-01_01-01-19.jpg",
+          "bytes": 94723,
+          "sha256": "5b27d50eb42041e26860d1d097cf75fbdbe75718af87e60bf8ba0df558e00c19",
+          "photoIndex": 21
+        },
+        {
+          "name": "photo_22_2026-11-01_01-01-19.jpg",
+          "bytes": 85673,
+          "sha256": "c637a62b19836535db95f201f73784098040d165559973ddecfd112a68f4eb5a",
+          "photoIndex": 22
+        },
+        {
+          "name": "photo_23_2026-11-01_01-01-19.jpg",
+          "bytes": 86456,
+          "sha256": "f7c0b5b6ef4c587ba450f43bf65f2b2d3e6ad0d305f733a2f71f51aa0fc594ec",
+          "photoIndex": 23
+        },
+        {
+          "name": "photo_24_2026-11-01_01-01-19.jpg",
+          "bytes": 82162,
+          "sha256": "a180db420f15381504518f28471acde7f45a14b277c7f19fd45c63ccd72c7ce8",
+          "photoIndex": 24
+        },
+        {
+          "name": "photo_25_2026-11-01_01-01-19.jpg",
+          "bytes": 85975,
+          "sha256": "b6d745f88d406bcbada97c9b48f241de6a43be148b049054a410785933e508b5",
+          "photoIndex": 25
+        },
+        {
+          "name": "дискретка лек 13 окт., 13.17​.m4a",
+          "bytes": 43739117,
+          "sha256": "0fb68dca97f293197166d772a8a6e4801dcf4c540152045a5ee940a9d22bbdd7"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "линал 08.10.rar",
+      "bytes": 59203469,
+      "sha256": "58a03c636a17bc56b2348ac72d0583a6654c09600f6e76fd5f2b493aa19e0a4d",
+      "members": [
+        {
+          "name": "8 окт., 13.27​ линал лек.m4a",
+          "bytes": 59338979,
+          "sha256": "fcea95f2ddbc9645d5386e943c237e6fb005f3b298656506391d42ec6807e20c"
+        },
+        {
+          "name": "photo_1_2026-11-01_00-41-58.jpg",
+          "bytes": 121782,
+          "sha256": "1d4c3a54b642fcf0547e99af0a4011333c8a3e8ff168fd4a328acdd417a98536",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_2_2026-11-01_00-41-58.jpg",
+          "bytes": 92672,
+          "sha256": "5c6db78449758043ffdceeb969168e425b6088ff36ca20496a9c3c5f28fa7bbc",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_3_2026-11-01_00-41-58.jpg",
+          "bytes": 116871,
+          "sha256": "f81b29eea2e4424f87b4fff3613b0e6ac7da001ad466e3d604a145c5e2fa6b47",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_4_2026-11-01_00-41-58.jpg",
+          "bytes": 159935,
+          "sha256": "7f732418426bf5f22c39339b42cfb1836b9292284be5b31d59665d183fdf5a16",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_5_2026-11-01_00-41-58.jpg",
+          "bytes": 124540,
+          "sha256": "25967bfb7cf1ea31ae922d29a0ee9c0a9621ee853c059aff0549708edd109e22",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_6_2026-11-01_00-41-58.jpg",
+          "bytes": 127483,
+          "sha256": "c6b8a292b3cdeda770fc286001bf7e63d37fd8f5873072e78776f0dd81d66402",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_7_2026-11-01_00-41-58.jpg",
+          "bytes": 124471,
+          "sha256": "4cd7e4f554ddd92b05751a2da55a2abff578dbb2718b7caba8c69f23d3e573bd",
+          "photoIndex": 7
+        },
+        {
+          "name": "photo_8_2026-11-01_00-41-58.jpg",
+          "bytes": 96076,
+          "sha256": "aa6dd35020c6c789ad1efb3cdb0655bbc70e0734ee98b57a35953d128b148303",
+          "photoIndex": 8
+        },
+        {
+          "name": "photo_9_2026-11-01_00-41-58.jpg",
+          "bytes": 81815,
+          "sha256": "8030276760ebffc190fc21d85d1e252f8ec5433775430c2c0ffa3444d42f3e16",
+          "photoIndex": 9
+        },
+        {
+          "name": "photo_10_2026-11-01_00-41-58.jpg",
+          "bytes": 99835,
+          "sha256": "92eb473356c33ff2686cce6da453d4a1f90b3a5d3e4220fbabc82390950db4d7",
+          "photoIndex": 10
+        },
+        {
+          "name": "photo_11_2026-11-01_00-41-58.jpg",
+          "bytes": 137489,
+          "sha256": "51205490d805621a088263ac4028f5893271ff54daedc2c807579784e63e9931",
+          "photoIndex": 11
+        },
+        {
+          "name": "photo_12_2026-11-01_00-41-58.jpg",
+          "bytes": 115795,
+          "sha256": "d0b61c0dbd6f933879016303e36ad787378fa1a84664a6aab4dfeed0215f56da",
+          "photoIndex": 12
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "матанал 16,10.rar",
+      "bytes": 60625056,
+      "sha256": "cefdc6d85f9e0e91b5757025ec9e2fae6f997a4c65e6c7cc147f1244a174bda0",
+      "members": [
+        {
+          "name": "матанализ лек 16 окт., 09.43​.m4a",
+          "bytes": 60732655,
+          "sha256": "2c5bea0aa3965192677d2f16ffb6a10389dcba0ecb4c8317b204a0622bfb878f"
+        },
+        {
+          "name": "photo_12_2026-11-01_01-17-40.jpg",
+          "bytes": 66458,
+          "sha256": "107025a3fe1b8bd5298eadee682057439b0ef292ebb1e3430fe1d7ea8f38c6a6",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_13_2026-11-01_01-17-40.jpg",
+          "bytes": 121955,
+          "sha256": "a2d307bb8c42dc940618fb15f3d9ca0d9779577e26f805817d2af299f093b40b",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_8_2026-11-01_01-17-40.jpg",
+          "bytes": 128133,
+          "sha256": "c35f762deaf2d3452593a259c948b5914e571a5dd8b609a1c21fdc794060472f",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_9_2026-11-01_01-17-40.jpg",
+          "bytes": 88341,
+          "sha256": "80fb4617b06dd439ee537094c2abd71bb31f0ebc83dbacb874fd2e53c9a70aa3",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_10_2026-11-01_01-17-40.jpg",
+          "bytes": 67133,
+          "sha256": "1c418c6da410ff12883cfe2678c0d110e26a1f4fe7892ce761cdb58fbe13c237",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_11_2026-11-01_01-17-40.jpg",
+          "bytes": 72099,
+          "sha256": "84d0c93c77df5d01160bf14a4d88a437c178b9c829487c97eefde0115443021f",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_4_2026-11-01_01-17-40.jpg",
+          "bytes": 147484,
+          "sha256": "19cc174b3fc38e2eb553f04bf5fa88c6b252e3880d4cb32fbcee006db354cd80",
+          "photoIndex": 7
+        },
+        {
+          "name": "photo_5_2026-11-01_01-17-40.jpg",
+          "bytes": 148177,
+          "sha256": "15f61317550829493689f34978c15f6a230fe8b72015d831f768f462002bca34",
+          "photoIndex": 8
+        },
+        {
+          "name": "photo_6_2026-11-01_01-17-40.jpg",
+          "bytes": 124905,
+          "sha256": "82dd5d3d796e304fee736b03f91a4975861bd422fcb1e0023b2697ce2c8adc8f",
+          "photoIndex": 9
+        },
+        {
+          "name": "photo_7_2026-11-01_01-17-40.jpg",
+          "bytes": 122829,
+          "sha256": "83e21e35f307e9aafcf06dbddcbc69d08de24b2bfeb115434bf66e796415bab4",
+          "photoIndex": 10
+        },
+        {
+          "name": "photo_1_2026-11-01_01-17-40.jpg",
+          "bytes": 162072,
+          "sha256": "ab8ab44b9730c6a48924b0ff4739a9872e9185911c57edf69d0b048369c33a28",
+          "photoIndex": 11
+        },
+        {
+          "name": "photo_2_2026-11-01_01-17-40.jpg",
+          "bytes": 145432,
+          "sha256": "b2dcec207e5569d86373a472c41ff9e06fda8556b98ff56c68d9b77aa1e4609a",
+          "photoIndex": 12
+        },
+        {
+          "name": "photo_3_2026-11-01_01-17-40.jpg",
+          "bytes": 139699,
+          "sha256": "e83fa4b96e04af0fa1e27403325c6692aa98186ae57526f7ca18389bb933207b",
+          "photoIndex": 13
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "матанализ 09,10.rar",
+      "bytes": 61388955,
+      "sha256": "8b84559190efc68198475a473dab618dc85be904f1efddf28c4d59806d4dc4ee",
+      "members": [
+        {
+          "name": "матанализ лек9 окт., 09.42​.m4a",
+          "bytes": 59299893,
+          "sha256": "579f13d3386bd6d801143f4b59124367ebb4696e889ac3c9bda3b92463ea6e56"
+        },
+        {
+          "name": "photo_25_2026-11-01_00-53-15.jpg",
+          "bytes": 114041,
+          "sha256": "79485f749efac9288a4adff6050e6ea3fa6ed4083be942f08c431293a62dd0bc",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_26_2026-11-01_00-53-15.jpg",
+          "bytes": 56698,
+          "sha256": "977b2d6ab19025e5deaf4f7c245c8dbe720ee7513c2dfd09af3fb19757419f57",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_27_2026-11-01_00-53-15.jpg",
+          "bytes": 136684,
+          "sha256": "c696f707f91e5963c2097960d48ec5d458b8306683615178e5abea3e8ef8d654",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_28_2026-11-01_00-53-15.jpg",
+          "bytes": 125260,
+          "sha256": "50b1499776410d5583145e715bac5cd9d430a62229729a1434f6d16800cf8577",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_20_2026-11-01_00-53-15.jpg",
+          "bytes": 176621,
+          "sha256": "b90714aa1abd5d25d67f078307ba872d6944c4f420446ac52426b2bfe9f12583",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_21_2026-11-01_00-53-15.jpg",
+          "bytes": 149090,
+          "sha256": "ae003672cd7eab611f8416d4a8282b8f42b5645e98aabb422fd055ba19b66ae6",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_22_2026-11-01_00-53-15.jpg",
+          "bytes": 120589,
+          "sha256": "9b52e378d9d00aeb906e5dc745a2b51580969bd7de080fb6a7b22a8ee61ca348",
+          "photoIndex": 7
+        },
+        {
+          "name": "photo_24_2026-11-01_00-53-15.jpg",
+          "bytes": 195531,
+          "sha256": "c2a71b792d3784ade0d7dcdac99ca0d440a2a16c90c1606efe1b896469e5eeea",
+          "photoIndex": 8
+        },
+        {
+          "name": "photo_15_2026-11-01_00-53-15.jpg",
+          "bytes": 235986,
+          "sha256": "318f3233799ebe778219755894a10d11dcb710cdeb7fc0ba3cd4aa75a326a639",
+          "photoIndex": 9
+        },
+        {
+          "name": "photo_16_2026-11-01_00-53-15.jpg",
+          "bytes": 144540,
+          "sha256": "5535b8bc83af51728674bcef16c64c91076abfa86e730aaec0b6a25789450002",
+          "photoIndex": 10
+        },
+        {
+          "name": "photo_17_2026-11-01_00-53-15.jpg",
+          "bytes": 139573,
+          "sha256": "900b498f1ff3d7381787f16cfc51b547e93040dff448f7c18d8f3da627ba656f",
+          "photoIndex": 11
+        },
+        {
+          "name": "photo_18_2026-11-01_00-53-15.jpg",
+          "bytes": 152411,
+          "sha256": "4a0a472f593f4845c09c2d7a00835777f22d08de4d90e393d7d780c27d13b816",
+          "photoIndex": 12
+        },
+        {
+          "name": "photo_19_2026-11-01_00-53-15.jpg",
+          "bytes": 97474,
+          "sha256": "105f90a8591a40ad88e84f356d07a5d8b4addc436d3f86210eee6df22e779742",
+          "photoIndex": 13
+        },
+        {
+          "name": "photo_10_2026-11-01_00-53-15.jpg",
+          "bytes": 87349,
+          "sha256": "8fd2b2303038e20c23f874301dee89ff743e8fc68c54ade1e5c07b53a8aff8bc",
+          "photoIndex": 14
+        },
+        {
+          "name": "photo_11_2026-11-01_00-53-15.jpg",
+          "bytes": 83289,
+          "sha256": "77e4f9a7928277ebdf2faaf681b98d9862ef95ee79bce0aa75c978d00ef7c4d5",
+          "photoIndex": 15
+        },
+        {
+          "name": "photo_12_2026-11-01_00-53-15.jpg",
+          "bytes": 141744,
+          "sha256": "bd8b780fa52e5e8b2b2f83896e53d8142adedb6da212b3228b310b86e0653341",
+          "photoIndex": 16
+        },
+        {
+          "name": "photo_13_2026-11-01_00-53-15.jpg",
+          "bytes": 120010,
+          "sha256": "e2c96721f0b2a9b391d8dd75699590a8e14e2f9dddc011564c3e75e3f40e4c87",
+          "photoIndex": 17
+        },
+        {
+          "name": "photo_14_2026-11-01_00-53-15.jpg",
+          "bytes": 149468,
+          "sha256": "ca10bc5850d5cdbc2daa382240de20e9e1a97939f9fd797374acf5c20f353a8e",
+          "photoIndex": 18
+        },
+        {
+          "name": "photo_23_2026-11-01_00-53-15.jpg",
+          "bytes": 149468,
+          "sha256": "ca10bc5850d5cdbc2daa382240de20e9e1a97939f9fd797374acf5c20f353a8e",
+          "photoIndex": 19
+        },
+        {
+          "name": "photo_4_2026-11-01_00-53-15.jpg",
+          "bytes": 121402,
+          "sha256": "262459129f0692eae9808bf284ea687ae335ec4d8a5e3095e2fc6b53bc70cc0b",
+          "photoIndex": 20
+        },
+        {
+          "name": "photo_5_2026-11-01_00-53-15.jpg",
+          "bytes": 121150,
+          "sha256": "d562fc349a0b3893826d8557b45a774815e450ed05f2ff3e5c85b937efe14d7f",
+          "photoIndex": 21
+        },
+        {
+          "name": "photo_6_2026-11-01_00-53-15.jpg",
+          "bytes": 124615,
+          "sha256": "9c786788ece4c71c08d1e902e546754ba3e1fa6eb878b6ba4f7e5b23640fab60",
+          "photoIndex": 22
+        },
+        {
+          "name": "photo_7_2026-11-01_00-53-15.jpg",
+          "bytes": 124412,
+          "sha256": "edf262b97b2585876fa3167fcb2affc7d868389b35845f2ed3a60d30943cd814",
+          "photoIndex": 23
+        },
+        {
+          "name": "photo_8_2026-11-01_00-53-15.jpg",
+          "bytes": 139229,
+          "sha256": "e6d5ff0c7d406800dc110c696392ba112d4590c778b216d92962b59bcfd4bfa8",
+          "photoIndex": 24
+        },
+        {
+          "name": "photo_9_2026-11-01_00-53-15.jpg",
+          "bytes": 112994,
+          "sha256": "c434e022bf2db8ea4e2236c031b49b722f391fa4ecef6790593e8780d83c8fab",
+          "photoIndex": 25
+        },
+        {
+          "name": "photo_1_2026-11-01_00-53-15.jpg",
+          "bytes": 150719,
+          "sha256": "1a1f5a0e83239f7e75eb3b239509b6b23ddcf6c00bb47daaf8f02ee569cce84a",
+          "photoIndex": 26
+        },
+        {
+          "name": "photo_2_2026-11-01_00-53-15.jpg",
+          "bytes": 104776,
+          "sha256": "4be6519910bf571eca47df5ccd8b313a47765f8f28f06a06b63ed9477b2cd3d0",
+          "photoIndex": 27
+        },
+        {
+          "name": "photo_3_2026-11-01_00-53-15.jpg",
+          "bytes": 103048,
+          "sha256": "9dbf5098e1afb3c825db23f63b430f36036260c8117dd92bea977ce0923b8a45",
+          "photoIndex": 28
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "матанализ пр 07.10.rar",
+      "bytes": 60970347,
+      "sha256": "bc1c1774975b6b3d8adea54fa6e31cd28bc0c2c99d72edb529625f611c455d22",
+      "members": [
+        {
+          "name": "photo_1_2026-11-01_00-37-11.jpg",
+          "bytes": 197409,
+          "sha256": "52b98e0ced67d00aa4fc2ff477b3f37f8c27f4b0f7fd5a36212251cd4dcac5d3",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_2_2026-11-01_00-37-11.jpg",
+          "bytes": 164693,
+          "sha256": "aca341ca0f7172c5914d656fa1d4e3084794efd934546f87804c09d3dca05a53",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_3_2026-11-01_00-37-11.jpg",
+          "bytes": 181948,
+          "sha256": "0725690020259374cdcf1ffe06a9c3450ad40a2eb74c03289c67693dd750cc90",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_4_2026-11-01_00-37-11.jpg",
+          "bytes": 133246,
+          "sha256": "c1f96fc7645f800e723a2852c111453100cf02557531b3d6f1a7ff9efbebf21b",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_5_2026-11-01_00-37-11.jpg",
+          "bytes": 88904,
+          "sha256": "7c81b239b49f0c14edae892aed01ea4bf51e31415bb6d0ae3a56173759a4a198",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_6_2026-11-01_00-37-11.jpg",
+          "bytes": 134669,
+          "sha256": "223c4c93cebb4a1169e4262c0e04ab98d0c6992103716d061861a41f37f40da9",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_7_2026-11-01_00-37-11.jpg",
+          "bytes": 152429,
+          "sha256": "7700192869561ef239394ccebfb5d436d080da965be484801122753b1a89b296",
+          "photoIndex": 7
+        },
+        {
+          "name": "photo_8_2026-11-01_00-37-11.jpg",
+          "bytes": 172583,
+          "sha256": "67d63057b418df9a07b995bc4c5290ac18a6b2478b680e27a6a8046a9a121ab4",
+          "photoIndex": 8
+        },
+        {
+          "name": "photo_9_2026-11-01_00-37-11.jpg",
+          "bytes": 145304,
+          "sha256": "66ae339ed2221659ac932250a9567468e96620887c57f6652f6d82c0353e0a16",
+          "photoIndex": 9
+        },
+        {
+          "name": "photo_10_2026-11-01_00-37-11.jpg",
+          "bytes": 98414,
+          "sha256": "5072162185970c8d8c2108b3ab80a3aef680ad68ea555cf9aec22b0be7963fb0",
+          "photoIndex": 10
+        },
+        {
+          "name": "photo_11_2026-11-01_00-37-11.jpg",
+          "bytes": 171103,
+          "sha256": "d1ec68b90b1b0bff1002f2cdd487e45fdaa88895c3c360aac2e1689133b7f58c",
+          "photoIndex": 11
+        },
+        {
+          "name": "photo_12_2026-11-01_00-37-11.jpg",
+          "bytes": 126192,
+          "sha256": "b388451e3c74fcc49c198a78167f6a1dc0758314737bf98cc7348305fb4859d3",
+          "photoIndex": 12
+        },
+        {
+          "name": "photo_13_2026-11-01_00-37-11.jpg",
+          "bytes": 153416,
+          "sha256": "7049db30b951ed36c1a988316519a1cfa104010d95231ec4e795a6524b5d49c6",
+          "photoIndex": 13
+        },
+        {
+          "name": "photo_14_2026-11-01_00-37-11.jpg",
+          "bytes": 163559,
+          "sha256": "766876fbad5184012511908de7c58651d37145d12db562d05f057c223e907b49",
+          "photoIndex": 14
+        },
+        {
+          "name": "photo_15_2026-11-01_00-37-11.jpg",
+          "bytes": 97812,
+          "sha256": "8f06c379704d1841eec447240e4ca0ce4a5a91412253fc3216ff14af1c3eec33",
+          "photoIndex": 15
+        },
+        {
+          "name": "photo_16_2026-11-01_00-37-11.jpg",
+          "bytes": 168506,
+          "sha256": "b48a8eaa2eeb36452b66ba2aba9444a6163a245ae531c47af9ce73e3448ae8c1",
+          "photoIndex": 16
+        },
+        {
+          "name": "photo_17_2026-11-01_00-37-11.jpg",
+          "bytes": 101461,
+          "sha256": "d61b27f4339d55092ed9e5e47367ae2b255b00b683551d565fff37a0c1f0ac30",
+          "photoIndex": 17
+        },
+        {
+          "name": "photo_18_2026-11-01_00-37-11.jpg",
+          "bytes": 161178,
+          "sha256": "c5338da1df986df855382035dabd9df9abaf3e3baaa9e1781d60c29bcc430010",
+          "photoIndex": 18
+        },
+        {
+          "name": "photo_19_2026-11-01_00-37-11.jpg",
+          "bytes": 116988,
+          "sha256": "f9b5cc0c67e5dc60c79e5455cf3816cc0d25550880a21258c6137e563ced6b38",
+          "photoIndex": 19
+        },
+        {
+          "name": "photo_20_2026-11-01_00-37-11.jpg",
+          "bytes": 86882,
+          "sha256": "9f0c02296f726e47442c89182707e117eea76b7335e6479597d6e61f28097d3a",
+          "photoIndex": 20
+        },
+        {
+          "name": "photo_21_2026-11-01_00-37-11.jpg",
+          "bytes": 147221,
+          "sha256": "6ff65b3ba5a7667b8f4cd3a75e77c6335a06f6f814f5a90abbb4a8f9dc57d533",
+          "photoIndex": 21
+        },
+        {
+          "name": "photo_22_2026-11-01_00-37-11.jpg",
+          "bytes": 127429,
+          "sha256": "a6b414b935e0fdf7ad8a02d7d4b910456295efe5b70ab3dbd92395ca4a94e5c2",
+          "photoIndex": 22
+        },
+        {
+          "name": "матанализ практ 7 окт., 08.09​.m4a",
+          "bytes": 59545547,
+          "sha256": "f34a237519e26abc9c2d27d213095d9342badd573391a311aba216720f5ba913"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "орг .rar",
+      "bytes": 1120992,
+      "sha256": "c13d955eb805c8b0dd99fdc5f1d2026d410d218c7a635336892009017d1f2127",
+      "members": [
+        {
+          "name": "photo_1_2026-10-31_23-31-10.jpg",
+          "bytes": 134959,
+          "sha256": "79d49e178240d3ad845e05dc566446cbdc1e208936a1850f786877f2d3623368",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_2_2026-10-31_23-31-10.jpg",
+          "bytes": 100007,
+          "sha256": "4701b77f2608049a0facf39c818890ff61baaf46b91367b04ba715e63bc3b34d",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_3_2026-10-31_23-31-10.jpg",
+          "bytes": 120439,
+          "sha256": "4f6614651227fbe0bf4dfa5eb3f7fc9159ca76262dae18537898732326fd61f0",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_4_2026-10-31_23-31-10.jpg",
+          "bytes": 136636,
+          "sha256": "76b0083b2f66ede2a232c3a31ffda2af11b6407efd13929541f0afcae86d9255",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_5_2026-10-31_23-31-10.jpg",
+          "bytes": 141170,
+          "sha256": "cbb166eef5fcf12471337c121bc66cbd6da1e229b3358f199e40e30794942b4e",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_6_2026-10-31_23-31-10.jpg",
+          "bytes": 117216,
+          "sha256": "c0e110ee495e8fbf83deaf3db069720d4a69670a3f9a99919a7c60cfcf92bc14",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_7_2026-10-31_23-31-10.jpg",
+          "bytes": 101450,
+          "sha256": "3a7093d8ff13a4553308f98ebfb67e09def4593f3c7ba71e71b21bcd1c4cf3a5",
+          "photoIndex": 7
+        },
+        {
+          "name": "photo_8_2026-10-31_23-31-10.jpg",
+          "bytes": 101057,
+          "sha256": "624466731168109a9fea868296877fbf92e4612d57825867c7eec4cb7a78469c",
+          "photoIndex": 8
+        },
+        {
+          "name": "photo_9_2026-10-31_23-31-10.jpg",
+          "bytes": 96514,
+          "sha256": "0f4a4dc91585a80d20912498a69f8aea798c7c46573c281d7719cea61ef92fc1",
+          "photoIndex": 9
+        },
+        {
+          "name": "photo_10_2026-10-31_23-31-10.jpg",
+          "bytes": 90720,
+          "sha256": "8492f242ea8cd051e1a94dd3006149ef5532f874ef5acab25e942d58bef164e8",
+          "photoIndex": 10
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "орг лек 13,10.rar",
+      "bytes": 63395690,
+      "sha256": "01b92093fa464c42cc3953988afee0f7d924676ebae7fa2668b3eb460968c854",
+      "members": [
+        {
+          "name": "13 окт., 11.20​ орг лекция.m4a",
+          "bytes": 64221379,
+          "sha256": "cd016d14d28a59eb076bcb5bffa4c78b7cd35f789e72e6689d9e49e7e0f94f6b"
+        },
+        {
+          "name": "photo_5_2026-11-01_00-58-15.jpg",
+          "bytes": 86973,
+          "sha256": "6995ca52212f21f2503fbb7435b906d059f098036fa41a2b85b1c1cec2dc8058",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_6_2026-11-01_00-58-15.jpg",
+          "bytes": 103175,
+          "sha256": "cadea7f9642f7b017108ab4d0b568ef5b4891a09c8822406f17055caa2fe4f79",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_7_2026-11-01_00-58-15.jpg",
+          "bytes": 115028,
+          "sha256": "569aa4a128d84678b92a690f7575571f4c09500cfc5370814ff5a04c865fae70",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_8_2026-11-01_00-58-15.jpg",
+          "bytes": 147265,
+          "sha256": "33cf5d69a5a11bf86c02232e536af97610dd0843322770e346acf3464377541e",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_1_2026-11-01_00-58-15.jpg",
+          "bytes": 90249,
+          "sha256": "c10612b397a4eb79bd804651354b29f3944147498317f99224e6b1e15878625f",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_2_2026-11-01_00-58-15.jpg",
+          "bytes": 90088,
+          "sha256": "897ead7bcbcf41070f58e2bb4b963f0903140b5a62145b809e69f42a78ff2873",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_3_2026-11-01_00-58-15.jpg",
+          "bytes": 100883,
+          "sha256": "ad74c5b27ad48edb1720d0855916fc9ab02e73d03a6705bd5bb2401106ecae34",
+          "photoIndex": 7
+        },
+        {
+          "name": "photo_4_2026-11-01_00-58-15.jpg",
+          "bytes": 102139,
+          "sha256": "2307042b5d2680a3e8ba0f50bd151262a3c682c32537e87323cb96faf20ddb14",
+          "photoIndex": 8
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "производные.rar",
+      "bytes": 60354284,
+      "sha256": "cf798881d2dfeab2f308045fd53d42765fa11773535d678dbac44adcccca4912",
+      "members": [
+        {
+          "name": "photo_7_2026-10-31_23-36-00.jpg",
+          "bytes": 114963,
+          "sha256": "3d487a41e89576a5dcc8a9c02dd9aa5176d04f29e475ee746794293174c50739",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_8_2026-10-31_23-36-00.jpg",
+          "bytes": 178894,
+          "sha256": "851798f06136e3f3bcfa1387552477a72f4b48f42aedd6810933aa81c5ec3bb2",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_9_2026-10-31_23-36-00.jpg",
+          "bytes": 141799,
+          "sha256": "085bf1e6241c3b7aa2706a2d827fcec6d6430673e54db771149115c60d30c819",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_10_2026-10-31_23-36-00.jpg",
+          "bytes": 161768,
+          "sha256": "626a6d681757fded84a32cb87e4dbc2b4e56f76a341a7766f56bdaec30efb56a",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_11_2026-10-31_23-36-00.jpg",
+          "bytes": 247811,
+          "sha256": "15cfd659a2cb607d4e83b4d5093dabda1d44c30e3f5cc357d474693379b9ab5e",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_1_2026-10-31_23-36-00.jpg",
+          "bytes": 117924,
+          "sha256": "86b9ceaa57785d6bdc2c77499a605be60500038fe2128315ba52f0611450f098",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_2_2026-10-31_23-36-00.jpg",
+          "bytes": 117614,
+          "sha256": "74bc0e75a16aa0690df7b152a0ede6a1838d7d96d0818f26bdf6b953db1724f4",
+          "photoIndex": 7
+        },
+        {
+          "name": "photo_3_2026-10-31_23-36-00.jpg",
+          "bytes": 113226,
+          "sha256": "d1d4e569eebac2c815705b5326f51fdfa6eda4799ff6616a33e06b8e03caae49",
+          "photoIndex": 8
+        },
+        {
+          "name": "photo_4_2026-10-31_23-36-00.jpg",
+          "bytes": 139811,
+          "sha256": "a61193e85b6707dd92cc90ccd4a628ea7f004d5e068bac8c397dbe2f4735997b",
+          "photoIndex": 9
+        },
+        {
+          "name": "photo_5_2026-10-31_23-36-00.jpg",
+          "bytes": 164543,
+          "sha256": "7d9cbc69d2260dcda03f27eb298b680857a2f0d7ea47f6b159830730f644f614",
+          "photoIndex": 10
+        },
+        {
+          "name": "photo_6_2026-10-31_23-36-00.jpg",
+          "bytes": 119564,
+          "sha256": "3caf0bf042154c0c5a96a77120ac72a41ac508e608059bf54a9d18c92312e12f",
+          "photoIndex": 11
+        },
+        {
+          "name": "photo_15_2026-10-31_23-36-00.jpg",
+          "bytes": 151613,
+          "sha256": "e0528c6301a1c3afac44a16ad2ed7f9baef5d2d1f3b47f309149c2f9eb08dc9f",
+          "photoIndex": 12
+        },
+        {
+          "name": "photo_12_2026-10-31_23-36-00.jpg",
+          "bytes": 193694,
+          "sha256": "539ab02fa3d617053d2bbcc33b24bf7494875bd161521acf938538fab10779d1",
+          "photoIndex": 13
+        },
+        {
+          "name": "photo_13_2026-10-31_23-36-00.jpg",
+          "bytes": 164951,
+          "sha256": "11dea417a1f305214751f6ed1ea836231a6e18f9b50b17b84caf2e19b0ade74b",
+          "photoIndex": 14
+        },
+        {
+          "name": "photo_14_2026-10-31_23-36-00.jpg",
+          "bytes": 169462,
+          "sha256": "44c2eedc1dc7b2cda2cc647db1d631146985f97c6f872a836f96b2bf12a2dfc4",
+          "photoIndex": 15
+        },
+        {
+          "name": "матанализ пр 14 окт., 08.10​.m4a",
+          "bytes": 59698547,
+          "sha256": "79abf736639c0ef9a44de67205d2298a0d7875e4d327c032a25a1804f3f386c0"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "совтех 16,10.rar",
+      "bytes": 44136263,
+      "sha256": "ea5e4816d962f2f5f19da85629f92b821a9befcc6f9802e4fc5e5c93c922bae2",
+      "members": [
+        {
+          "name": "photo_28_2026-11-01_01-06-03.jpg",
+          "bytes": 94393,
+          "sha256": "cbb0c2feb4ce71befe31c392e3c2c49207f8c2e0a5f49722ae2790454cd7f688",
+          "photoIndex": 1
+        },
+        {
+          "name": "photo_29_2026-11-01_01-06-03.jpg",
+          "bytes": 105845,
+          "sha256": "592d38e6805e8257d09fcbd8a97406c95d32981fbb6404824c019dc89f5d212f",
+          "photoIndex": 2
+        },
+        {
+          "name": "photo_26_2026-11-01_01-06-03.jpg",
+          "bytes": 109277,
+          "sha256": "fa88aecd05e05756aa26c1d07dd1ab9415455659795ebc2e1ab3661f5986222a",
+          "photoIndex": 3
+        },
+        {
+          "name": "photo_27_2026-11-01_01-06-03.jpg",
+          "bytes": 109277,
+          "sha256": "c44d9fd82b598aefc60ae8432ae04fe9ad7fc5318100df3c39c7722d2dd07805",
+          "photoIndex": 4
+        },
+        {
+          "name": "photo_24_2026-11-01_01-06-03.jpg",
+          "bytes": 72270,
+          "sha256": "48569ec4d53aa6fbecc6269002395bd9d0342d96de72ca5aa5e529c8cedd51f2",
+          "photoIndex": 5
+        },
+        {
+          "name": "photo_25_2026-11-01_01-06-03.jpg",
+          "bytes": 102436,
+          "sha256": "b853857436df91ece7f82ac4e6cc8031c78691e02d94f73f6d71386731ebe469",
+          "photoIndex": 6
+        },
+        {
+          "name": "photo_20_2026-11-01_01-06-03.jpg",
+          "bytes": 75182,
+          "sha256": "ac5e5420f7a2573f13641734a87c8e03cba8459ec7fd8d2689c875b0d4e43180",
+          "photoIndex": 7
+        },
+        {
+          "name": "photo_21_2026-11-01_01-06-03.jpg",
+          "bytes": 75912,
+          "sha256": "ebac83b80cde5739f85b6eeade7d0617a710c0ef6e2c3190c71d18e262392ca6",
+          "photoIndex": 8
+        },
+        {
+          "name": "photo_22_2026-11-01_01-06-03.jpg",
+          "bytes": 120720,
+          "sha256": "51c9b150000bd73f5b4b63e5147e0817c42b0df6bf04b5c84d06443c3ed1962c",
+          "photoIndex": 9
+        },
+        {
+          "name": "photo_23_2026-11-01_01-06-03.jpg",
+          "bytes": 67392,
+          "sha256": "698c3f67e8039cec41366f7a4dce2c1aa4e153ca69e2c12a5d110e2224992262",
+          "photoIndex": 10
+        },
+        {
+          "name": "photo_18_2026-11-01_01-06-03.jpg",
+          "bytes": 76389,
+          "sha256": "e5a264538c206e13f3453a16cfac1efa7357bff17e1ef8f083cccbda3734cb94",
+          "photoIndex": 11
+        },
+        {
+          "name": "photo_19_2026-11-01_01-06-03.jpg",
+          "bytes": 118561,
+          "sha256": "3aece01847ffe10977a62927cb3a6fbf30c3cc4c65338a814f26e67d12644c5c",
+          "photoIndex": 12
+        },
+        {
+          "name": "photo_17_2026-11-01_01-06-03.jpg",
+          "bytes": 92571,
+          "sha256": "24d9ab27920511d08d74a8ee4330c485927d715e3aa2a50808e4285198636a17",
+          "photoIndex": 13
+        },
+        {
+          "name": "photo_16_2026-11-01_01-06-03.jpg",
+          "bytes": 86394,
+          "sha256": "e367da35512bcec9cb3c7894f2530ca5c3aa3a52872b3c760d3c4dae6b6d3882",
+          "photoIndex": 14
+        },
+        {
+          "name": "photo_15_2026-11-01_01-06-03.jpg",
+          "bytes": 110372,
+          "sha256": "8f00e3d309dd47a61e130e34a9f9be309dcc86089fc7805a9d9b964bfc89caf9",
+          "photoIndex": 15
+        },
+        {
+          "name": "photo_14_2026-11-01_01-06-03.jpg",
+          "bytes": 118574,
+          "sha256": "e8bf86d84f57222513bd1856f9e035e7dbd73dde03325c3f04f01346489da0bb",
+          "photoIndex": 16
+        },
+        {
+          "name": "photo_12_2026-11-01_01-06-03.jpg",
+          "bytes": 131110,
+          "sha256": "dd56355106728e4f2b6cd403f7f3b44c85155d140cfec122032923db398e5487",
+          "photoIndex": 17
+        },
+        {
+          "name": "photo_13_2026-11-01_01-06-03.jpg",
+          "bytes": 110161,
+          "sha256": "6263143284dab107329a99c61faf0214523658120e88a9036f143e11e5fc8ca7",
+          "photoIndex": 18
+        },
+        {
+          "name": "photo_9_2026-11-01_01-06-03.jpg",
+          "bytes": 146100,
+          "sha256": "889a1d8c2d4180539cfe3f1e9917506f2e9d3fbb20bb40632c52062d47a9b833",
+          "photoIndex": 19
+        },
+        {
+          "name": "photo_10_2026-11-01_01-06-03.jpg",
+          "bytes": 79279,
+          "sha256": "ffe449f9bf77a44614e7738888350543fe2ba452b11fbf954ab4babcc3e21a42",
+          "photoIndex": 20
+        },
+        {
+          "name": "photo_11_2026-11-01_01-06-03.jpg",
+          "bytes": 121498,
+          "sha256": "e64e66f735525324382ac7122ef338b224faa69be3c2935ad77d97f48042d0f3",
+          "photoIndex": 21
+        },
+        {
+          "name": "photo_7_2026-11-01_01-06-03.jpg",
+          "bytes": 108836,
+          "sha256": "1ac0c3274699210bb3e47d74911f221cb278bdc70e5d5d32fea3495e5b5b33b3",
+          "photoIndex": 22
+        },
+        {
+          "name": "photo_8_2026-11-01_01-06-03.jpg",
+          "bytes": 99463,
+          "sha256": "2b581e6217df4656b86dec0104ce5a406cbbc7198a420011f2396260455adbf9",
+          "photoIndex": 23
+        },
+        {
+          "name": "совтех лек 16 окт., 08.04​.m4a",
+          "bytes": 42276648,
+          "sha256": "2135fac47a115db2f2fe4406d3fb201ec017b8a21c469cee7283ff8e318b1973"
+        },
+        {
+          "name": "photo_5_2026-11-01_01-06-03.jpg",
+          "bytes": 128118,
+          "sha256": "c8baccc7e8b7049f001581edd6f9ef47538dea4d0b2d9901ac4386a9b14b7916",
+          "photoIndex": 24
+        },
+        {
+          "name": "photo_6_2026-11-01_01-06-03.jpg",
+          "bytes": 117228,
+          "sha256": "d1c328665889ac3386b78381aafbaf8c977242f4256e6173011d5c2f23ce9157",
+          "photoIndex": 25
+        },
+        {
+          "name": "photo_3_2026-11-01_01-06-03.jpg",
+          "bytes": 103972,
+          "sha256": "72f0216462a0a0bbce33aa456430f3799ead279a67b69905357efe0ab3802844",
+          "photoIndex": 26
+        },
+        {
+          "name": "photo_4_2026-11-01_01-06-03.jpg",
+          "bytes": 121434,
+          "sha256": "0eba0480a56234406097d9fc2ac96d3574f8854e6b06533691611d3682773e8f",
+          "photoIndex": 27
+        },
+        {
+          "name": "photo_1_2026-11-01_01-06-03.jpg",
+          "bytes": 104907,
+          "sha256": "0400e087d9066c67969b5c152172ce240e956ecaac1335144d00d3cf742fae7f",
+          "photoIndex": 28
+        },
+        {
+          "name": "photo_2_2026-11-01_01-06-03.jpg",
+          "bytes": 89729,
+          "sha256": "8320b3d6de08e395226a87af4febbaa1213300ac05b1fc090a0482926d6d11e4",
+          "photoIndex": 29
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "линал лек 15 окт., 13.23​ (transcribed on 01-Nov-2026 20-55-37).txt",
+      "bytes": 64859,
+      "sha256": "75cc7ae84eb4e29f3a5e87174e5630647bd4391209fdfe36b52c2be13031face",
+      "members": []
+    },
+    {
+      "id": 15,
+      "name": "информатика 10 окт., 09.58​ (transcribed on 01-Nov-2026 21-03-16).txt",
+      "bytes": 83372,
+      "sha256": "16e12003c8b2e4f8f2bae1cb1d07bd379792b4a5a917a22b20b4b02010f043be",
+      "members": []
+    }
+  ]
+}

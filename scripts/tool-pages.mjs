@@ -16,7 +16,8 @@ export const toolPages = [
     ['announcements', 'Объявления', 'Сообщения старосты и важная информация.', 'campaign'],
 ];
 export function buildToolPages(writePage, icons) {
-    const cards = [['/map/', 'Карта ЧелГУ', 'Кабинеты, этажи и маршруты.', 'map'],
+    const cards = [['/curriculum/', 'Учебный план', 'Дисциплины и нагрузка по курсам.', 'menu_book'],
+        ['/map/', 'Карта ЧелГУ', 'Кабинеты, этажи и маршруты.', 'map'],
         ['/exams/', 'Зачёты и экзамены', 'Даты и ответы для подготовки.', 'fact_check'],
         ...toolPages.map(([id, title, text, icon]) => ['/tools/' + id + '/', title, text, icon]),
         ['/reference/', 'Формулы', 'Справочник по дисциплинам.', 'calculate'],

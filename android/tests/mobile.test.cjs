@@ -79,12 +79,13 @@ function page(route) {
     assert.equal(cards[0].pathname, '/schedule/', 'Next lesson opens the timetable');
     const tools = page('/tools/');
     const toolLinks = [...tools.window.document.querySelectorAll('.tools-grid a')].map((link) => link.pathname);
+    assert.equal(toolLinks[0], '/curriculum/');
     assert.ok(toolLinks.includes('/map/'));
     assert.ok(toolLinks.includes('/bookmarks/'));
     for (const path of toolLinks) {
         assert.ok(fs.existsSync(root + '/android/generated/assets/site' + path + 'index.html'), path);
     }
-    for (const path of ['/map/', '/tools/limits/', '/reference/', '/check/']) {
+    for (const path of ['/curriculum/', '/map/', '/tools/limits/', '/reference/', '/check/']) {
         const nested = page(path);
         assert.equal(nested.window.document.querySelector('.app-nav [aria-current="page"]').pathname, '/tools/');
         nested.window.close();

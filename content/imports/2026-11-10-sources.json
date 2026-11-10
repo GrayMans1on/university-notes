@@ -1,0 +1,318 @@
+{
+  "importDate": "2026-11-10",
+  "baseCommit": "265bb9c3d8fc55935421b645a437c9599f67e64a",
+  "sources": [
+    {
+      "name": "05.11 Линал (transcribed on 10-Nov-2026 21-34-46).txt",
+      "bytes": 66811,
+      "sha256": "db060156389807548131d0a1d193702d195b518904b156b1cba5d0616fde980f"
+    },
+    {
+      "name": "photos.zip",
+      "bytes": 9934310,
+      "sha256": "c5223ef5cc250b21fe58eff19ceb8d83ecf5f8ff0233f2deacc063c42ffb11ad",
+      "members": [
+        {
+          "name": "photo_10_2026-11-10_21-14-13.jpg",
+          "bytes": 170772,
+          "sha256": "028b9ecc84d647530b97227b7b1251411aef6f17e6c2962799b97b0c53fc851e"
+        },
+        {
+          "name": "photo_11_2026-11-10_21-14-13.jpg",
+          "bytes": 192723,
+          "sha256": "ce03041a2f71c98281d9f45fe4cb66ae97fe6a47f2e22955d8664a7616a68afa"
+        },
+        {
+          "name": "photo_12_2026-11-10_21-14-13.jpg",
+          "bytes": 111221,
+          "sha256": "fb638ea0354fd563aa3bcc421816c6dd1e45d10ef4efe85ec1e1278d843dc2de"
+        },
+        {
+          "name": "photo_13_2026-11-10_21-14-13.jpg",
+          "bytes": 101170,
+          "sha256": "be9f9a63a6ce752970c57a236fece50efcb40688f96ddbb292c5d1ac2884fa6c"
+        },
+        {
+          "name": "photo_14_2026-11-10_21-14-13.jpg",
+          "bytes": 118921,
+          "sha256": "cd31936d2c1d3e32e79af1ac7e710f409fa56fe3f09622b9ba608a6d693090ff"
+        },
+        {
+          "name": "photo_15_2026-11-10_21-14-13.jpg",
+          "bytes": 135959,
+          "sha256": "4479188d788102e49db81ce4c38a802e0848dd8c12dd0618708e48156e775c04"
+        },
+        {
+          "name": "photo_16_2026-11-10_21-14-13.jpg",
+          "bytes": 166478,
+          "sha256": "4f60a6d383006a1897fe15b056e4dea6a905f0e27807390b49ad95bac8b35769"
+        },
+        {
+          "name": "photo_17_2026-11-10_21-14-13.jpg",
+          "bytes": 188931,
+          "sha256": "6c6730d8ad6d8013540de263abfd58a2f9046aec0a76702c1ec66b8e5361806e"
+        },
+        {
+          "name": "photo_18_2026-11-10_21-14-13.jpg",
+          "bytes": 169160,
+          "sha256": "2c00fee439c6fcd93b88e7653007b106b6cfb4092e50b09d823056536510274e"
+        },
+        {
+          "name": "photo_19_2026-11-10_21-14-13.jpg",
+          "bytes": 128721,
+          "sha256": "44d260ae06bc77afc139bfe2dad29e91249248eee21bedc44e17eb4cffabee20"
+        },
+        {
+          "name": "photo_1_2026-11-10_21-12-09.jpg",
+          "bytes": 249727,
+          "sha256": "8eaf96a73aa4e1c8622276e205f1d059b41b7a5c16235ed25ad93125da6e2f8c"
+        },
+        {
+          "name": "photo_1_2026-11-10_21-13-18.jpg",
+          "bytes": 705808,
+          "sha256": "a85e7d452fd86c24044dce8272ae5cc889f15724d41c42bcbebb25f1bca44af0"
+        },
+        {
+          "name": "photo_1_2026-11-10_21-14-13.jpg",
+          "bytes": 188648,
+          "sha256": "83a7000aa1401c84b31a16f25e38a778b5ac7ef245491889e36c3c3f3bb43ff6"
+        },
+        {
+          "name": "photo_20_2026-11-10_21-14-13.jpg",
+          "bytes": 201660,
+          "sha256": "df81e888072c531e01a037101ff0dba2d8061d8911e94a0bb079ea10d2effaa7"
+        },
+        {
+          "name": "photo_21_2026-11-10_21-14-13.jpg",
+          "bytes": 93136,
+          "sha256": "377ccc9acee9da03b69e6f2104806c45099eea6ba6d84c633e2d62c45e98850f"
+        },
+        {
+          "name": "photo_22_2026-11-10_21-14-13.jpg",
+          "bytes": 185961,
+          "sha256": "e62368b0ac4ff87e3cf3e1032eb10b808dbb81ccbef9d103e89e9fec26900482"
+        },
+        {
+          "name": "photo_23_2026-11-10_21-14-13.jpg",
+          "bytes": 174004,
+          "sha256": "a7db64d230984a08c699ebba2cfbfaf684871f77ba71bd760046dcde1a5bb2d5"
+        },
+        {
+          "name": "photo_24_2026-11-10_21-14-13.jpg",
+          "bytes": 178493,
+          "sha256": "33d654a33c30b5829a261c205cda9dac2e9cba47027edcc1e3d901e11833a0b1"
+        },
+        {
+          "name": "photo_25_2026-11-10_21-14-13.jpg",
+          "bytes": 135864,
+          "sha256": "1e065db3399a81f909ed04516fd84a35b6c8100f12de86aaeed74da3654f4c69"
+        },
+        {
+          "name": "photo_26_2026-11-10_21-14-13.jpg",
+          "bytes": 109420,
+          "sha256": "702589dd8923cdc16ae3cd7f1ccfa8ff59c690ec0ee659c793c56e54d8557652"
+        },
+        {
+          "name": "photo_2_2026-11-10_21-12-09.jpg",
+          "bytes": 196271,
+          "sha256": "17f465be99a272db53f13310441a17ce557a12e70f835ecdb7085c79dd3c878f"
+        },
+        {
+          "name": "photo_2_2026-11-10_21-13-18.jpg",
+          "bytes": 729812,
+          "sha256": "c40c233266dbec980ff90d7f93937c3ec6d7b22e359956cd82de0d89036d6c2e"
+        },
+        {
+          "name": "photo_2_2026-11-10_21-14-13.jpg",
+          "bytes": 212650,
+          "sha256": "8469673de9ff538b4f1c0073f561a2cb47741670b560b5ea416d270ed899859a"
+        },
+        {
+          "name": "photo_3_2026-11-10_21-12-09.jpg",
+          "bytes": 220161,
+          "sha256": "91efd5aa988fa82a8c9b64dafd6e74d1644f301f7bd4923cf45e71d519b81607"
+        },
+        {
+          "name": "photo_3_2026-11-10_21-13-18.jpg",
+          "bytes": 766195,
+          "sha256": "a87ba35eebe5f597ae0175c78e40298b029036c6fce4fdc13498791ce65dd1b9"
+        },
+        {
+          "name": "photo_3_2026-11-10_21-14-13.jpg",
+          "bytes": 215775,
+          "sha256": "f4094d69adac59a4bef7724da824fb857424e492fd7fbd496a50ac98b89cd644"
+        },
+        {
+          "name": "photo_4_2026-11-10_21-12-09.jpg",
+          "bytes": 222317,
+          "sha256": "f17a8ceca3f76ad340c069eb1e2b28e4fa9409c880710aac49da1a49b96e317e"
+        },
+        {
+          "name": "photo_4_2026-11-10_21-13-18.jpg",
+          "bytes": 725944,
+          "sha256": "80e7b2f21b2e69429a6f320c43453d559ef73389c67863b9e90f46a1e71a1cc0"
+        },
+        {
+          "name": "photo_4_2026-11-10_21-14-13.jpg",
+          "bytes": 233674,
+          "sha256": "f477b0d5b9fdef51a47cd701755120329c1e45c249e6cc5758e259e5f1642e8b"
+        },
+        {
+          "name": "photo_5_2026-11-10_21-12-09.jpg",
+          "bytes": 228191,
+          "sha256": "8948525e87305fc1b2dfa3ab8fedd8ccdef890dc2a97203952d9c84ad0faca3c"
+        },
+        {
+          "name": "photo_5_2026-11-10_21-13-18.jpg",
+          "bytes": 685436,
+          "sha256": "eb7672520d1591f39828ef266993f486ff7f24b4f2421d40c8b5f5c2dfd46e56"
+        },
+        {
+          "name": "photo_5_2026-11-10_21-14-13.jpg",
+          "bytes": 247343,
+          "sha256": "97f9fab4e876260d846c858017c7699a8b965db83bbc6724bc9e9415e4dd1e6c"
+        },
+        {
+          "name": "photo_6_2026-11-10_21-12-09.jpg",
+          "bytes": 169513,
+          "sha256": "4fe4c20c501124950be44a5dbdc92a8fcb97eb2b6f84395909b5084efcdf7469"
+        },
+        {
+          "name": "photo_6_2026-11-10_21-14-13.jpg",
+          "bytes": 209460,
+          "sha256": "a4331c0f780902e9950202447705aa60f236c5fb3168f5b3b59b66a7b3bf4c6e"
+        },
+        {
+          "name": "photo_7_2026-11-10_21-12-09.jpg",
+          "bytes": 211823,
+          "sha256": "b6a272032c136ec8a7edaeaad2a374f491ca4501dc44e796f37bdc59ade7a2e7"
+        },
+        {
+          "name": "photo_7_2026-11-10_21-14-13.jpg",
+          "bytes": 208899,
+          "sha256": "94d6288f3860bcb1ef352f9f6205d3eb122b84a0a3e1d2c671e8440bd6141012"
+        },
+        {
+          "name": "photo_8_2026-11-10_21-12-09.jpg",
+          "bytes": 216575,
+          "sha256": "c1abacffa2942ca7b274cb28efdb5a7d6b09e6ce69df81e9c3e4f4ae94a131f3"
+        },
+        {
+          "name": "photo_8_2026-11-10_21-14-13.jpg",
+          "bytes": 184149,
+          "sha256": "97f5124259dd9ebceb427c2e942a2c81894a676e61a407f33aa283fdb017c325"
+        },
+        {
+          "name": "photo_9_2026-11-10_21-12-09.jpg",
+          "bytes": 213723,
+          "sha256": "32e7d04571db0e98703da93ec246ef65cc5f886955fcecf43e6cd317539fe0d5"
+        },
+        {
+          "name": "photo_9_2026-11-10_21-14-13.jpg",
+          "bytes": 216683,
+          "sha256": "a991a67e05deb435eae051677facf06c214ee6930fbd466b76a0c173f1b5e8f3"
+        }
+      ]
+    },
+    {
+      "name": "дискр 13.10(1).rar",
+      "bytes": 44753807,
+      "sha256": "393c123907c2f9e49ddb91d6e4bca5b7ed831a7bc5afd1a81d242addbe7fca05",
+      "duplicateOf": {
+        "registry": "2026-11-02-sources.json",
+        "id": 5
+      }
+    },
+    {
+      "name": "информатика 10 окт., 09.58​ (transcribed on 10-Nov-2026 21-27-31)(1).txt",
+      "bytes": 79874,
+      "sha256": "1864436fd6e1651ecb6958cbc75f36314b33b8df44af97bd8bd33d5da3dc2f34"
+    },
+    {
+      "name": "линал 08.10(1).rar",
+      "bytes": 59203469,
+      "sha256": "58a03c636a17bc56b2348ac72d0583a6654c09600f6e76fd5f2b493aa19e0a4d",
+      "duplicateOf": {
+        "registry": "2026-11-02-sources.json",
+        "id": 6
+      }
+    },
+    {
+      "name": "линал лек 15 окт., 13.23​ (transcribed on 10-Nov-2026 21-30-57).txt",
+      "bytes": 66204,
+      "sha256": "5b8262a2b4b256d7e79052fd3444663ab71a514fc9ef824cc8ff898e13f97dc2"
+    },
+    {
+      "name": "матанал 16,10(1).rar",
+      "bytes": 60625056,
+      "sha256": "cefdc6d85f9e0e91b5757025ec9e2fae6f997a4c65e6c7cc147f1244a174bda0",
+      "duplicateOf": {
+        "registry": "2026-11-02-sources.json",
+        "id": 7
+      }
+    },
+    {
+      "name": "матанализ 09,10(1).rar",
+      "bytes": 61388955,
+      "sha256": "8b84559190efc68198475a473dab618dc85be904f1efddf28c4d59806d4dc4ee",
+      "duplicateOf": {
+        "registry": "2026-11-02-sources.json",
+        "id": 8
+      }
+    },
+    {
+      "name": "матанализ пр 07.10(1).rar",
+      "bytes": 60970347,
+      "sha256": "bc1c1774975b6b3d8adea54fa6e31cd28bc0c2c99d72edb529625f611c455d22",
+      "duplicateOf": {
+        "registry": "2026-11-02-sources.json",
+        "id": 9
+      }
+    },
+    {
+      "name": "орг (1).rar",
+      "bytes": 1120992,
+      "sha256": "c13d955eb805c8b0dd99fdc5f1d2026d410d218c7a635336892009017d1f2127",
+      "duplicateOf": {
+        "registry": "2026-11-02-sources.json",
+        "id": 10
+      }
+    },
+    {
+      "name": "орг лек 13,10(1).rar",
+      "bytes": 63395690,
+      "sha256": "01b92093fa464c42cc3953988afee0f7d924676ebae7fa2668b3eb460968c854",
+      "duplicateOf": {
+        "registry": "2026-11-02-sources.json",
+        "id": 11
+      }
+    },
+    {
+      "name": "производные(1).rar",
+      "bytes": 60354284,
+      "sha256": "cf798881d2dfeab2f308045fd53d42765fa11773535d678dbac44adcccca4912",
+      "duplicateOf": {
+        "registry": "2026-11-02-sources.json",
+        "id": 12
+      }
+    },
+    {
+      "name": "совтех 16,10(1).rar",
+      "bytes": 44136263,
+      "sha256": "ea5e4816d962f2f5f19da85629f92b821a9befcc6f9802e4fc5e5c93c922bae2",
+      "duplicateOf": {
+        "registry": "2026-11-02-sources.json",
+        "id": 13
+      }
+    },
+    {
+      "name": "физика 09,10(1).rar",
+      "bytes": 65648336,
+      "sha256": "47788ffbeb60fc4f0f388f2a34c74b9a384fa9df53232c4df10751a08a5bb63b",
+      "duplicateOf": {
+        "registry": "2026-11-02-sources.json",
+        "id": 1
+      }
+    }
+  ]
+}

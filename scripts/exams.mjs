@@ -14,7 +14,7 @@ export function buildExams({ root, output, writePage, renderMarkdown, searchInde
     }
     const ids = new Set();
     const cards = [];
-    const navigation = [];
+    const routes = [];
     for (const entry of catalog.entries) {
         if (!/^[a-z0-9-]+$/.test(entry.id) || ids.has(entry.id)
             || !['credit', 'exam'].includes(entry.kind) || !entry.subject || !entry.title
@@ -61,29 +61,34 @@ export function buildExams({ root, output, writePage, renderMarkdown, searchInde
         }
         const toc = headings.filter((item) => item.depth === 3).map((item) =>
             `<a href="#${encodeURIComponent(item.id)}">${escapeHtml(item.title)}</a>`).join('');
-        const partial = entry.questions.filter((question) => question.status === 'partial');
+        const route = 'exams/' + entry.id;
+        const url = '/' + route + '/';
+        routes.push(route);
         const dateHtml = entry.date === null ? 'не указана'
             : `<time datetime="${entry.date}">${date}</time>`;
-        cards.push(`<article class="note exam-entry" id="${entry.id}">`
-            + `<header><span class="eyebrow">${escapeHtml(entry.title)}</span>`
-            + `<h2>${escapeHtml(heading)}</h2><p class="exam-date">Дата: ${dateHtml}</p>`
-            + `<p class="exam-coverage">${numbers.length} вопросов · частично: `
-            + partial.map((question) => '№' + question.number).join(', ') + '</p>'
-            + `<div class="exam-actions"><a class="exam-download" href="${download}" download>Краткие ответы (Markdown)</a>`
+        cards.push(`<a class="exam-card" id="${entry.id}" href="${url}">`
+            + `<strong>${escapeHtml(entry.title)}</strong><span>${escapeHtml(heading)}</span>`
+            + `<span>Дата: ${dateHtml}</span></a>`);
+        writePage(route, entry.title + ' · ' + heading, 'Вопросы и ответы для подготовки.',
+            '<link rel="stylesheet" href="/assets/exams.css"><div class="reading-column exams-page">'
+            + '<a class="exam-back" href="/exams/">К списку зачётов и экзаменов</a>'
+            + `<article class="note exam-entry" id="${entry.id}"><header><h1>${escapeHtml(entry.title)}</h1>`
+            + `<p>${escapeHtml(heading)}</p><p class="exam-date">Дата: ${dateHtml}</p>`
+            + `<div class="exam-actions"><a class="exam-download" href="${download}" download>Ответы (Markdown)</a>`
             + expandedLink
             + '<button class="print-button" type="button">Печать / PDF</button></div></header>'
             + `<nav class="exam-contents" aria-label="Вопросы: ${escapeHtml(heading)}">${toc}</nav>`
-            + `<div class="exam-answers">${html}</div></article>`);
-        navigation.push(`<a href="#${entry.id}">${escapeHtml(heading)}</a>`);
-        for (const section of markdown.split(/(?=^### №\d+\.)/m).slice(1)) {
+            + `<div class="exam-answers">${html}</div></article></div>`, 'exams');
+        for (const section of markdown.split(/(?=^### №\d+\.)/m).filter((block) => block.startsWith("### №"))) {
             const title = section.match(/^### (.+)/)[1];
             searchIndex.push({ subject: heading, slug: 'exams', title, text: plain(section), symbols: section,
-                url: '/exams/#' + encodeURIComponent(prefix + anchor(title)) });
+                url: url + '#' + encodeURIComponent(prefix + anchor(title)) });
         }
     }
     writePage('exams', 'Зачёты и экзамены', 'Даты и подробные материалы для подготовки.',
         '<link rel="stylesheet" href="/assets/exams.css"><div class="reading-column exams-page">'
-        + '<div class="library-header"><span class="eyebrow">Подготовка</span><h1>Зачёты и экзамены</h1></div>'
-        + `<nav class="exam-list" aria-label="Зачёты и экзамены">${navigation.join('')}</nav>`
-        + cards.join('') + '</div>', 'exams');
+        + '<div class="library-header"><h1>Зачёты и экзамены</h1></div>'
+        + `<nav class="exam-list" aria-label="Зачёты и экзамены">${cards.join('')}</nav>`
+        + '</div>', 'exams');
+    return routes;
 }

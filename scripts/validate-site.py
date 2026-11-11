@@ -66,6 +66,10 @@ for file in DIST.rglob('*.html'):
 def validate_link(source, link):
     url = urlparse(link)
     if url.scheme:
+        if source.is_relative_to(DIST / 'exams') and link == (
+            'https://chatgpt.com/library?file_id=libfile_b37ff826499481918c215d25d84e5991&account_id=personal'
+        ):
+            return
         assert link in TEXTBOOK_URLS or link in {
             'https://github.com/GrayMans1on/UniversityProjects_Shparov/tree/main/lectures',
             'https://map.csu.ru/',
